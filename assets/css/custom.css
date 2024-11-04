@@ -6,7 +6,7 @@ h5,
 h6,
 p,
 a {
-    font-family: 'Manrope', sans-serif;
+    font-family: "Manrope", Manrope, sans-serif;
 }
 
 .mobile-menu {
@@ -34,7 +34,7 @@ a {
     padding-top: 1rem;
 }
 
-.mobile-dropdown-menu li{
+.mobile-dropdown-menu li {
     border-bottom: none;
     border-top: 1px solid #e0e0e0;
 }
@@ -43,8 +43,8 @@ a {
     padding-bottom: 0;
 }
 
-.mobile-dropdown-menu{
-   margin-top: 12px;
+.mobile-dropdown-menu {
+    margin-top: 12px;
 }
 
 /* .group:hover h3,
@@ -101,7 +101,7 @@ a {
     object-fit: cover;
 }
 
-@media(min-width:1400px){
+@media (min-width: 1400px) {
     .main-slider .swiper-slide img {
         max-height: inherit;
     }
@@ -112,18 +112,18 @@ a {
     bottom: 20%;
 }
 
-@media (max-width:640px) {
-    .main-slider .swiper-slide-content{
+@media (max-width: 640px) {
+    .main-slider .swiper-slide-content {
         bottom: inherit;
         padding: 10px;
     }
 }
 
-.main-slider  .swiper-slide {
+.main-slider .swiper-slide {
     padding: 0;
 }
 
-@media(min-width: 1400px) {
+@media (min-width: 1400px) {
     .main-slider .swiper-slide-content {
         position: absolute;
         bottom: 20%;
@@ -132,19 +132,21 @@ a {
     }
 }
 
-#product-slider .swiper-button-prev, #product-slider .swiper-button-next{
+#product-slider .swiper-button-prev,
+#product-slider .swiper-button-next {
     color: #fff;
 }
 
-.brands-swiper-slider .swiper-button-prev, .brands-swiper-slider .swiper-button-next{
+.brands-swiper-slider .swiper-button-prev,
+.brands-swiper-slider .swiper-button-next {
     color: #ff0042;
 }
 
-.brands-swiper-slider .swiper-button-next{
+.brands-swiper-slider .swiper-button-next {
     right: 0;
 }
 
-.brands-swiper-slider .swiper-button-prev{
+.brands-swiper-slider .swiper-button-prev {
     left: 0;
 }
 
@@ -176,7 +178,6 @@ a {
 }
 
 @media (max-width: 1023px) {
-
     .swiper-button-prev,
     .swiper-button-next {
         display: none;
@@ -190,20 +191,20 @@ img.cursor-pointer:hover {
 /* single product tabs */
 .tab {
     padding: 0.5rem 1rem;
-    color: #010717; 
+    color: #010717;
     border-bottom-width: 2px;
     border-color: transparent;
     font-size: 1rem;
-    font-weight: 500; 
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 .tab:hover {
-    color: #323232; 
-    border-color: #ff0042; 
+    color: #323232;
+    border-color: #ff0042;
 }
 .tab.active {
-    color: #ff0042; 
+    color: #ff0042;
     border-color: #ff0042;
 }
 .tab-content {
@@ -212,7 +213,6 @@ img.cursor-pointer:hover {
 .tab-content:not(.hidden) {
     display: block;
 }
-
 
 .custom-checkbox {
     appearance: none;
@@ -232,4 +232,3 @@ img.cursor-pointer:hover {
     background-color: #ff0042;
     border-color: #ff0042;
 }
-
