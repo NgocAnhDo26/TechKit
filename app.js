@@ -18,7 +18,7 @@ process.on("SIGINT", () => {
 
 // Init routes
 var router = require("./src/routes/index.js");
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "src/views"));
 app.use("", router);
 
 // Use static files
