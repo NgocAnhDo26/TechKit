@@ -1,15 +1,11 @@
-const express = require("express");
+const express = require('express');
+const apiRoute = require('./api');
+const serviceRoute = require('./service');
 const router = express.Router();
 
-/* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index");
-});
+const api = process.env.PORT;
 
-// router.get("", (req, res, next) => {
-//     return res.status(200).json({
-//         message: "Welcome to my server!",
-//     });
-// });
+router.use(`${api}`, apiRoute);
+router.use('', serviceRoute);
 
 module.exports = router;
