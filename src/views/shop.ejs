@@ -159,23 +159,10 @@
                     <div
                         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
                     >
-                        <!-- Product 1 -->
-                        <%- include('product'); %>
-
-                        <!-- Product 2 -->
-                        <%- include('product'); %>
-
-                        <!-- Product 3 -->
-                        <%- include('product'); %>
-
-                        <!-- Product 4 -->
-                        <%- include('product'); %>
-
-                        <!-- Product 5 -->
-                        <%- include('product'); %>
-
-                        <!-- Product 6 -->
-                        <%- include('product'); %>
+                        <!-- Loop through products and display each one -->
+                        <% products.forEach(product => { %>
+                            <%- include('product', { product }); %>
+                        <% }); %>
                     </div>
                     <!-- Pagination -->
                     <div class="flex justify-center mt-8">
