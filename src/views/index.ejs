@@ -1,28 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-    <head>
-        <%- include('./partials/head'); %>
-    </head>
+  <head>
+    <%- include('./partials/head'); %>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="bg-primary sticky top-0 z-50">
+      <%- include('./partials/header'); %>
+    </header>
 
-    <body>
-        <!-- Header -->
-        <header class="bg-primary sticky top-0 z-50">
-            <%- include('./partials/header'); %>
-        </header>
+    <!-- Shop -->
+    <section id="shop"><%- include('shop'); %></section>
 
-        <!-- Shop -->
-        <section id="shop">
-            <%- include('shop'); %>
-        </section>
-
-        <footer>
-
-        </footer>
-            <%- include('./partials/footer'); %>
-        <script
-            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
-            defer
-        ></script>
-        <script src="assets/js/script.js"></script>
-    </body>
+    <footer><%- include('./partials/footer'); %></footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
+    <script src="../../assets/js/script.js"></script>
+  </body>
 </html>
