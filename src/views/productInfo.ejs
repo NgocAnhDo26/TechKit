@@ -10,11 +10,11 @@
             <li><span class="mx-2">&gt;</span></li>
             <li>
                 <a href="/shop/laptop" class="font-semibold hover:text-primary"
-                    >Laptop</a
+                    ><%= product.category_name %></a
                 >
             </li>
             <li><span class="mx-2">&gt;</span></li>
-            <li>Laptop Gaming ASUS ROG Strix SCAR 16 G634JYR RA132W</li>
+            <li><%= product.product_name %></li>
         </ol>
     </div>
 </section>
@@ -32,7 +32,7 @@
                             <img
                                 id="main-image"
                                 class="h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px]"
-                                src="../images/products/1.png"
+                                src="../../images/products/1.png"
                                 alt="Main Product Image"
                             />
                         </div>
@@ -41,7 +41,7 @@
                             <div>
                                 <img
                                     onclick="changeImage(this)"
-                                    data-full="../images/single-product/1.png"
+                                    data-full="../../images/single-product/1.png"
                                     src="../images/single-product/1.png"
                                     class="object-cover object-center max-h-30 max-w-full rounded-lg cursor-pointer"
                                     alt="Gallery Image 1"
@@ -51,7 +51,7 @@
                                 <img
                                     onclick="changeImage(this)"
                                     data-full="../images/single-product/2.jpg"
-                                    src="../images/single-product/2.jpg"
+                                    src="../../images/single-product/2.jpg"
                                     class="object-cover object-center max-h-30 max-w-full rounded-lg cursor-pointer"
                                     alt="Gallery Image 2"
                                 />
@@ -59,8 +59,8 @@
                             <div>
                                 <img
                                     onclick="changeImage(this)"
-                                    data-full="../images/single-product/3.jpg"
-                                    src="../images/single-product/3.jpg"
+                                    data-full="../../images/single-product/3.jpg"
+                                    src="../../images/single-product/3.jpg"
                                     class="object-cover object-center max-h-30 max-w-full rounded-lg cursor-pointer"
                                     alt="Gallery Image 3"
                                 />
@@ -68,8 +68,8 @@
                             <div>
                                 <img
                                     onclick="changeImage(this)"
-                                    data-full="../images/single-product/4.jpg"
-                                    src="../images/single-product/4.jpg"
+                                    data-full="../../images/images/single-product/4.jpg"
+                                    src="../../images/images/single-product/4.jpg"
                                     class="object-cover object-center max-h-30 max-w-full rounded-lg cursor-pointer"
                                     alt="Gallery Image 4"
                                 />
@@ -77,8 +77,8 @@
                             <div>
                                 <img
                                     onclick="changeImage(this)"
-                                    data-full="../images/single-product/5.jpg"
-                                    src="../images/single-product/5.jpg"
+                                    data-full="../../images/images/single-product/5.jpg"
+                                    src="../../images/images/single-product/5.jpg"
                                     class="object-cover object-center max-h-30 max-w-full rounded-lg cursor-pointer"
                                     alt="Gallery Image 5"
                                 />
@@ -90,7 +90,7 @@
                 <div class="w-full lg:w-1/2 flex flex-col justify-between">
                     <div class="pb-8 border-b border-gray-line">
                         <h1 class="text-3xl font-bold mb-4">
-                            Laptop Gaming ASUS ROG Strix SCAR 16 G634JYR RA132W
+                            <%= product.product_name %>
                         </h1>
                         <div class="flex items-center mb-4">
                             <span class="text-yellow-400">★★★★★</span>
@@ -98,10 +98,10 @@
                         </div>
                         <div class="mb-4 pb-4 border-b">
                             <span>Thương hiệu: </span>
-                            <a href="" class="text-primary">Lenovo</a>
+                            <a href="" class="text-primary"><%= product.brand %></a>
                             <span class="mx-2">|</span>
                             <span>Loại: </span>
-                            <a href="" class="text-primary">Laptop</a>
+                            <a href="" class="text-primary"><%= product.category_name %></a>
                         </div>
                         <div class="mb-4 pb-4 border-b border-gray-line">
                             <p class="mb-2">✔ Bảo hành chính hãng 24 tháng.</p>
@@ -109,7 +109,7 @@
                             <p class="mb-2">✔ Miễn phí giao hàng toàn quốc.</p>
                         </div>
                         <div class="text-4xl font-semibold mb-8 text-primary">
-                            <span> 117.990.000₫ </span>
+                            <span> <%= product.price.toLocaleString() %>₫ </span>
                             <s
                                 class="text-3xl text-gray-400 font-light stroke-gray-line ml-3"
                             >
@@ -206,18 +206,10 @@
                         <div class="flex flex-col lg:flex-row lg:space-x-8">
                             <div class="w-full lg:w-1/2">
                                 <h3 class="text-xl font-semibold mb-2">
-                                    With the new fashion trends and all the
-                                    available shopping options, you can order
-                                    your clothes online and make money without
-                                    even leaving your house.
+                                    Laptop Intel Gen 14th HX Series mạnh nhất Việt Nam
                                 </h3>
                                 <p class="mb-4">
-                                    These days, you can take your own
-                                    inspiration and create something new for
-                                    yourself. All you need to do is read books
-                                    and magazines about fashion, watch videos on
-                                    YouTube, keep yourself updated on social
-                                    media, and, of course, shop online!
+                                    <%= product.description %>
                                 </p>
                             </div>
                             <div class="w-full lg:w-1/4">

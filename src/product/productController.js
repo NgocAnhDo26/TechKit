@@ -9,17 +9,19 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/laptop', async (req, res) => {
-    let products = await productModel.fetch();
+    var products = await productModel.fetchProductByCategoryID(1);
     res.render('shop', { products });
-});
+})
 
 router.get('/pc', async (req, res) => {
-    let products = await productModel.fetch();
+    var products = await productModel.fetchProductByCategoryID(2);
     res.render('shop', { products });
 });
 
-router.get('/single-product', (req, res) => {
-    res.render('singleProduct');
+router.get('/:category_name/:product_id',async (req, res) => {
+    const { category_name, product_id } = req.params;
+    var product = await productModel.fetchProductByID(product_id);
+    res.render('singleProduct',{product});
 });
 
 module.exports = router;

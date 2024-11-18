@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../product/productController');
+const productModel = require('../product/product');
 
-router.get('/', (req, res) => {
-    res.render('index');
+router.get('/',async (req, res) => {
+    var products = await productModel.fetchProductByCategoryID(1);
+    res.render('index', { products });
 });
 
 router.get('/about', (req, res) => {
