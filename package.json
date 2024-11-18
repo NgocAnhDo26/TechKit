@@ -23,7 +23,7 @@
     "name": "techkit",
     "version": "1.0.0",
     "description": "An online electronic e-commerce website.",
-    "main": "app.js",
+    "main": "index.js",
     "author": "",
     "license": "ISC",
     "type": "commonjs"
