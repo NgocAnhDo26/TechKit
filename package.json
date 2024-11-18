@@ -2,8 +2,8 @@
     "scripts": {
         "dev": "npx tailwindcss -i assets/css/tailwind.css -o assets/css/styles.css --watch",
         "build": "npx tailwindcss -i assets/css/tailwind.css -o assets/css/styles.css --minify",
-        "start": "node app.js",
-        "devstart": "nodemon --inspect app.js",
+        "start": "node index.js",
+        "devstart": "nodemon --inspect index.js",
         "serverstart": "SET DEBUG=express-locallibrary-tutorial:* & npm run devstart"
     },
     "devDependencies": {
