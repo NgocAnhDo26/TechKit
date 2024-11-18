@@ -21,9 +21,6 @@ async function fetchProductByCategoryID(categoryID) {
                 c.category_id = ?`,
             [categoryID]
         );
-        if (rows.length === 0) {
-            throw new Error(`No products found for category ID ${categoryID}.`);
-        }
         return rows; // Return the joined data
     } catch (error) {
         console.error('Error fetching products with categories:', error.message);
@@ -31,7 +28,36 @@ async function fetchProductByCategoryID(categoryID) {
     }
 }
 
+// Function to fetch product by product ID
+async function fetchProductByID(productID) {
+    try {
+        // Parameterized query to join product and category tables
+        const [rows] = await pool.query(
+            `SELECT 
+                p.product_id, 
+                p.name as product_name, 
+                p.price, 
+                p.description, 
+                p.brand,
+                c.name as category_name
+             FROM 
+                product p
+             JOIN 
+                category c 
+             ON 
+                p.category_id = c.category_id
+             WHERE 
+                p.product_id = ?`, // Use product_id instead of category_id
+            [productID]
+        );
+
+        return rows[0]; // Return the first row (the product) from the result
+    } catch (error) {
+        console.error('Error fetching product by ID:', error.message);
+        throw error;
+    }
+}
 // Export the function
 module.exports = {
-    fetchProductByCategoryID,
+    fetchProductByCategoryID, fetchProductByID,
 };
