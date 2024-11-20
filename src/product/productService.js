@@ -1,4 +1,4 @@
-const pool = require('../db/product'); // Import database connection pool
+import pool from '../db/init.js'; // Import database connection pool
 
 // Function to fetch products with category name
 async function fetchProductByCategoryID(categoryID) {
@@ -61,7 +61,7 @@ async function fetchProductByID(productID) {
     }
 }
 // Export the function
-module.exports = {
+export {
     fetchProductByCategoryID,
     fetchProductByID,
 };

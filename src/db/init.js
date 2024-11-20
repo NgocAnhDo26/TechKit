@@ -1,21 +1,38 @@
-const express = require('express');
-const mysql = require('mysql2');
-const router = express.Router();
+import mysql from 'mysql2/promise';
+import dotenv from '@dotenvx/dotenvx';
 
-// create the connection to database
-const db = mysql.createConnection({
+dotenv.config({ path: '.env' });
+
+// Create the connection pool. The pool-specific settings are the defaults
+const pool = mysql.createPool({
     port: process.env.DB_PORT,
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
-});
-db.connect((error) => {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('MYSQL connected...');
-    }
+    waitForConnections: true,
+    connectionLimit: 10,
+    maxIdle: 10, // max idle connections, the default value is the same as connectionLimit
+    idleTimeout: 10000000, // idle connections timeout, in milliseconds, the default value 60000
+    queueLimit: 0,
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
 });
 
-module.exports = { router, db };
+export async function initDatabase() {
+    try {
+        // Get a connection from the pool
+        const connection = await pool.getConnection();
+
+        // Test the database connection with a simple query
+        const [rows] = await connection.query('SELECT 1');
+        console.log('Database connected successfully.');
+
+        // Release the connection back to the pool
+        connection.release();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export default pool;
