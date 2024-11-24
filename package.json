@@ -1,8 +1,9 @@
 {
     "scripts": {
         "dev": "npx tailwindcss -i public/stylesheets/tailwind.css -o public/stylesheets/styles.css --watch",
-        "build": "npx tailwindcss -i public/stylesheets/tailwind.css -o public/stylesheets/styles.css --minify",
+        "build": "prisma generate && npx tailwindcss -i public/stylesheets/tailwind.css -o public/stylesheets/styles.css --minify",
         "start": "node app.js",
+        "postinstall": "prisma generate",
         "devstart": "nodemon --inspect app.js",
         "serverstart": "SET DEBUG=TechKit:* & npm run devstart"
     },
