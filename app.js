@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import router from './src/routes/index.js';
-import { initDatabase } from './src/db/init.js';
+import { PrismaClient } from '@prisma/client';
 
 const app = express();
 const __dirname = import.meta.dirname;
@@ -21,17 +21,20 @@ const server = app.listen(PORT, () => {
 });
 
 process.on('SIGINT', () => {
-    server.close(() => console.log('Exit Server Express'));
+    server.close(() => {
+        console.log('Exit Server Express');
+        prisma.$disconnect;
+    });
 });
 
 // Init routes
 app.use('', router);
 
+// Init database
+export const prisma = new PrismaClient();
+
 // Use static files
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Init database
-initDatabase();
 
 // Handing errors
 

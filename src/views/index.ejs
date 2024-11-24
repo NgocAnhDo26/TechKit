@@ -10,64 +10,52 @@
         <%- include('./partials/header'); %>
 
         <!-- Slider -->
-        <section id="product-slider">
-            <div class="main-slider swiper-container">
-                <div class="swiper-wrapper">
-                    <!-- Slide 1 -->
-                    <div class="swiper-slide max-h-80">
-                        <img
-                            src="/images/main-slider/1.png"
-                            alt="Product 1"
-                            class="object-cover"
-                        />
-                        <div class="swiper-slide-content">
-                            <h2
-                                class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4"
-                            >
-                                TECHKIT
-                            </h2>
-                            <p class="mb-4 text-white md:text-2xl">
-                                The realm of technology advancements
-                            </p>
-                            <a
-                                href="/"
-                                class="bg-primary hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block"
-                                >Shop now</a
-                            >
-                        </div>
-                    </div>
-                </div>
+        <div class="banner flex flex-row min-h-80 bg-white w-full">
+            <div class="flex flex-col justify-center items-center align-middle grow">
+                <h2
+                    class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4"
+                >
+                    TECHKIT
+                </h2>
+                <p class="mb-4 text-white md:text-2xl">
+                    The realm of technology advancements
+                </p>
+                <a
+                    href="/"
+                    class="bg-primary mt-5 hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block"
+                    >Shop now</a
+                >
             </div>
-        </section>
+        </div>
 
         <!-- Product banner section -->
         <section id="product-banners">
             <div class="container mx-auto py-10">
                 <div class="flex flex-wrap -mx-4">
                     <!-- Category 1 -->
-                    <div class="w-full sm:w-1/5 px-4 mb-8">
-                        <div
+                    <a href="/shop/laptop" class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110">
+                            <div
                             class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
-                        >
-                            <img
+                            >
+                                <img
                                 src="/images/categories/laptop.png"
                                 alt="Category 1"
                                 class="w-full h-36 object-cover"
-                            />
-                            <div
+                                />
+                                <div
                                 class="absolute inset-0 bg-gray-light bg-opacity-50"
-                            ></div>
-                            <div
+                                ></div>
+                                <div
                                 class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4"
-                            >
-                                <h2 class="text-2xl md:text-3xl font-bold mb-4">
+                                >
+                                    <h2 class="text-2xl md:text-3xl font-bold mb-4">
                                     Laptop
-                                </h2>
+                                    </h2>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                    </a>
                     <!-- Category 2 -->
-                    <div class="w-full sm:w-1/5 px-4 mb-8">
+                    <a href="/shop/pc" class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110">
                         <div
                             class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
                         >
@@ -87,9 +75,9 @@
                                 </h2>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     <!-- Category 3 -->
-                    <div class="w-full sm:w-1/5 px-4 mb-8">
+                    <a href="/shop/monitor" class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110">
                         <div
                             class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
                         >
@@ -105,13 +93,13 @@
                                 class="category-text absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 transition duration-300"
                             >
                                 <h2 class="text-2xl md:text-3xl font-bold mb-4">
-                                    Monitor
+                                    Màn hình
                                 </h2>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     <!-- Category 4 -->
-                    <div class="w-full sm:w-1/5 px-4 mb-8">
+                    <a href="/shop/gear" class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110">
                         <div
                             class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
                         >
@@ -131,9 +119,9 @@
                                 </h2>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     <!-- Category 5 -->
-                    <div class="w-full sm:w-1/5 px-4 mb-8">
+                    <a href="/shop/components" class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110">
                         <div
                             class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
                         >
@@ -149,22 +137,22 @@
                                 class="category-text absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 transition duration-300"
                             >
                                 <h2 class="text-2xl md:text-3xl font-bold mb-4">
-                                    Components
+                                    Linh Kiện
                                 </h2>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </section>
 
         <% products.forEach(product => { %>
-            <%- include('featuredProducts', { product }); %>
+            <%- include('featuredProducts', { title: 'Sản phẩm nổi bật', product }); %>
         <% }); %>
 
         <!-- Latest product section -->
         <% products.forEach(product => { %>
-            <%- include('featuredProducts', { product }); %>
+            <%- include('featuredProducts', { title: 'Sản phẩm mới nhất', product }); %>
         <% }); %>
 
         <!-- Subscribe section -->

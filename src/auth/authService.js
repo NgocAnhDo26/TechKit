@@ -1,4 +1,4 @@
-import pool from '../db/init.js';
+import { prisma } from '../../app.js'; // Import prisma database connection
 
 async function register(req, res) {
     try {
