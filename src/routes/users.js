@@ -1,15 +1,15 @@
 import express from 'express';
 import productController from '../product/productController.js';
-import {
-    fetchProductByCategoryID,
-    fetchProductByID,
-} from '../product/productService.js';
+import * as productService from '../product/productService.js';
 import authController from '../auth/authController.js';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    var products = await fetchProductByCategoryID(1);
+    var products = await productService.fetchProductWithQuery(
+        { category: 'Laptop' },
+        {},
+    );
     res.render('index', { products });
 });
 
@@ -23,10 +23,6 @@ router.get('/contact', (req, res) => {
 
 router.get('/cart', (req, res) => {
     res.render('cart');
-});
-
-router.get('/register', (req, res) => {
-    res.render('register');
 });
 
 router.use('/shop', productController);

@@ -12,8 +12,8 @@
         <!-- Product Info -->
         <%- include('productInfo',{ product }); %>
 
-        <!-- Popular-products -->
-        <%- include('featuredProducts'); %>
+        <!-- Related-products -->
+        <%- include('featuredProducts', { product, title: 'Sản phẩm liên quan' } ); %>
 
         <!-- Footer -->
         <%- include('./partials/footer'); %>

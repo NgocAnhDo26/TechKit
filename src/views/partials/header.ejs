@@ -12,19 +12,22 @@
         </a>
 
         <!-- Search field (for desktops)-->
-        <div
+        <form
             id="search-field"
             class="hidden md:flex bg-white shadow-lg rounded-md w-full md:w-1/2 p-1 mx-10 self-center"
+            onsubmit="handleSearchSubmit(event)"
         >
             <input
+                id="search-input"
                 type="text"
+                name="keyword"
                 class="w-full p-2 focus:border-none focus:outline-none"
                 placeholder="Search for products..."
             />
             <button class="self-center mr-2">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
-        </div>
+        </form>
 
         <!-- Right section: Buttons (for mobile) -->
         <div class="flex md:hidden gap-3">
@@ -110,12 +113,12 @@
             </div>
 
             <!-- Login -->
-            <a href="/register">
+            <a href="/auth/login">
                 <div
                     class="group login-register text-primary px-3 py-2 rounded-md bg-white w-max"
                 >
                     <i class="fa-regular fa-user" style="color: #ff0042"></i>
-                    <a href="/register" class="font-semibold ml-2">Đăng nhập</a>
+                    <a href="/auth/login" class="font-semibold ml-2">Đăng nhập</a>
                 </div>
             </a>
         </div>

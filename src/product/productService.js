@@ -1,67 +1,76 @@
-import pool from '../db/init.js'; // Import database connection pool
+import { name } from 'ejs';
+import { prisma } from '../../app.js'; // Import prisma database connection
 
-// Function to fetch products with category name
-async function fetchProductByCategoryID(categoryID) {
-    try {
-        // Parameterized query to join product and category tables
-        const [rows] = await pool.query(
-            `SELECT 
-                p.product_id, 
-                p.name as product_name, 
-                p.price, 
-                p.description, 
-                c.name as category_name
-             FROM 
-                product p
-             JOIN 
-                category c 
-             ON 
-                p.category_id = c.category_id
-             WHERE 
-                c.category_id = ?`,
-            [categoryID]
-        );
-        return rows; // Return the joined data
-    } catch (error) {
-        console.error(
-            'Error fetching products with categories:',
-            error.message
-        );
-        throw error;
+// Function to fetch all products
+// async function fetchAllProducts(categoryName) {
+
+// Function to fetch products with filters (query)
+async function fetchProductWithQuery(params, query) {
+    let filters = { category: { name: params.category } };
+    let orderBy = {};
+
+    if (query.keyword) {
+        filters.OR = [
+            { name: { contains: query.keyword } },
+            {
+                description: {
+                    contains: query.keyword,
+                },
+            },
+        ];
     }
+
+    if (query.brand) {
+        if (query.brand.constructor === Array) {
+            filters.brand = { in: query.brand };
+        } else {
+            filters.brand = query.brand;
+        }
+    }
+
+    if (query.cpu) {
+        if (query.cpu.constructor === Array) {
+            filters.cpu = { in: query.cpu };
+        } else {
+            filters.cpu = query.cpu;
+        }
+    }
+
+    if (query.order) {
+        orderBy.price = query.order;
+    }
+
+    if (query.minPrice || query.maxPrice) {
+        filters.price = {
+            gte: query.minPrice ? Number(query.minPrice) : 0,
+            lte: query.maxPrice ? Number(query.maxPrice) : 999999999,
+        };
+    }
+
+    const products = await prisma.product.findMany({
+        include: {
+            category: true,
+        },
+        orderBy,
+        where: filters,
+    });
+
+    return products;
 }
 
 // Function to fetch product by product ID
 async function fetchProductByID(productID) {
-    try {
-        // Parameterized query to join product and category tables
-        const [rows] = await pool.query(
-            `SELECT 
-                p.product_id, 
-                p.name as product_name, 
-                p.price, 
-                p.description, 
-                p.brand,
-                c.name as category_name
-             FROM 
-                product p
-             JOIN 
-                category c 
-             ON 
-                p.category_id = c.category_id
-             WHERE 
-                p.product_id = ?`, // Use product_id instead of category_id
-            [productID]
-        );
+    const product = await prisma.product.findUnique({
+        include: {
+            category: true,
+        },
+        where: {
+            product_id: productID,
+        },
+    });
 
-        return rows[0]; // Return the first row (the product) from the result
-    } catch (error) {
-        console.error('Error fetching product by ID:', error.message);
-        throw error;
-    }
+    return product;
 }
+
 // Export the function
-export {
-    fetchProductByCategoryID,
-    fetchProductByID,
-};
+export { fetchProductByID, fetchProductWithQuery };

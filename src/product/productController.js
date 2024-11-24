@@ -1,30 +1,42 @@
 import express from 'express';
-import {
-    fetchProductByCategoryID,
-    fetchProductByID,
-} from './productService.js';
+import * as service from './productService.js';
 
 const router = express.Router();
 
-// This will be removed later
-router.get('/', async (req, res) => {
-    res.render('shop');
+const categories = {
+    LAPTOP: 1,
+    PC: 2,
+};
+
+router.get('/', (req, res) => {
+    res.redirect('..');
 });
 
-router.get('/laptop', async (req, res) => {
-    var products = await fetchProductByCategoryID(1);
-    res.render('shop', { products });
+router.get('/:category', async (req, res) => {
+    service
+        .fetchProductWithQuery(req.params, req.query)
+        .then((products) => {
+            res.status(200).render('shop', {
+                category: req.params.category,
+                products,
+            });
+        })
+        .catch((e) => {
+            console.log(e);
+            res.status(500).json(e);
+        });
 });
 
-router.get('/pc', async (req, res) => {
-    var products = await fetchProductByCategoryID(2);
-    res.render('shop', { products });
-});
-
-router.get('/:category_name/:product_id', async (req, res) => {
-    const { category_name, product_id } = req.params;
-    var product = await fetchProductByID(product_id);
-    res.render('singleProduct', { product });
+router.get('/:category/:product_id', async (req, res) => {
+    service
+        .fetchProductByID(req.params.product_id)
+        .then((product) => {
+            res.render('singleProduct', { product });
+        })
+        .catch((e) => {
+            console.error(e);
+            res.render('error');
+        });
 });
 
 export default router;
