@@ -65,10 +65,9 @@ async function fetchProductByID(productID) {
             category: true,
         },
         where: {
-            product_id: productID,
+            product_id: Number(productID),
         },
     });
-
     return product;
 }
 

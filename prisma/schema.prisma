@@ -15,29 +15,31 @@ model category {
 
 model customer {
   customer_id Int    @id @default(autoincrement())
-  email       String @db.VarChar(254)
-  password    String @db.VarChar(100)
+  email       String @unique(map: "email") @db.VarChar(254)
+  password    String @db.VarChar(32)
 }
 
 model image {
-  image_id   Int     @id @default(autoincrement())
-  product_id String  @db.VarChar(15)
-  image_url  String  @db.VarChar(100)
-  product    product @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_id")
+  image_id   Int      @id @default(autoincrement())
+  product_id Int?
+  image_url  String   @db.VarChar(100)
+  product    product? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_id")
 
-  @@index([product_id], map: "fk_product_id_idx")
+  @@index([product_id], map: "fk_product_id")
 }
 
 model product {
-  product_id  String    @id @db.VarChar(15)
+  product_id  Int       @id @default(autoincrement())
   name        String    @db.VarChar(70)
   price       Int
   brand       String?   @db.VarChar(30)
-  cpu         String?    @db.VarChar(30)
   description String?   @db.LongText
   category_id Int?
+  cpu         String?   @db.VarChar(30)
+  price_sale  Int
+  is_featured Boolean
   image       image[]
   category    category? @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_category")
 
-  @@index([category_id], map: "fk_category_idx")
+  @@index([category_id], map: "fk_category")
 }

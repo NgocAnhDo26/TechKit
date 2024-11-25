@@ -1,5 +1,5 @@
-<header class="bg-primary sticky top-0 z-50">
-    <div class="container mx-auto flex justify-between items-center py-4">
+<header class="sticky top-0 z-50 bg-primary">
+    <div class="container mx-auto flex items-center justify-between py-4">
         <!-- Left section: Logo -->
         <a href="/" class="flex items-center">
             <div>
@@ -14,7 +14,7 @@
         <!-- Search field (for desktops)-->
         <form
             id="search-field"
-            class="hidden md:flex bg-white shadow-lg rounded-md w-full md:w-1/2 p-1 mx-10 self-center"
+            class="mx-10 hidden w-full self-center rounded-md bg-white p-1 shadow-lg md:flex md:w-1/2"
             onsubmit="handleSearchSubmit(event)"
         >
             <input
@@ -24,14 +24,14 @@
                 class="w-full p-2 focus:border-none focus:outline-none"
                 placeholder="Search for products..."
             />
-            <button class="self-center mr-2">
+            <button class="mr-2 self-center">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
         </form>
 
         <!-- Right section: Buttons (for mobile) -->
-        <div class="flex md:hidden gap-3">
-            <a href="/cart" class="border-2 rounded-md px-2 py-2">
+        <div class="flex gap-3 md:hidden">
+            <a href="/cart" class="rounded-md border-2 px-2 py-2">
                 <img
                     src="/images/cart-shopping.svg"
                     alt="Cart"
@@ -40,17 +40,17 @@
             </a>
             <!-- Login -->
             <a
-                href="register.html"
-                class="group login-register text-primary px-3 py-2 rounded-md bg-white w-max"
+                href="/auth/login"
+                class="login-register group w-max rounded-md bg-white px-3 py-2 text-primary"
             >
                 <i class="fa-regular fa-user" style="color: #ff0042"></i>
-                <span class="font-semibold ml-2">Đăng nhập</span>
+                <span class="ml-2 font-semibold">Đăng nhập</span>
             </a>
         </div>
 
         <!-- Right section: Buttons (for desktop) -->
-        <div class="hidden md:flex items-center space-x-4 relative">
-            <div class="relative group cart-wrapper mr-2">
+        <div class="relative hidden items-center space-x-4 md:flex">
+            <div class="cart-wrapper group relative mr-2">
                 <div class="flex w-max">
                     <a href="/cart">
                         <img
@@ -59,25 +59,25 @@
                             class="h-6 w-6"
                         />
                     </a>
-                    <a href="/cart" class="text-white font-semibold ml-2"
+                    <a href="/cart" class="ml-2 font-semibold text-white"
                         >Giỏ hàng (2)</a
                     >
                 </div>
 
                 <!-- Cart dropdown -->
                 <div
-                    class="absolute right-0 mt-1 w-80 bg-white shadow-lg p-4 rounded hidden group-hover:block"
+                    class="absolute right-0 mt-1 hidden w-80 rounded bg-white p-4 shadow-lg group-hover:block"
                 >
                     <div class="space-y-4">
                         <!-- product item -->
                         <div
-                            class="flex items-center justify-between pb-4 border-b border-gray-line"
+                            class="flex items-center justify-between border-b border-gray-line pb-4"
                         >
                             <div class="flex items-center">
                                 <img
                                     src="/images/single-product/1.png"
                                     alt="Product"
-                                    class="h-12 w-12 object-cover rounded mr-2"
+                                    class="mr-2 h-12 w-12 rounded object-cover"
                                 />
                                 <div>
                                     <p class="font-semibold">
@@ -94,7 +94,7 @@
                                 <img
                                     src="/images/single-product/2.jpg"
                                     alt="Product"
-                                    class="h-12 w-12 object-cover rounded mr-2"
+                                    class="mr-2 h-12 w-12 rounded object-cover"
                                 />
                                 <div>
                                     <p class="font-semibold">Black suit</p>
@@ -106,7 +106,7 @@
                     </div>
                     <a
                         href="/cart"
-                        class="block text-center mt-4 border border-primary bg-primary hover:bg-transparent text-white hover:text-primary py-2 rounded-full font-semibold"
+                        class="mt-4 block rounded-full border border-primary bg-primary py-2 text-center font-semibold text-white hover:bg-transparent hover:text-primary"
                         >Go to Cart</a
                     >
                 </div>
@@ -115,23 +115,25 @@
             <!-- Login -->
             <a href="/auth/login">
                 <div
-                    class="group login-register text-primary px-3 py-2 rounded-md bg-white w-max"
+                    class="login-register group w-max rounded-md bg-white px-3 py-2 text-primary"
                 >
                     <i class="fa-regular fa-user" style="color: #ff0042"></i>
-                    <a href="/auth/login" class="font-semibold ml-2">Đăng nhập</a>
+                    <a href="/auth/login" class="ml-2 font-semibold"
+                        >Đăng nhập</a
+                    >
                 </div>
             </a>
         </div>
     </div>
 
     <div
-        class="container2 mx-auto flex justify-around items-center py-4 bg-gray-light"
+        class="container2 mx-auto flex items-center justify-around bg-gray-light py-4"
     >
         <!-- Hamburger menu (for mobile) -->
         <div class="flex md:hidden">
             <button id="hamburger" class="text-white focus:outline-none">
                 <svg
-                    class="w-6 h-6"
+                    class="h-6 w-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -147,8 +149,8 @@
         </div>
 
         <!-- Center section: Menu -->
-        <nav class="hidden md:flex md:flex-grow justify-center">
-            <ul class="flex justify-evenly space-x-4 text-white w-full">
+        <nav class="hidden justify-center md:flex md:flex-grow">
+            <ul class="flex w-full justify-evenly space-x-4 text-white">
                 <li>
                     <a href="/" class="hover:text-secondary font-semibold"
                         >Trang chủ</a
@@ -161,13 +163,13 @@
                 </li>
 
                 <!-- Men Dropdown -->
-                <li class="relative group" x-data="{ open: false }">
+                <li class="group relative" x-data="{ open: false }">
                     <a
                         href="/shop/laptop"
                         @mouseover="open = true"
                         @mouseleave="open = false"
                         href="#"
-                        class="hover:text-secondary font-semibold flex items-center"
+                        class="hover:text-secondary flex items-center font-semibold"
                     >
                         Laptop
                         <i
@@ -178,7 +180,7 @@
                         x-show="open"
                         @mouseover="open = true"
                         @mouseleave="open = false"
-                        class="absolute left-0 bg-white text-black space-y-2 mt-1 p-2 rounded shadow-lg"
+                        class="absolute left-0 mt-1 space-y-2 rounded bg-white p-2 text-black shadow-lg"
                         x-transition:enter="transition ease-out duration-100"
                         x-transition:enter-start="opacity-0 scale-90"
                         x-transition:enter-end="opacity-100 scale-100"
@@ -189,28 +191,28 @@
                         <li>
                             <a
                                 href="/shop/laptop/asus"
-                                class="min-w-40 block px-4 py-2 hover:bg-primary hover:text-white rounded"
+                                class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
                                 >Asus</a
                             >
                         </li>
                         <li>
                             <a
                                 href="/shop/laptop/lenovo"
-                                class="min-w-40 block px-4 py-2 hover:bg-primary hover:text-white rounded"
+                                class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
                                 >Lenovo</a
                             >
                         </li>
                         <li>
                             <a
                                 href="/shop/laptop/hp"
-                                class="min-w-40 block px-4 py-2 hover:bg-primary hover:text-white rounded"
+                                class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
                                 >HP</a
                             >
                         </li>
                         <li>
                             <a
                                 href="/shop/laptop/msi"
-                                class="min-w-40 block px-4 py-2 hover:bg-primary hover:text-white rounded"
+                                class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
                                 >MSI</a
                             >
                         </li>
@@ -218,19 +220,21 @@
                 </li>
 
                 <li>
-                    <a href="/shop/pc" class="hover:text-secondary font-semibold"
+                    <a
+                        href="/shop/pc"
+                        class="hover:text-secondary font-semibold"
                         >PC</a
                     >
                 </li>
 
                 <!-- Women Dropdown -->
-                <li class="relative group" x-data="{ open: false }">
+                <li class="group relative" x-data="{ open: false }">
                     <a
                         href="/shop"
                         @mouseover="open = true"
                         @mouseleave="open = false"
                         href="#"
-                        class="hover:text-secondary font-semibold flex items-center"
+                        class="hover:text-secondary flex items-center font-semibold"
                     >
                         Gaming Gear
                         <i
@@ -241,7 +245,7 @@
                         x-show="open"
                         @mouseover="open = true"
                         @mouseleave="open = false"
-                        class="absolute left-0 bg-white text-black space-y-2 mt-1 p-2 rounded shadow-lg"
+                        class="absolute left-0 mt-1 space-y-2 rounded bg-white p-2 text-black shadow-lg"
                         x-transition:enter="transition ease-out duration-100"
                         x-transition:enter-start="opacity-0 scale-90"
                         x-transition:enter-end="opacity-100 scale-100"
@@ -252,21 +256,21 @@
                         <li>
                             <a
                                 href="/shop"
-                                class="min-w-40 block px-4 py-2 hover:bg-primary hover:text-white rounded"
+                                class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
                                 >Bàn phím</a
                             >
                         </li>
                         <li>
                             <a
                                 href="/shop"
-                                class="min-w-40 block px-4 py-2 hover:bg-primary hover:text-white rounded"
+                                class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
                                 >Chuột</a
                             >
                         </li>
                         <li>
                             <a
                                 href="/shop"
-                                class="min-w-40 block px-4 py-2 hover:bg-primary hover:text-white rounded"
+                                class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
                                 >Tai nghe</a
                             >
                         </li>

@@ -32,6 +32,8 @@ module.exports = {
                 txt: '#4c4d56',
                 line: '#E5E5E5',
             },
+            error: '#fcf1f4',
+            error_second: '#f3aea9',
         },
         extend: {},
     },

@@ -13,6 +13,15 @@ app.set('views', path.join(__dirname, 'src/views'));
 app.use(express.urlencoded({ extended: false })); // Parse URL-encoded bodies
 app.use(express.json()); // Parse JSON bodies
 
+// Init routes
+app.use('', router);
+
+// Init database
+export const prisma = new PrismaClient();
+
+// Use static files
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Server setup
 const PORT = process.env.PORT ?? 1111;
 
@@ -26,15 +35,6 @@ process.on('SIGINT', () => {
         prisma.$disconnect;
     });
 });
-
-// Init routes
-app.use('', router);
-
-// Init database
-export const prisma = new PrismaClient();
-
-// Use static files
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Handing errors
 
