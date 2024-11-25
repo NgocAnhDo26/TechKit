@@ -36,6 +36,33 @@ process.on('SIGINT', () => {
     });
 });
 
+const products = await prisma.product.createMany({
+    data: [
+        {
+            name: 'Laptop Acer Swift X SFX16 51G 516Q',
+            price: 29990000,
+            brand: 'Acer',
+            description:
+                'Bên cạnh Acer Aspire 5 dòng laptop văn phòng mỏng nhẹ dành cho các bạn học sinh - sinh viên thì Acer còn mang đến thị trường ở phân khúc cao cấp hơn với mẫu laptop Acer  Swift X dòng laptop mỏng nhẹ, cao cấp với hiệu năng có thể xử lý mọi tác vụ như render, thiết kế đồ họa,....',
+            category_id: 1,
+            cpu: 'Intel Core i5',
+            price_sale: 19990000,
+            is_featured: true,
+        },
+        {
+            name: 'Laptop Acer Swift 14 AI SF14 51 75VP',
+            price: 39990000,
+            brand: 'Acer',
+            description:
+                'Acer Swift 14 AI SF14 51 75VP là một trong những chiếc laptop cao cấp nhất của Acer, được thiết kế dành cho những người dùng đòi hỏi sự hoàn hảo về cả hiệu năng và thiết kế. Với cấu hình mạnh mẽ, màn hình OLED chất lượng cao và các tính năng thông minh, chiếc laptop này hứa hẹn sẽ mang đến những trải nghiệm tuyệt vời cho người dùng. Cùng GEARVN tìm hiểu thêm về sản phẩm trong phầm dưới đây để rõ hơn.',
+            category_id: 1,
+            cpu: 'Intel Core Ultra 7',
+            price_sale: 38990000,
+            is_featured: true
+        },
+    ],
+});
+
 // Handing errors
 
 export default app;

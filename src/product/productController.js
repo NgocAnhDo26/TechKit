@@ -28,15 +28,12 @@ router.get('/:category', async (req, res) => {
 });
 
 router.get('/:category/:product_id', async (req, res) => {
-    service
-        .fetchProductByID(req.params.product_id)
-        .then((product) => {
-            res.render('singleProduct', { product });
-        })
-        .catch((e) => {
-            console.error(e);
-            res.render('error');
-        });
+    const product = await service.fetchProductByID(req.params.product_id)
+    console.log("single product: ", product)
+    const products = await service.fetchProductByRelevant(product)
+    res.render('singleProduct', {product, products})
 });
+
+
 
 export default router;
