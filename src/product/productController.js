@@ -49,4 +49,6 @@ router.get('/:category/:product_id', async (req, res) => {
     }
 });
 
+
+
 export default router;

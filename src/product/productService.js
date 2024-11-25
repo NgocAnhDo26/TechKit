@@ -54,7 +54,6 @@ async function fetchProductWithQuery(params, query) {
         orderBy,
         where: filters,
     });
-
     return products;
 }
 
@@ -65,10 +64,10 @@ async function fetchProductByID(productID) {
             category: true,
         },
         where: {
-            product_id: productID,
+            product_id: Number(productID),
         },
     });
-
+    // console.log('product', product);
     return product;
 }
 
@@ -115,6 +114,19 @@ async function fetchProductsByCategory(categoryId) {
     return products;
 }
 
+async function fetchProductByRelevant(singleProduct) {
+    const products = await prisma.product.findMany({
+        where: {
+            OR: [{ brand: singleProduct.brand }, { cpu: singleProduct.cpu }],
+            NOT: { product_id: singleProduct.product_id },
+        },
+        include: {
+            category: true,
+        },
+    });
+    console.log('products: ', products);
+    return products;
+}
 
 
 // Export the function

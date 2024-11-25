@@ -12,54 +12,73 @@
         <!-- Register -->
         <section id="register-login-page" class="bg-white py-5">
             <div class="container mx-auto px-4">
-                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <div class="flex flex-col justify-center gap-4 md:flex-row">
                     <div
-                        class="md:w-1/2 bg-white rounded-lg shadow-md p-4 md:p-10 md:m-10"
+                        class="rounded-lg bg-white p-4 shadow-md md:m-10 md:w-1/2 md:p-10"
                     >
-                        <h2 class="text-2xl font-semibold mb-10">Register</h2>
+                        <h2 class="mb-10 text-2xl font-semibold">Register</h2>
+                        <%# if (typeof message !== 'undefined') { %>
+                        <div class="bg-error border-error_second my-10 flex gap-4 max-w-sm rounded-md min-h-16 items-center shadow-md mx-auto">
+                            <span class="font-medium"><%#= message %></span>
+                            <img src="/images/icons/mark.png" alt="error" class="max-w-5 max-h-5 ml-4"/>
+                            <div class="flex-col">
+                                <h2 class="font-bold">
+                                    We couldn't create your account.
+                                </h2>
+                                <p>hello</p>
+                            </div>
+                        </div>
+                        <%# } %>
                         <form action="/auth/register" method="post">
                             <div class="mb-3">
-                                <label for="register-email" class="block mb-2">Email</label>
+                                <label for="register-email" class="mb-2 block"
+                                    >Email</label
+                                >
                                 <input
                                     type="email"
                                     id="register-email"
                                     name="email"
-                                    class="w-full px-3 py-1 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                    class="w-full rounded-full border px-3 py-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
                                     required
                                 />
                             </div>
                             <div class="mb-3">
-                                <label for="register-password" class="block mb-2">Password</label>
+                                <label
+                                    for="register-password"
+                                    class="mb-2 block"
+                                    >Password</label
+                                >
                                 <input
                                     type="password"
+                                    maxlength="32"
                                     id="register-password"
                                     name="password"
-                                    class="w-full px-3 py-1 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                    class="w-full rounded-full border px-3 py-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
                                     required
                                 />
                             </div>
                             <div class="mb-3">
-                                <label for="register-confirm-password" class="block mb-2">Confirm Password</label>
+                                <label
+                                    for="register-confirm-password"
+                                    class="mb-2 block"
+                                    >Confirm Password</label
+                                >
                                 <input
                                     type="password"
+                                    maxlength="32"
                                     id="register-confirm-password"
                                     name="confirmPassword"
-                                    class="w-full px-3 py-1 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                    class="w-full rounded-full border px-3 py-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
                                     required
                                 />
                             </div>
                             <button
                                 type="submit"
-                                class="mt-10 bg-primary text-white border border-primary hover:bg-transparent hover:text-primary py-2 px-3 rounded-full w-full"
+                                class="mt-10 w-full rounded-full border border-primary bg-primary px-3 py-2 text-white hover:bg-transparent hover:text-primary"
                             >
                                 Register
                             </button>
                         </form>
-                        <% if (typeof message !== 'undefined') { %>
-                            <div class="mt-4 p-4 mb-4 text-sm text-primary rounded-lg bg-gray-txt" role="alert">
-                                <span class="font-medium"><%= message %></span>
-                            </div>
-                        <% } %>
                     </div>
                 </div>
             </div>
