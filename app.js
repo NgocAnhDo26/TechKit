@@ -36,7 +36,6 @@ process.on('SIGINT', () => {
     });
 });
 
-
 // Handing errors
 
 export default app;

@@ -4,7 +4,7 @@
         "build": "prisma generate && npx tailwindcss -i public/stylesheets/tailwind.css -o public/stylesheets/styles.css --minify",
         "start": "node app.js",
         "postinstall": "prisma generate",
-        "updatedb": "prisma db pull",
+        "updatedb": "prisma db pull && npx prisma db push",
         "devstart": "nodemon --inspect app.js",
         "serverstart": "SET DEBUG=TechKit:* & npm run devstart"
     },
