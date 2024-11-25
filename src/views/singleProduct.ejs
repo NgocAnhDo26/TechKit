@@ -13,7 +13,7 @@
         <%- include('productInfo',{ product }); %>
 
         <!-- Related-products -->
-        <%- include('featuredProducts', { product, title: 'Sản phẩm liên quan' } ); %>
+        <%- include('featuredProducts', { product,featured_products:related_products, title: 'Sản phẩm liên quan' } ); %>
 
         <!-- Footer -->
         <%- include('./partials/footer'); %>

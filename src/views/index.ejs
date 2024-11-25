@@ -146,14 +146,11 @@
             </div>
         </section>
 
-        <% products.forEach(product => { %>
-            <%- include('featuredProducts', { title: 'Sản phẩm nổi bật', product }); %>
-        <% }); %>
+        <!-- Featured product section -->
+        <%- include('featuredProducts', { title: 'Sản phẩm nổi bật', featured_products }); %>
 
-        <!-- Latest product section -->
-        <% products.forEach(product => { %>
-            <%- include('featuredProducts', { title: 'Sản phẩm mới nhất', product }); %>
-        <% }); %>
+        <!-- Sale product section -->
+        <%- include('featuredProducts', { title: 'Deal cực sốc', featured_products: sale_products }); %>
 
         <!-- Subscribe section -->
         <section

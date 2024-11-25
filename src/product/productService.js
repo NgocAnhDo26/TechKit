@@ -72,5 +72,50 @@ async function fetchProductByID(productID) {
     return product;
 }
 
+// Function to fetch all featured products
+async function fetchAllFeaturedProducts() {
+    const products = await prisma.product.findMany({
+        include: {
+            category: true, // Include related category data
+        },
+        where: {
+            is_featured: true, // Filter for featured products
+        },
+    });
+
+    return products;
+}
+
+async function fetchAllSaleProducts() {
+    const products = await prisma.product.findMany({
+        include: {
+            category: true, // Include related category data
+        },
+        where: {
+            NOT: {
+                price_sale: null
+            }
+        },
+    });
+
+    return products;
+}
+
+// Function to fetch products by category ID
+async function fetchProductsByCategory(categoryId) {
+    const products = await prisma.product.findMany({
+        include: {
+            category: true, // Include related category data
+        },
+        where: {
+            category_id: categoryId, // Filter by category_id
+        },
+    });
+
+    return products;
+}
+
+
+
 // Export the function
-export { fetchProductByID, fetchProductWithQuery };
+export { fetchProductByID, fetchProductWithQuery,fetchAllFeaturedProducts,fetchAllSaleProducts,fetchProductsByCategory };

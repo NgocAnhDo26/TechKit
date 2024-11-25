@@ -28,15 +28,25 @@ router.get('/:category', async (req, res) => {
 });
 
 router.get('/:category/:product_id', async (req, res) => {
-    service
-        .fetchProductByID(req.params.product_id)
-        .then((product) => {
-            res.render('singleProduct', { product });
-        })
-        .catch((e) => {
-            console.error(e);
-            res.render('error');
-        });
+    try {
+        const product = await service.fetchProductByID(parseInt(req.params.product_id, 10));
+        
+        if (!product) {
+            return res.render('error', { message: 'Product not found' });
+        }
+
+        const categoryId = product.category_id;
+
+        // Fetch related products and exclude the current product by comparing product_id
+        const related_products = (await service.fetchProductsByCategory(categoryId))
+            .filter((relatedProduct) => relatedProduct.product_id !== product.product_id)
+            .slice(0, 4); // Limit to 4 related products
+
+        res.render('singleProduct', { product, related_products });
+    } catch (e) {
+        console.error(e);
+        res.render('error', { message: 'An error occurred while fetching the product.' });
+    }
 });
 
 export default router;
