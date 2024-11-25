@@ -10,7 +10,9 @@ router.get('/', async (req, res) => {
         { category: 'Laptop' },
         {},
     );
-    res.render('index', { products });
+    var featured_products = await productService.fetchAllFeaturedProducts();
+    var sale_products = await productService.fetchAllSaleProducts();
+    res.render('index', { products, featured_products,sale_products });
 });
 
 router.get('/about', (req, res) => {
