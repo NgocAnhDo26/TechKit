@@ -109,12 +109,16 @@
                             <p class="mb-2">✔ Miễn phí giao hàng toàn quốc.</p>
                         </div>
                         <div class="text-4xl font-semibold mb-8 text-primary">
-                            <span> <%= product.price_sale.toLocaleString() %>₫ </span>
-                            <s
-                                class="text-3xl text-gray-400 font-light stroke-gray-line ml-3"
-                            >
+                            <% if (product.price_sale) { %>
+                                <span> <%= product.price_sale.toLocaleString() %>₫ </span>
+                                <s
+                                    class="text-3xl text-gray-400 font-light stroke-gray-line ml-3"
+                                >
                                 <%= product.price.toLocaleString() %>₫
-                            </s>
+                                </s>
+                            <% } else { %>
+                                <span> <%= product.price.toLocaleString() %>₫ </span>
+                            <% } %>
                         </div>
                         <div class="flex items-center mb-8 border-2 w-min">
                             <button

@@ -1,8 +1,10 @@
 import express from 'express';
 import path from 'path';
 import router from './src/routes/index.js';
+import dotenv from 'dotenv'
 import { PrismaClient } from '@prisma/client';
 
+dotenv.config()
 const app = express();
 const __dirname = import.meta.dirname;
 
