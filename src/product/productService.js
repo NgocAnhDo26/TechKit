@@ -1,4 +1,3 @@
-import { name } from 'ejs';
 import { prisma } from '../../app.js'; // Import prisma database connection
 
 // Function to fetch all products
@@ -28,11 +27,11 @@ async function fetchProductWithQuery(params, query) {
         }
     }
 
-    if (query.cpu) {
-        if (query.cpu.constructor === Array) {
-            filters.cpu = { in: query.cpu };
+    if (query.status) {
+        if (query.status.constructor === Array) {
+            filters.status = { in: query.status };
         } else {
-            filters.cpu = query.cpu;
+            filters.status = query.status;
         }
     }
 
@@ -54,6 +53,7 @@ async function fetchProductWithQuery(params, query) {
         orderBy,
         where: filters,
     });
+
     return products;
 }
 
@@ -67,7 +67,6 @@ async function fetchProductByID(productID) {
             product_id: Number(productID),
         },
     });
-    // console.log('product', product);
     return product;
 }
 

@@ -4,7 +4,7 @@
         "build": "prisma generate && npx tailwindcss -i public/stylesheets/tailwind.css -o public/stylesheets/styles.css --minify",
         "start": "node app.js",
         "postinstall": "prisma generate",
-        "updatedb": "prisma db pull",
+        "updatedb": "prisma db pull && npx prisma db push",
         "devstart": "nodemon --inspect app.js",
         "serverstart": "SET DEBUG=TechKit:* & npm run devstart"
     },
@@ -19,6 +19,7 @@
         "@dotenvx/dotenvx": "^1.24.5",
         "@prisma/client": "^5.22.0",
         "bcrypt": "^5.1.1",
+        "cloudinary": "^2.5.1",
         "ejs": "^3.1.10",
         "express": "^4.21.1",
         "mysql2": "^3.11.4",
