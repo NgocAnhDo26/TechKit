@@ -62,7 +62,7 @@ const sortByPrice = function () {
 /* shop page filter show/hide */
 document.addEventListener('DOMContentLoaded', function () {
     const toggleButton = document.getElementById('products-toggle-filters');
-    const filters = document.getElementById('filters');
+    const filters = document.getElementById('product-filters');
 
     if (toggleButton && filters) {
         toggleButton.addEventListener('click', function () {
@@ -94,9 +94,9 @@ document.addEventListener('DOMContentLoaded', function () {
 /* search */
 const search = document.getElementById('search-input');
 const handleSearchSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     window.location.href =
-        `${window.location.origin}/shop/laptop ` +
+        `${window.location.origin}/` +
         (search.value ? `?keyword=${encodeURIComponent(search.value)}` : '');
 };
 
@@ -115,7 +115,6 @@ const onFilterSubmit = function (e) {
 
     // Collect price range values
     const minPrice = document.getElementById('minPrice').value;
-    console.log(minPrice);
     const maxPrice = document.getElementById('maxPrice').value;
 
     // Construct query string
@@ -129,5 +128,7 @@ const onFilterSubmit = function (e) {
 
     // Redirect
     const baseUrl = window.location.href.split('?')[0];
+    console.log(baseUrl);
+    console.log(window.location.href);
     window.location.href = `${baseUrl}${queryParams ? '?' : ''}${queryParams.toString()}`;
 };

@@ -1,10 +1,9 @@
 import express from 'express';
 import path from 'path';
 import router from './src/routes/index.js';
-import dotenv from 'dotenv'
-import { PrismaClient } from '@prisma/client';
+import morgan from 'morgan';
+import session from 'express-session';
 
-dotenv.config()
 const app = express();
 const __dirname = import.meta.dirname;
 
@@ -14,18 +13,17 @@ app.set('views', path.join(__dirname, 'src/views'));
 
 app.use(express.urlencoded({ extended: false })); // Parse URL-encoded bodies
 app.use(express.json()); // Parse JSON bodies
+app.use(morgan('short'));
+app.use(express.static(path.join(__dirname, 'public'))); // Use static files
+// app.use(session.);
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-// Init routes
-app.use('', router);
+app.use('', router); // Init routes
 
-// Init database
-export const prisma = new PrismaClient();
+// Handing errors
 
-// Use static files
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Server setup
-const PORT = process.env.PORT ?? 1111;
+const PORT = process.env.PORT ?? 1111; // Server setup
 
 const server = app.listen(PORT, () => {
     console.log(`TechKit starts at port http://localhost:${PORT}`);
@@ -37,7 +35,5 @@ process.on('SIGINT', () => {
         prisma.$disconnect;
     });
 });
-
-// Handing errors
 
 export default app;

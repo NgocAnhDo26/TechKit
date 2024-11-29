@@ -17,18 +17,17 @@
                         class="rounded-lg bg-white p-4 shadow-md md:m-10 md:w-1/2 md:p-10"
                     >
                         <h2 class="mb-10 text-2xl font-semibold">Register</h2>
-                        <%# if (typeof message !== 'undefined') { %>
-                        <div class="bg-error border-error_second my-10 flex gap-4 max-w-sm rounded-md min-h-16 items-center shadow-md mx-auto">
-                            <span class="font-medium"><%#= message %></span>
-                            <img src="/images/icons/mark.png" alt="error" class="max-w-5 max-h-5 ml-4"/>
-                            <div class="flex-col">
-                                <h2 class="font-bold">
-                                    We couldn't create your account.
-                                </h2>
-                                <p>hello</p>
+                        <% if (typeof message != 'undefined') { %>
+                            <div class="bg-error border-error_second my-10 flex gap-4 max-w-sm rounded-md min-h-16 items-center shadow-md mx-auto">
+                                <img src="/images/icons/alert.png" alt="error" class="max-w-5 max-h-5 ml-4"/>
+                                <div class="flex-col">
+                                    <h2 class="font-bold text-lg">
+                                        We couldn't create your account.
+                                    </h2>
+                                    <p class="text-sm font-medium"><%= message %></p>
+                                </div>
                             </div>
-                        </div>
-                        <%# } %>
+                        <% } %>
                         <form action="/auth/register" method="post">
                             <div class="mb-3">
                                 <label for="register-email" class="mb-2 block"

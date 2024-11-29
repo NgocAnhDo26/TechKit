@@ -28,7 +28,7 @@
 // });
 
 // // if (typeof Swiper !== 'undefined') {
-var swiper = new Swiper('.swiper', {
+let swiper = new Swiper('.swiper', {
     // observer: true,
     // observeParents: true,
     slidesPerView: 4,

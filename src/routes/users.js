@@ -6,13 +6,9 @@ import authController from '../auth/authController.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    var products = await productService.fetchProductWithQuery(
-        { category: 'Laptop' },
-        {},
-    );
-    var featured_products = await productService.fetchAllFeaturedProducts();
-    var sale_products = await productService.fetchAllSaleProducts();
-    res.render('index', { products, featured_products,sale_products });
+    const featured_products = await productService.fetchAllFeaturedProducts();
+    const sale_products = await productService.fetchAllSaleProducts();
+    res.render('index', { featured_products, sale_products });
 });
 
 router.get('/about', (req, res) => {

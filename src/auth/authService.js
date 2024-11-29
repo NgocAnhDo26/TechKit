@@ -1,9 +1,15 @@
-import { prisma } from '../../app.js'; // Import prisma database connection
+import { prisma } from '../config/config.js'; // Import prisma database connection
 
 async function register(req, res) {
     const { email, password, confirmPassword } = req.body;
 
-    if (password != confirmPassword) {
+    if (!password.length || !email.length) {
+        return res.render('register', {
+            message: 'The fields below must not be empty',
+        });
+    }
+
+    if (password !== confirmPassword) {
         return res.render('register', {
             message: 'Passwords do not match',
         });
@@ -11,7 +17,7 @@ async function register(req, res) {
 
     // get email from db
     if (
-        await prisma.customer.findFirst({
+        await prisma.account.findFirst({
             where: {
                 email: email,
             },
@@ -22,16 +28,17 @@ async function register(req, res) {
         });
     }
 
-    await prisma.customer.create({
+    await prisma.account.create({
         data: {
             email: email,
             password: password,
         },
     });
 
-    return res.render('register', {
-        message: 'User registered successfully',
-    });
+    // move to main page
+    // return res.render('register', {
+    //     message: 'User registered successfully',
+    // });
 }
 
 export { register };

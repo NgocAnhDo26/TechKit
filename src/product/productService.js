@@ -1,8 +1,4 @@
-import { name } from 'ejs';
-import { prisma } from '../../app.js'; // Import prisma database connection
-
-// Function to fetch all products
-// async function fetchAllProducts(categoryName) {
+import { prisma } from '../config/config.js'; // Import prisma database connection
 
 // Function to fetch products with filters (query)
 async function fetchProductWithQuery(params, query) {
@@ -67,19 +63,18 @@ async function fetchProductByID(productID) {
             product_id: Number(productID),
         },
     });
-    // console.log('product', product);
     return product;
 }
 
-// Function to fetch all featured products
+// Function to fetch all featured products   ------  should be replaced by products are on big sale.
 async function fetchAllFeaturedProducts() {
     const products = await prisma.product.findMany({
         include: {
             category: true, // Include related category data
         },
-        where: {
-            is_featured: true, // Filter for featured products
-        },
+        // where: {
+        //     is_featured: true, // Filter for featured products
+        // },
     });
 
     return products;
@@ -92,8 +87,8 @@ async function fetchAllSaleProducts() {
         },
         where: {
             NOT: {
-                price_sale: null
-            }
+                price_sale: null,
+            },
         },
     });
 
@@ -117,17 +112,42 @@ async function fetchProductsByCategory(categoryId) {
 async function fetchProductByRelevant(singleProduct) {
     const products = await prisma.product.findMany({
         where: {
-            OR: [{ brand: singleProduct.brand }, { cpu: singleProduct.cpu }],
+            brand: singleProduct.brand,
             NOT: { product_id: singleProduct.product_id },
         },
         include: {
-            category: true,
+            category: {
+                select: {
+                    name: true,
+                },
+            },
+            image: {
+                select: {
+                    image_url: true,
+                },
+            },
         },
     });
-    console.log('products: ', products);
+
+    products.forEach((product) => {
+        console.log(
+            `product_id: ${product.product_id}, product_name: ${product.name}`,
+        );
+        console.log(`category_name: ${product.category.name}`);
+        product.image.forEach((img) => {
+            console.log(`img_url: ${img.image_url}`);
+        });
+        console.log('\n');
+    });
     return products;
 }
 
-
 // Export the function
-export { fetchProductByID, fetchProductWithQuery,fetchAllFeaturedProducts,fetchAllSaleProducts,fetchProductsByCategory };
+export {
+    fetchProductByID,
+    fetchProductWithQuery,
+    fetchAllFeaturedProducts,
+    fetchAllSaleProducts,
+    fetchProductsByCategory,
+    fetchProductByRelevant,
+};
