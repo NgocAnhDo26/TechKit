@@ -47,6 +47,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Filter Toggle Button for Mobile -->
             <div class="block md:hidden text-center mb-4">
                 <button
@@ -56,131 +57,14 @@
                     Hiện Bộ lọc
                 </button>
             </div>
+
             <div class="flex flex-col md:flex-row">
                 <!-- Filters -->
-                <form id="product-filters" class="w-full md:w-1/4 p-4 hidden md:block">
-                    <!-- Category Filter -->
-                    <!-- Laptop Brand Filter -->
-                    <div class="mb-6 pb-8 border-b border-gray-line">
-                        <% if(category !== 'pc') { %>
-                            <h3 class="text-lg font-semibold mb-6">Thương hiệu</h3>
-                        <% } %>
-
-                        <% switch(category) {
-                            case 'laptop': %>
-                                <div class="space-y-2">
-                                    <label class="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            name="brand"
-                                            value="Asus"
-                                            class="form-checkbox custom-checkbox"
-                                        />
-                                        <span class="ml-2">ASUS</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            name="brand"
-                                            value="Lenovo"
-                                            class="form-checkbox custom-checkbox"
-                                        />
-                                        <span class="ml-2">Lenovo</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            name="brand"
-                                            value="HP"
-                                            class="form-checkbox custom-checkbox"
-                                        />
-                                        <span class="ml-2">HP</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            name="brand"
-                                            value="MSI"
-                                            class="form-checkbox custom-checkbox"
-                                        />
-                                        <span class="ml-2">MSI</span>
-                                    </label>
-                                </div>
-                            <% break;
-                        } %>
-                    </div>
-                    
-                    <!-- Laptop & PC CPU -->
-                    <% if(category === 'laptop' || category === 'pc'){ %> 
-                        <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">CPU</h3>
-                        <div class="space-y-2">
-                            <label class="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    name="cpu"
-                                    value="i7"
-                                    class="form-checkbox custom-checkbox"
-                                />
-                                <span class="ml-2">Intel Core i7</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    name="cpu"
-                                    value="i9"
-                                    class="form-checkbox custom-checkbox"
-                                />
-                                <span class="ml-2">Intel Core i9</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    name="cpu"
-                                    value="ryzen 7"
-                                    class="form-checkbox custom-checkbox"
-                                />
-                                <span class="ml-2">ADM Ryzen 7</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    name="cpu"
-                                    value="ryzen 9"
-                                    class="form-checkbox custom-checkbox"
-                                />
-                                <span class="ml-2">ADM Ryzen 9</span>
-                            </label>
-                        </div>
-                    </div>
-                    <% } %>  
-
-                    
-                    <div class="mb-6 pb-8 border-b border-gray-line">
-                        <h3 class="text-lg font-semibold mb-6">Khoảng giá</h3>
-                        <div class="grid    grid-cols-2 grid-rows-2 space-y-2 items-center">
-                            <span>Thấp nhất:</span>
-                            <input
-                                type="number"
-                                min="0"
-                                max="999999999"
-                                id="minPrice" 
-                                name="minPrice"
-                                class="border-2 rounded-md pl-2 py-1"
-                            />
-                            <span>Cao nhất:</span>
-                            <input
-                                type="number"
-                                max="999999999"
-                                id="maxPrice" 
-                                name="maxPrice"
-                                class="border-2 rounded-md pl-2 py-1"
-                            />  
-                        </div>
-                    </div>
-
-                    <button onclick="onFilterSubmit(event);" class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full">Áp dụng</button>
-                </form>
+                <% switch(category) {
+                    case 'laptop': %>
+                        <%- include('./filters/laptop'); %>
+                    <% break;
+                } %>
                 
                 
                 <!-- Products List -->

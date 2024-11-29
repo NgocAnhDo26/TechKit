@@ -26,7 +26,7 @@ function setFilters() {
     };
 
     setCheckboxes('brand', params.brand); // Set brands
-    setCheckboxes('cpu', params.cpu); // Set CPUs
+    setCheckboxes('status', params.status); // Set CPUs
 
     // Set single value inputs (e.g., minPrice and maxPrice)
     if (params.minPrice) {
@@ -62,7 +62,7 @@ const sortByPrice = function () {
 /* shop page filter show/hide */
 document.addEventListener('DOMContentLoaded', function () {
     const toggleButton = document.getElementById('products-toggle-filters');
-    const filters = document.getElementById('product-filters');
+    const filters = document.getElementById('filters');
 
     if (toggleButton && filters) {
         toggleButton.addEventListener('click', function () {
@@ -91,14 +91,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-/* search */
-const search = document.getElementById('search-input');
-const handleSearchSubmit = (e) => {
-    // e.preventDefault();
-    window.location.href =
-        `${window.location.origin}/` +
-        (search.value ? `?keyword=${encodeURIComponent(search.value)}` : '');
-};
+// /* search */
+// const search = document.getElementById('search-global');
+// const handleSearchSubmit = (e) => {
+//     e.preventDefault();
+//     window.location.href =
+//         `${window.location.origin}/shop/laptop ` +
+//         (search.value ? `?keyword=${encodeURIComponent(search.value)}` : '');
+// };
 
 /* filter submit */
 const onFilterSubmit = function (e) {
@@ -111,24 +111,22 @@ const onFilterSubmit = function (e) {
         ).map((input) => input.value);
 
     const brand = getCheckedValues('brand');
-    const cpu = getCheckedValues('cpu');
+    const status = getCheckedValues('status');
 
     // Collect price range values
     const minPrice = document.getElementById('minPrice').value;
+    console.log(minPrice);
     const maxPrice = document.getElementById('maxPrice').value;
 
     // Construct query string
-    const queryParams = new URLSearchParams();
-    if (brand.length) queryParams.append('brand', brand.join(','));
-    if (cpu.length) queryParams.append('cpu', cpu.join(','));
-    console.log('min: ', minPrice);
-    console.log('max: ', maxPrice);
-    if (minPrice) queryParams.append('minPrice', minPrice);
-    if (maxPrice) queryParams.append('maxPrice', maxPrice);
+    const queryString = window.location.search;
+    const queryParams = new URLSearchParams(queryString);
+    if (brand.length) queryParams.set('brand', brand.join(','));
+    if (status.length) queryParams.set('status', status.join(','));
+    if (minPrice) queryParams.set('minPrice', minPrice);
+    if (maxPrice) queryParams.set('maxPrice', maxPrice);
 
     // Redirect
     const baseUrl = window.location.href.split('?')[0];
-    console.log(baseUrl);
-    console.log(window.location.href);
     window.location.href = `${baseUrl}${queryParams ? '?' : ''}${queryParams.toString()}`;
 };

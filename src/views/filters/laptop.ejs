@@ -1,0 +1,113 @@
+<!-- Filters -->
+<form
+    onsubmit="onFilterSubmit(event);"
+    id="product-filters"
+    class="hidden w-full p-4 md:block md:w-1/4"
+>
+    <!-- Laptop Brand Filter -->
+    <div class="mb-6 border-b border-gray-line pb-8">
+        <h3 class="mb-6 text-lg font-semibold">Thương hiệu</h3>
+        <div class="space-y-2">
+            <label class="flex items-center">
+                <input
+                    type="checkbox"
+                    name="brand"
+                    value="Asus"
+                    class="form-checkbox custom-checkbox"
+                />
+                <span class="ml-2">ASUS</span>
+            </label>
+            <label class="flex items-center">
+                <input
+                    type="checkbox"
+                    name="brand"
+                    value="Lenovo"
+                    class="form-checkbox custom-checkbox"
+                />
+                <span class="ml-2">Lenovo</span>
+            </label>
+            <label class="flex items-center">
+                <input
+                    type="checkbox"
+                    name="brand"
+                    value="Acer"
+                    class="form-checkbox custom-checkbox"
+                />
+                <span class="ml-2">Acer</span>
+            </label>
+            <label class="flex items-center">
+                <input
+                    type="checkbox"
+                    name="brand"
+                    value="MSI"
+                    class="form-checkbox custom-checkbox"
+                />
+                <span class="ml-2">MSI</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Availability -->
+    <div class="mb-6 border-b border-gray-line pb-8">
+        <h3 class="mb-6 text-lg font-semibold">Tình trạng</h3>
+        <div class="space-y-2">
+            <label class="flex items-center">
+                <input
+                    type="checkbox"
+                    name="status"
+                    value="IN_STOCK"
+                    class="form-checkbox custom-checkbox"
+                />
+                <span class="ml-2">Còn hàng</span>
+            </label>
+            <label class="flex items-center">
+                <input
+                    type="checkbox"
+                    name="status"
+                    value="OUT_OF_STOCK"
+                    class="form-checkbox custom-checkbox"
+                />
+                <span class="ml-2">Hết hàng</span>
+            </label>
+            <label class="flex items-center">
+                <input
+                    type="checkbox"
+                    name="status"
+                    value="SUSPENDED"
+                    class="form-checkbox custom-checkbox"
+                />
+                <span class="ml-2">Ngừng phân phối</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="mb-6 border-b border-gray-line pb-8">
+        <h3 class="mb-6 text-lg font-semibold">Khoảng giá</h3>
+        <div class="grid grid-cols-2 grid-rows-2 items-center space-y-2">
+            <span>Thấp nhất:</span>
+            <input
+                type="number"
+                min="0"
+                max="999999999"
+                id="minPrice"
+                name="minPrice"
+                class="rounded-md border-2 py-1 pl-2"
+            />
+            <span>Cao nhất:</span>
+            <input
+                type="number"
+                max="999999999"
+                id="maxPrice"
+                name="maxPrice"
+                class="rounded-md border-2 py-1 pl-2"
+            />
+        </div>
+    </div>
+
+    <button
+        type="submit"
+        class="w-full rounded-full border border-transparent bg-primary px-4 py-2 font-semibold text-white hover:border-primary hover:bg-transparent hover:text-primary"
+    >
+        Áp dụng
+    </button>
+</form>

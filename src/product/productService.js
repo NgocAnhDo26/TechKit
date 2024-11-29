@@ -24,11 +24,11 @@ async function fetchProductWithQuery(params, query) {
         }
     }
 
-    if (query.cpu) {
-        if (query.cpu.constructor === Array) {
-            filters.cpu = { in: query.cpu };
+    if (query.status) {
+        if (query.status.constructor === Array) {
+            filters.status = { in: query.status };
         } else {
-            filters.cpu = query.cpu;
+            filters.status = query.status;
         }
     }
 
@@ -50,6 +50,7 @@ async function fetchProductWithQuery(params, query) {
         orderBy,
         where: filters,
     });
+
     return products;
 }
 
