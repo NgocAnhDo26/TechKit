@@ -25,18 +25,18 @@ model product {
   ram            String           @db.VarChar(10)
   graphic_card   String?          @db.VarChar(50)
   description    String?          @db.Text
-  price          Int
-  price_sale     Int?
-  in_stock       Int
-  sales          Int
-  create_time    DateTime         @db.Timestamp(0)
+  price          Int              @default(25990000)
+  price_sale     Int?             @default(19990000)
+  in_stock       Int              @default(1)
+  sales          Int              @default(1)
+  create_time    DateTime         @default(now()) @db.Timestamp(0)
   cart           cart[]
   order_product  order_product[]
   category       category         @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_category")
   product_image  product_image[]
   product_review product_review[]
 
-  @@index([category_id], map: "category_id")
+  @@index([category_id], map: "fk_category")
 }
 
 model account {
@@ -47,17 +47,17 @@ model account {
   address        String?          @db.VarChar(100)
   birthdate      DateTime?        @db.DateTime(0)
   sex            String?          @db.VarChar(50)
-  avatar         String           @db.VarChar(100)
-  create_time    DateTime         @db.Timestamp(0)
-  is_lock        Boolean
-  is_admin       Boolean
-  cart           cart[]
+  avatar         String           @default("avatar/default") @db.VarChar(100)
+  create_time    DateTime         @default(now()) @db.Timestamp(0)
+  is_lock        Boolean          @default(false)
+  is_admin       Boolean          @default(false)
+  cart           cart?
   orders         orders[]
   product_review product_review[]
 }
 
 model cart {
-  account_id Int
+  account_id Int     @unique(map: "account_id")
   product_id Int
   quantity   Int
   account    account @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_ibfk_1")

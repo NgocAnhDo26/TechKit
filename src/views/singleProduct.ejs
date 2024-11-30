@@ -8,12 +8,12 @@
     <body>
         <!-- Header -->
         <%- include('./partials/header'); %>
-
+        
         <!-- Product Info -->
         <%- include('productInfo', { product }); %>
 
         <!-- Related-products -->
-        <%- include('featuredProducts', { product,featured_products:related_products, title: 'Sản phẩm liên quan' } ); %>
+        <%- include('relevantProducts', { products: related_products, title: 'Sản phẩm liên quan' } ); %>
 
         <!-- Footer -->
         <%- include('./partials/footer'); %>

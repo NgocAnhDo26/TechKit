@@ -10,6 +10,13 @@
         "serverstart": "SET DEBUG=TechKit:* & npm run devstart"
     },
     "devDependencies": {
+        "@dotenvx/dotenvx": "^1.25.1",
+        "@prisma/client": "^6.0.0",
+        "bcrypt": "^5.1.1",
+        "cloudinary": "^2.5.1",
+        "cookie-parser": "^1.4.7",
+        "ejs": "^3.1.10",
+        "express": "^4.21.1",
         "express-session": "^1.18.1",
         "morgan": "^1.10.0",
         "nodemon": "^3.1.7",
@@ -18,14 +25,8 @@
         "prettier": "^3.4.1",
         "prettier-plugin-tailwindcss": "^0.6.9",
         "prisma": "^6.0.0",
-        "tailwindcss": "^3.4.15",
-        "@dotenvx/dotenvx": "^1.25.1",
-        "@prisma/client": "^6.0.0",
-        "bcrypt": "^5.1.1",
-        "cloudinary": "^2.5.1",
-        "ejs": "^3.1.10",
-        "express": "^4.21.1",
-        "swiper": "^11.1.15"
+        "swiper": "^11.1.15",
+        "tailwindcss": "^3.4.15"
     },
     "name": "techkit",
     "version": "1.0.0",

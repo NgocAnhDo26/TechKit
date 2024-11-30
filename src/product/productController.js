@@ -35,14 +35,7 @@ router.get('/:category/:product_id', async (req, res) => {
         const categoryId = product.category_id;
 
         // Fetch related products and exclude the current product by comparing product_id
-        const related_products = (
-            await service.fetchProductsByCategory(categoryId)
-        )
-            .filter(
-                (relatedProduct) =>
-                    relatedProduct.product_id !== product.product_id,
-            )
-            .slice(0, 4); // Limit to 4 related products
+        const related_products = await service.fetchProductByRelevant(product);
 
         res.render('singleProduct', { product, related_products });
     } catch (e) {

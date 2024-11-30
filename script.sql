@@ -55,7 +55,7 @@ CREATE TABLE product_review (
 );
 
 CREATE TABLE cart (
-  account_id INT,
+  account_id INT UNIQUE,
   product_id INT,
   quantity INT NOT NULL,
   PRIMARY KEY (account_id, product_id),

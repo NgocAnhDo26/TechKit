@@ -128,6 +128,7 @@ async function fetchProductByRelevant(singleProduct) {
                 },
             },
         },
+        take: 4, // take 4 product
     });
 
     products.forEach((product) => {

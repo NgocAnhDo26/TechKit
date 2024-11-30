@@ -30,6 +30,18 @@
                         <% } %>
                         <form action="/auth/register" method="post">
                             <div class="mb-3">
+                                <label for="register-name" class="mb-2 block"
+                                    >Your name</label
+                                >
+                                <input
+                                    type="text"
+                                    id="register-name"
+                                    name="name"
+                                    class="w-full rounded-full border px-3 py-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
+                                    required
+                                />
+                            </div>
+                            <div class="mb-3">
                                 <label for="register-email" class="mb-2 block"
                                     >Email</label
                                 >

@@ -3,7 +3,11 @@
         <!-- Left section: Logo -->
         <a href="/" class="flex items-center">
             <div>
-                <img src="images/logo/template-white-logo.png" alt="Logo" class="mr-4 max-h-16 w-auto" />
+                <img
+                    src="images/logo/template-white-logo.png"
+                    alt="Logo"
+                    class="mr-4 max-h-16 w-auto"
+                />
             </div>
         </a>
 
@@ -109,16 +113,27 @@
             </div>
 
             <!-- Login -->
-            <a href="/auth/login">
-                <div
-                    class="login-register group w-max rounded-md bg-white px-3 py-2 text-primary"
-                >
-                    <i class="fa-regular fa-user" style="color: #ff0042"></i>
-                    <a href="/auth/login" class="ml-2 font-semibold"
-                        >Đăng nhập</a
-                    >
+            <% if (isAuth) { %>
+                <div>
+                    <a href="/auth/logout">
+                        <div
+                            class="login-register group w-max rounded-md bg-white px-3 py-2 text-primary "
+                        >
+                            <span class="font-semibold">Đăng xuất</span>
+                        </div>
+                    </a>
                 </div>
-            </a>
+                <a href="/profile"><img src="<%= avatar %>" alt="" class="w-10 h-10 bg-white rounded-full"></a>
+            <% } else { %>
+                <a href="/auth/login">
+                    <div
+                        class="login-register group w-max rounded-md bg-white px-3 py-2 text-primary"
+                    >
+                        <i class="fa-regular fa-user" style="color: #ff0042"></i>
+                        <span class="ml-2 font-semibold">Đăng nhập</span>
+                    </div>
+                </a>
+            <% } %>
         </div>
     </div>
 
