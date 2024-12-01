@@ -37,13 +37,13 @@ export const addNewAccount = async (name, email, password) => {
     });
 };
 
-// get url image from cloudinary
-export const getUrl = (address) => {
-    return cloudinary.url(address, {
+// Get url image from cloudinary
+export const getUrl = (address) =>
+    cloudinary.url(address, {
         fetch_format: 'auto',
         quality: 'auto',
     });
-
+    
 // Upload image to cloudinary
 // Const uploadResult = await cloudinary.uploader
 //     .upload('public/images/profile.png', {

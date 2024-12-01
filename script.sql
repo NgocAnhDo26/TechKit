@@ -21,13 +21,14 @@ CREATE TABLE product (
   price_sale INT,
   in_stock INT NOT NULL,
   sales INT NOT NULL,
-  create_time TIMESTAMP NOT NULL,
+  create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
 CREATE TABLE product_image (
   product_id INT,
-  address VARCHAR(50),
+  url VARCHAR(50),
+  is_profile_img BOOL NOT NULL DEFAULT FALSE,
   PRIMARY KEY (product_id, address),
   FOREIGN KEY (product_id) REFERENCES product(id)
 );
@@ -41,7 +42,7 @@ CREATE TABLE account (
   birthdate DATETIME,
   sex VARCHAR(50),
   avatar VARCHAR(100) NOT NULL,
-  create_time TIMESTAMP  NOT NULL,
+  create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   is_lock BOOL NOT NULL,
   is_admin BOOL NOT NULL
 );
@@ -49,7 +50,7 @@ CREATE TABLE account (
 CREATE TABLE product_review (
   product_id INT,
   account_id INT,
-  create_time TIMESTAMP,
+  create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   content TEXT NOT NULL,
   PRIMARY KEY (product_id, account_id, create_time),
   FOREIGN KEY (product_id) REFERENCES product(id),
@@ -69,7 +70,7 @@ CREATE TABLE orders (
   id INT AUTO_INCREMENT PRIMARY KEY,
   account_id INT NOT NULL,
   shipping_address VARCHAR(100),
-  create_time TIMESTAMP NOT NULL,
+  create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   status VARCHAR(20) NOT NULL,
   FOREIGN KEY (account_id) REFERENCES account(id)
 );

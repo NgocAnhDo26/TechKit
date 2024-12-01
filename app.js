@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 app.use(router); // Init routes
 
 // Handing errors
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).send('Something broke!');
 });

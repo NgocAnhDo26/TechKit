@@ -24,7 +24,7 @@ async function fetchProductWithQuery(params, query) {
         }
     }
 
-    // if (query.status) {
+    // If (query.status) {
     //     if (query.status.constructor === Array) {
     //         filters.status = { in: query.status };
     //     } else {
