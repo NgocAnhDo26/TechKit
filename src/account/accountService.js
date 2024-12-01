@@ -22,22 +22,20 @@ export const findAccountByQuery = async (query) => {
     return await prisma.account.findMany({ where: filter, orderBy: order });
 };
 
-// get url image from cloudinary
-export const getUrl = (address) => {
-    return cloudinary.url(address, {
+// Get url image from cloudinary
+export const getUrl = (address) => cloudinary.url(address, {
         fetch_format: 'auto',
         quality: 'auto',
     });
-};
 
-// upload image to cloudinary
-// const uploadResult = await cloudinary.uploader
+// Upload image to cloudinary
+// Const uploadResult = await cloudinary.uploader
 //     .upload('public/images/profile.png', {
-//         public_id: 'default',
-//         folder: 'avatar',
+//         Public_id: 'default',
+//         Folder: 'avatar',
 //     })
 //     .catch((error) => {
-//         console.log(error);
+//         Console.log(error);
 //     });
 
-// console.log(uploadResult);
+// Console.log(uploadResult);

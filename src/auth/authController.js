@@ -1,7 +1,6 @@
 import express from 'express';
 import { register } from './authService.js';
 import passport from './authService.js';
-import { getUrl } from '../account/accountService.js';
 
 const router = express.Router();
 
@@ -12,7 +11,7 @@ router.post('/register', (req, res, next) => {
                 return res.render('register', { message: newUser });
             }
             console.log(newUser);
-            // register successfully
+            // Register successfully
             req.login(newUser, (err) => {
                 if (err) {
                     return next(err);
@@ -35,10 +34,10 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
-    // passport.authenticate(): in this case is a customer callback that return a middleware function which accepted parameters (req, res, next)
+    // Passport.authenticate(): in this case is a customer callback that return a middleware function which accepted parameters (req, res, next)
     passport.authenticate('local', (err, user, info) => {
         if (err) {
-            next(err); // execute middleware function defined in app.js which handled error
+            next(err); // Execute middleware function defined in app.js which handled error
         }
         if (!user) {
             // Authentication failed, render login with error message
@@ -53,7 +52,7 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', (req, res, next) => {
     req.logout((err) => {
         if (err) {
             return next(err);

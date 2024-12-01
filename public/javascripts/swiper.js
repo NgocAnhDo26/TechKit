@@ -1,36 +1,36 @@
-/* swiper slider */
-// const swiper = new Swiper('.swiper', {
+/* Swiper slider */
+// Const swiper = new Swiper('.swiper', {
 //     // Optional parameters
-//     slidesPerView: 4,
-//     direction: 'vertical',
-//     loop: true,
+//     SlidesPerView: 4,
+//     Direction: 'vertical',
+//     Loop: true,
 
 //     // If we need pagination
-//     pagination: {
-//         el: '.swiper-pagination',
+//     Pagination: {
+//         El: '.swiper-pagination',
 //     },
 
 //     // Navigation arrows
-//     navigation: {
-//         nextEl: '.swiper-button-next',
-//         prevEl: '.swiper-button-prev',
+//     Navigation: {
+//         NextEl: '.swiper-button-next',
+//         PrevEl: '.swiper-button-prev',
 //     },
 
 //     // And if we need scrollbar
-//     scrollbar: {
-//         el: '.swiper-scrollbar',
+//     Scrollbar: {
+//         El: '.swiper-scrollbar',
 //     },
-//     breakpoints: {
+//     Breakpoints: {
 //         1024: {
-//             slidesPerView: 6,
+//             SlidesPerView: 6,
 //         },
 //     },
 // });
 
 // // if (typeof Swiper !== 'undefined') {
 let swiper = new Swiper('.swiper', {
-    // observer: true,
-    // observeParents: true,
+    // Observer: true,
+    // ObserveParents: true,
     slidesPerView: 4,
     loop: true,
     autoplay: {

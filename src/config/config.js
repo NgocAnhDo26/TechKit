@@ -12,7 +12,7 @@ cloudinary.config({
 });
 
 // Init database
-// export const prisma = new PrismaClient({ log: ['query'] });
+// Export const prisma = new PrismaClient({ log: ['query'] });
 export const prisma = new PrismaClient();
 
 export { cloudinary };

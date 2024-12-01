@@ -1,3 +1,5 @@
+use `db-techkit`;
+
 CREATE TABLE category (
   id TINYINT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(50) NOT NULL UNIQUE
@@ -34,7 +36,7 @@ CREATE TABLE account (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(70) NOT NULL,
   email VARCHAR(254) NOT NULL UNIQUE,
-  password VARCHAR(32) NOT NULL,
+  password VARCHAR(60) NOT NULL,
   address VARCHAR(100),
   birthdate DATETIME,
   sex VARCHAR(50),

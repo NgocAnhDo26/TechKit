@@ -73,8 +73,8 @@ async function fetchAllFeaturedProducts() {
         include: {
             category: true, // Include related category data
         },
-        // where: {
-        //     is_featured: true, // Filter for featured products
+        // Where: {
+        //     Is_featured: true, // Filter for featured products
         // },
     });
 
@@ -128,7 +128,7 @@ async function fetchProductByRelevant(singleProduct) {
                 },
             },
         },
-        take: 4, // take 4 product
+        take: 4, // Take 4 product
     });
 
     products.forEach((product) => {

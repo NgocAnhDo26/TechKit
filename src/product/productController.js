@@ -32,8 +32,6 @@ router.get('/:category/:product_id', async (req, res) => {
             return res.render('error', { message: 'Product not found' });
         }
 
-        const categoryId = product.category_id;
-
         // Fetch related products and exclude the current product by comparing product_id
         const related_products = await service.fetchProductByRelevant(product);
 
