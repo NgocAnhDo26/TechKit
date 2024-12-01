@@ -6,7 +6,7 @@ import authController from '../auth/authController.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    req.session.visited = true; // to keep session unchanged every time access the website
+    req.session.visited = true; // To keep session unchanged every time access the website
 
     const featured_products = await productService.fetchRecentProducts();
     const sale_products = await productService.fetchMostDiscountedProducts();

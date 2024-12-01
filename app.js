@@ -30,9 +30,9 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-// app.use(morgan('short'));
+app.use(morgan('short'));
 
-// set local variables to use in all view engine templates
+// Set local variables to use in all view engine templates
 app.use((req, res, next) => {
     res.locals.isAuth = req.user ? true : false;
     res.locals.avatar = req.user ? getUrl(req.user.avatar) : '';
@@ -56,7 +56,6 @@ const server = app.listen(PORT, () => {
 process.on('SIGINT', () => {
     server.close(() => {
         console.log('Exit Server Express');
-        prisma.$disconnect;
     });
 });
 

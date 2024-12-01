@@ -1,4 +1,4 @@
-/* cart */
+/* Cart */
 document.addEventListener('DOMContentLoaded', function () {
     const cartIcon = document.querySelector('.cart-wrapper');
     const cartDropdown = cartIcon.querySelector('.group-hover\\:block');
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-/* mobile menu */
+/* Mobile menu */
 document.addEventListener('DOMContentLoaded', function () {
     const hamburgerBtn = document.getElementById('hamburger');
     const mobileMenu = document.querySelector('.mobile-menu');
@@ -38,14 +38,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // /* search icon show/hide */
-// document.getElementById('search-icon').addEventListener('click', function () {
-//     let searchField = document.getElementById('search-field');
-//     if (searchField.classList.contains('hidden')) {
-//         searchField.classList.remove('hidden');
-//         searchField.classList.add('search-slide-down');
+// Document.getElementById('search-icon').addEventListener('click', function () {
+//     Let searchField = document.getElementById('search-field');
+//     If (searchField.classList.contains('hidden')) {
+//         SearchField.classList.remove('hidden');
+//         SearchField.classList.add('search-slide-down');
 //     } else {
-//         searchField.classList.add('hidden');
-//         searchField.classList.remove('search-slide-down');
+//         SearchField.classList.add('hidden');
+//         SearchField.classList.remove('search-slide-down');
 //     }
 // });
 
@@ -63,7 +63,7 @@ function changeImage(element) {
     mainImage.src = element.getAttribute('data-full');
 }
 
-/* single page product count */
+/* Single page product count */
 document.addEventListener('DOMContentLoaded', function () {
     const decreaseButton = document.getElementById('decrease');
     const increaseButton = document.getElementById('increase');
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-/* single product tabs */
+/* Single product tabs */
 document.addEventListener('DOMContentLoaded', function () {
     const tabs = document.querySelectorAll('.tab');
     const contents = document.querySelectorAll('.tab-content');
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-/* cart page */
+/* Cart page */
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.cart-increment').forEach((button) => {
         button.addEventListener('click', function () {

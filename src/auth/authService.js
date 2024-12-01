@@ -55,7 +55,7 @@ export async function register(userInfo) {
         return 'Passwords do not match';
     }
 
-    // get email from db
+    // Get email from db
     if (
         await prisma.account.findUnique({
             where: {

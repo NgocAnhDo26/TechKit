@@ -46,7 +46,7 @@ function setFilters() {
 // Call the function to set filters when the page loads
 document.addEventListener('DOMContentLoaded', setFilters);
 
-/* sort by price */
+/* Sort by price */
 const sortByPrice = function () {
     const sort = document.getElementById('sort-price');
     const queryString = window.location.search; // Get query string (e.g., "?brand=a,b&cpu=i7,i5&minPrice=100&maxPrice=200")
@@ -60,7 +60,7 @@ const sortByPrice = function () {
     }
 };
 
-/* shop page filter show/hide */
+/* Shop page filter show/hide */
 document.addEventListener('DOMContentLoaded', function () {
     const toggleButton = document.getElementById('products-toggle-filters');
     const filters = document.getElementById('filters');
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-/* shop page filter*/
+/* Shop page filter*/
 document.addEventListener('DOMContentLoaded', function () {
     const selectElement = document.querySelector('select');
     const arrowDown = document.getElementById('arrow-down');
@@ -93,15 +93,15 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // /* search */
-// const search = document.getElementById('search-global');
-// const handleSearchSubmit = (e) => {
-//     e.preventDefault();
-//     window.location.href =
+// Const search = document.getElementById('search-global');
+// Const handleSearchSubmit = (e) => {
+//     E.preventDefault();
+//     Window.location.href =
 //         `${window.location.origin}/shop/laptop ` +
 //         (search.value ? `?keyword=${encodeURIComponent(search.value)}` : '');
 // };
 
-/* filter submit */
+/* Filter submit */
 const onFilterSubmit = function (e) {
     e.preventDefault();
 

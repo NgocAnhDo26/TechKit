@@ -100,11 +100,12 @@ async function fetchRecentProducts() {
                 },
             },
         },
-        orderBy: {
-            create_time: 'desc', // Sort by most recently added
-        },
-        take: 10,
+        // where: {
+        //     is_featured: true, // Filter for featured products
+        // },
     });
+
+    return products;
 }
 
 async function fetchMostDiscountedProducts() {
@@ -177,7 +178,7 @@ async function fetchProductByRelevant(singleProduct) {
                 },
             },
         },
-        take: 4, // take 4 product
+        take: 4, // Take 4 product
     });
 
     return products;
