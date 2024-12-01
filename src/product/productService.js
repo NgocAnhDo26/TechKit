@@ -24,13 +24,13 @@ async function fetchProductWithQuery(params, query) {
         }
     }
 
-    if (query.status) {
-        if (query.status.constructor === Array) {
-            filters.status = { in: query.status };
-        } else {
-            filters.status = query.status;
-        }
-    }
+    // if (query.status) {
+    //     if (query.status.constructor === Array) {
+    //         filters.status = { in: query.status };
+    //     } else {
+    //         filters.status = query.status;
+    //     }
+    // }
 
     if (query.order) {
         orderBy.price = query.order;
@@ -46,6 +46,11 @@ async function fetchProductWithQuery(params, query) {
     const products = await prisma.product.findMany({
         include: {
             category: true,
+            product_image: {
+                where: {
+                    is_profile_img: 1,
+                },
+            },
         },
         orderBy,
         where: filters,
@@ -59,9 +64,14 @@ async function fetchProductByID(productID) {
     const product = await prisma.product.findUnique({
         include: {
             category: true,
+            product_image: {
+                where: {
+                    is_profile_img: 1,
+                },
+            },
         },
         where: {
-            product_id: Number(productID),
+            id: Number(productID),
         },
     });
     return product;
@@ -72,6 +82,11 @@ async function fetchAllFeaturedProducts() {
     const products = await prisma.product.findMany({
         include: {
             category: true, // Include related category data
+            product_image: {
+                where: {
+                    is_profile_img: 1,
+                },
+            },
         },
         // where: {
         //     is_featured: true, // Filter for featured products
@@ -85,6 +100,11 @@ async function fetchAllSaleProducts() {
     const products = await prisma.product.findMany({
         include: {
             category: true, // Include related category data
+            product_image: {
+                where: {
+                    is_profile_img: 1,
+                },
+            },
         },
         where: {
             NOT: {
@@ -101,6 +121,11 @@ async function fetchProductsByCategory(categoryId) {
     const products = await prisma.product.findMany({
         include: {
             category: true, // Include related category data
+            product_image: {
+                where: {
+                    is_profile_img: 1,
+                },
+            },
         },
         where: {
             category_id: categoryId, // Filter by category_id
@@ -113,8 +138,10 @@ async function fetchProductsByCategory(categoryId) {
 async function fetchProductByRelevant(singleProduct) {
     const products = await prisma.product.findMany({
         where: {
-            brand: singleProduct.brand,
-            NOT: { product_id: singleProduct.product_id },
+            category: {
+                id: singleProduct.category.id,
+            },
+            NOT: { id: singleProduct.id },
         },
         include: {
             category: {
@@ -122,25 +149,18 @@ async function fetchProductByRelevant(singleProduct) {
                     name: true,
                 },
             },
-            image: {
+            product_image: {
                 select: {
-                    image_url: true,
+                    url: true,
+                },
+                where: {
+                    is_profile_img: 1,
                 },
             },
         },
         take: 4, // take 4 product
     });
 
-    products.forEach((product) => {
-        console.log(
-            `product_id: ${product.product_id}, product_name: ${product.name}`,
-        );
-        console.log(`category_name: ${product.category.name}`);
-        product.image.forEach((img) => {
-            console.log(`img_url: ${img.image_url}`);
-        });
-        console.log('\n');
-    });
     return products;
 }
 

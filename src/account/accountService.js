@@ -1,5 +1,6 @@
 import { prisma } from '../config/config.js';
 import { cloudinary } from '../config/config.js';
+import bcrypt from 'bcrypt';
 
 export const findAccountByQuery = async (query) => {
     const filter = { AND: [] };
@@ -20,6 +21,20 @@ export const findAccountByQuery = async (query) => {
         order.push({ name: query.createTimeOrder });
     }
     return await prisma.account.findMany({ where: filter, orderBy: order });
+};
+
+export const addNewAccount = async (name, email, password) => {
+    const SALT_ROUNDS = 10;
+    const salt = bcrypt.genSaltSync(SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    return await prisma.account.create({
+        data: {
+            name: name,
+            email: email,
+            password: hashedPassword,
+        },
+    });
 };
 
 // get url image from cloudinary
