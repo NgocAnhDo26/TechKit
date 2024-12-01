@@ -4,7 +4,7 @@
         <a href="/" class="flex items-center">
             <div>
                 <img
-                    src="images/logo/template-white-logo.png"
+                    src="https://res.cloudinary.com/dqi9dab5p/image/upload/v1733040689/template-white-logo_dxrc04.png"
                     alt="Logo"
                     class="mr-4 max-h-16 w-auto"
                 />
@@ -15,6 +15,7 @@
         <form
             id="search-global"
             method="get"
+            action="/shop"
             class="mx-10 hidden w-full self-center rounded-md bg-white p-1 shadow-lg md:flex md:w-1/2"
         >
             <input
@@ -50,7 +51,7 @@
 
         <!-- Right section: Buttons (for desktop) -->
         <div class="relative hidden items-center space-x-4 md:flex">
-            <div class="cart-wrapper group relative mr-2">
+            <div class="cart-wrapper group relative mr-2 border-white border-2 p-2 rounded-md ">
                 <div class="flex w-max">
                     <a href="/cart">
                         <img
@@ -107,7 +108,7 @@
                     <a
                         href="/cart"
                         class="mt-4 block rounded-full border border-primary bg-primary py-2 text-center font-semibold text-white hover:bg-transparent hover:text-primary"
-                        >Go to Cart</a
+                        >Xem giỏ hàng</a
                     >
                 </div>
             </div>
@@ -176,13 +177,13 @@
                 <!-- Men Dropdown -->
                 <li class="group relative" x-data="{ open: false }">
                     <a
-                        href="/shop/laptop"
+                        href="/shop/gaming"
                         @mouseover="open = true"
                         @mouseleave="open = false"
                         href="#"
                         class="hover:text-secondary flex items-center font-semibold"
                     >
-                        Laptop
+                        Gaming
                         <i
                             :class="open ? 'fas fa-chevron-up ml-1 text-xs' : 'fas fa-chevron-down ml-1 text-xs'"
                         ></i>
@@ -232,22 +233,23 @@
 
                 <li>
                     <a
-                        href="/shop/pc"
+                        href="/shop/office"
                         class="hover:text-secondary font-semibold"
-                        >PC</a
+                        >Văn Phòng</a
                     >
                 </li>
+                
 
                 <!-- Women Dropdown -->
                 <li class="group relative" x-data="{ open: false }">
                     <a
-                        href="/shop"
+                        href="/shop/graphic"
                         @mouseover="open = true"
                         @mouseleave="open = false"
                         href="#"
                         class="hover:text-secondary flex items-center font-semibold"
                     >
-                        Gaming Gear
+                        Đồ Họa
                         <i
                             :class="open ? 'fas fa-chevron-up ml-1 text-xs' : 'fas fa-chevron-down ml-1 text-xs'"
                         ></i>
@@ -268,36 +270,24 @@
                             <a
                                 href="/shop"
                                 class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
-                                >Bàn phím</a
+                                >Asus</a
                             >
                         </li>
                         <li>
                             <a
                                 href="/shop"
                                 class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
-                                >Chuột</a
+                                >Lenovo</a
                             >
                         </li>
                         <li>
                             <a
                                 href="/shop"
                                 class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
-                                >Tai nghe</a
+                                >Acer</a
                             >
                         </li>
                     </ul>
-                </li>
-
-                <li>
-                    <a href="/shop" class="hover:text-secondary font-semibold"
-                        >Màn hình</a
-                    >
-                </li>
-
-                <li>
-                    <a href="/shop" class="hover:text-secondary font-semibold"
-                        >Linh kiện PC</a
-                    >
                 </li>
 
                 <li>

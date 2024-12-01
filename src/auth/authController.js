@@ -4,6 +4,10 @@ import passport from './authService.js';
 
 const router = express.Router();
 
+router.get('/register', (req, res) => {
+    res.render('register');
+});
+
 router.post('/register', (req, res, next) => {
     register(req.body)
         .then((newUser) => {
@@ -11,7 +15,8 @@ router.post('/register', (req, res, next) => {
                 return res.render('register', { message: newUser });
             }
             console.log(newUser);
-            // Register successfully
+
+            // register successfully
             req.login(newUser, (err) => {
                 if (err) {
                     return next(err);
@@ -20,13 +25,9 @@ router.post('/register', (req, res, next) => {
             });
         })
         .catch((err) => {
-            console.err(err);
+            console.error(err);
             res.status(500).send('There are problems when registering');
         });
-});
-
-router.get('/register', (req, res) => {
-    res.render('register');
 });
 
 router.get('/login', (req, res) => {

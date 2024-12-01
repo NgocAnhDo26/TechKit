@@ -4,7 +4,18 @@ import * as service from './productService.js';
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.redirect('..');
+    service
+        .fetchProductWithQuery(req.params, req.query)
+        .then((products) => {
+            res.status(200).render('shop', {
+                category: req.params.category,
+                products,
+            });
+        })
+        .catch((e) => {
+            console.log(e);
+            res.status(500).json(e);
+        });
 });
 
 router.get('/:category', async (req, res) => {
@@ -24,9 +35,7 @@ router.get('/:category', async (req, res) => {
 
 router.get('/:category/:product_id', async (req, res) => {
     try {
-        const product = await service.fetchProductByID(
-            Number(req.params.product_id),
-        );
+        const product = await service.fetchProductByID(req.params.product_id);
 
         if (!product) {
             return res.render('error', { message: 'Product not found' });

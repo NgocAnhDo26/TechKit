@@ -43,7 +43,7 @@ model account {
   id             Int              @id @default(autoincrement())
   name           String           @db.VarChar(70)
   email          String           @unique(map: "email") @db.VarChar(254)
-  password       String           @db.VarChar(32)
+  password       String           @db.VarChar(72)
   address        String?          @db.VarChar(100)
   birthdate      DateTime?        @db.DateTime(0)
   sex            String?          @db.VarChar(50)
@@ -91,11 +91,12 @@ model orders {
 }
 
 model product_image {
-  product_id Int
-  address    String  @db.VarChar(50)
-  product    product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_image_ibfk_1")
+  product_id     Int
+  url            String  @db.VarChar(100)
+  is_profile_img Int?    @db.TinyInt
+  product        product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_image_ibfk_1")
 
-  @@id([product_id, address])
+  @@id([product_id, url])
 }
 
 model product_review {

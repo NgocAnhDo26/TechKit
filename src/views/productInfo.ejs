@@ -26,64 +26,18 @@
             <div class="flex flex-col lg:flex-row gap-6">
                 <!-- Image Section -->
                 <div class="w-full lg:w-1/2">
-                    <div class="grid gap-4">
+                    <div class="flex flex-col gap-4">
                         <!-- Big Image -->
                         <div id="main-image-container">
                             <img
                                 id="main-image"
                                 class="h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px]"
-                                src="/images/products/1.png"
+                                src="<%= product.product_image[0].url %>"
                                 alt="Main Product Image"
                             />
                         </div>
                         <!-- Small Images -->
-                        <!-- <div class="grid grid-cols-5 gap-4">
-                            <div>
-                                <img
-                                    onclick="changeImage(this)"
-                                    data-full="/images/single-product/1.png"
-                                    src="/images/single-product/1.png"
-                                    class="object-cover object-center max-h-30 max-w-full rounded-lg cursor-pointer"
-                                    alt="Gallery Image 1"
-                                />
-                            </div>
-                            <div>
-                                <img
-                                    onclick="changeImage(this)"
-                                    data-full="/images/single-product/2.jpg"
-                                    src="/images/single-product/2.jpg"
-                                    class="object-cover object-center max-h-30 max-w-full rounded-lg cursor-pointer"
-                                    alt="Gallery Image 2"
-                                />
-                            </div>
-                            <div>
-                                <img
-                                    onclick="changeImage(this)"
-                                    data-full="/images/single-product/3.jpg"
-                                    src="/images/single-product/3.jpg"
-                                    class="object-cover object-center max-h-30 max-w-full rounded-lg cursor-pointer"
-                                    alt="Gallery Image 3"
-                                />
-                            </div>
-                            <div>
-                                <img
-                                    onclick="changeImage(this)"
-                                    data-full="/images/images/single-product/4.jpg"
-                                    src="/images/single-product/4.jpg"
-                                    class="object-cover object-center max-h-30 max-w-full rounded-lg cursor-pointer"
-                                    alt="Gallery Image 4"
-                                />
-                            </div>
-                            <div>
-                                <img
-                                    onclick="changeImage(this)"
-                                    data-full="/images/images/single-product/5.jpg"
-                                    src="/images/single-product/5.jpg"
-                                    class="object-cover object-center max-h-30 max-w-full rounded-lg cursor-pointer"
-                                    alt="Gallery Image 5"
-                                />
-                            </div>
-                        </div> -->
+                        <!-- Swiper Slider -->
                     </div>
                 </div>
                 <!-- Product Details Section -->

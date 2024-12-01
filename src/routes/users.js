@@ -22,7 +22,13 @@ router.get('/contact', (req, res) => {
 });
 
 router.get('/cart', (req, res) => {
-    res.render('cart');
+    req.user
+        ? res.status(200).render('cart')
+        : res.status(401).json('You must be logged in!');
+});
+
+router.get('/profile', (req, res) => {
+    req.user ? res.status(200).json("HI!") : res.status(401).json("You must be logged in!");
 });
 
 router.use('/shop', productController);

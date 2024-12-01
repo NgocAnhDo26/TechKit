@@ -60,11 +60,7 @@
 
             <div class="flex flex-col md:flex-row">
                 <!-- Filters -->
-                <% switch(category) {
-                    case 'laptop': %>
-                        <%- include('./filters/laptop'); %>
-                    <% break;
-                } %>
+                <%- include('./filters'); %>
                 
                 
                 <!-- Products List -->
@@ -73,13 +69,18 @@
                     <div
                         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
                     >
-                        <!-- Loop through products and display each one -->
+                    <!-- Loop through products and display each one -->
+                    <% if (products) { %>
                         <% products.forEach(product => { %>
                             <%- include('product', { product }); %>
                         <% }); %>
                     </div>
+                    <% } else { %>
+                        <h1>No products found...</h1>
+                    <% } %>
+                        
                     <!-- Pagination -->
-                    <div class="flex justify-center mt-8">
+                    <!-- <div class="flex justify-center mt-8">
                         <nav aria-label="Page navigation">
                             <ul class="inline-flex space-x-2">
                                 <li>
@@ -112,7 +113,7 @@
                                 </li>
                             </ul>
                         </nav>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
