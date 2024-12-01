@@ -8,8 +8,8 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     req.session.visited = true; // to keep session unchanged every time access the website
 
-    const featured_products = await productService.fetchAllFeaturedProducts();
-    const sale_products = await productService.fetchAllSaleProducts();
+    const featured_products = await productService.fetchRecentProducts();
+    const sale_products = await productService.fetchMostDiscountedProducts();
     res.render('index', { featured_products, sale_products });
 });
 
@@ -28,7 +28,9 @@ router.get('/cart', (req, res) => {
 });
 
 router.get('/profile', (req, res) => {
-    req.user ? res.status(200).json("HI!") : res.status(401).json("You must be logged in!");
+    req.user
+        ? res.status(200).json('HI!')
+        : res.status(401).json('You must be logged in!');
 });
 
 router.use('/shop', productController);

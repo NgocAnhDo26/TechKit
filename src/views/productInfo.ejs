@@ -70,6 +70,7 @@
                                 >
                                 <%= product.price.toLocaleString() %>₫
                                 </s>
+                                <span class="text-2xl ml-7">-<%= (100 - Math.round((product.price_sale / product.price) * 100)) %>%</span>
                             <% } else { %>
                                 <span> <%= product.price.toLocaleString() %>₫ </span>
                             <% } %>
@@ -133,7 +134,7 @@
                         aria-selected="false"
                         class="tab"
                     >
-                        Đánh giá
+                        Thông số chi tiết
                     </button>
                 </div>
                 <div class="mt-8">
@@ -161,8 +162,16 @@
                         <!-- Reviews List -->
                         <div class="space-y-6">
                             <div id="reviews-list">
+                                <ul>
+                                    <li><span class="font-bold">CPU: </span><%= product.cpu %></li>
+                                    <li><span class="font-bold">Dung lượng: </span><%= product.storage %></li>
+                                    <li><span class="font-bold">RAM: </span><%= product.ram %></li>
+                                    <li><span class="font-bold">Card đồ họa: </span><%= product.graphic_card %></li>
+                                    <li><span class="font-bold">Kích thước màn hình: </span><%= product.screen_size %> inch</li>
+                                    <li><span class="font-bold">Độ phân giải: </span><%= product.resolution %></li>
+                                </ul>
                                 <!-- Review 1 -->
-                                <div class="py-4">
+                                <!-- <div class="py-4">
                                     <div class="flex items-center mb-2">
                                         <span
                                             class="text-lg font-semibold text-gray-700"
@@ -177,9 +186,9 @@
                                         material feels premium. Highly recommend
                                         this t-shirt.
                                     </p>
-                                </div>
+                                </div> -->
                                 <!-- Review 2 -->
-                                <div class="border-t border-gray-line py-4">
+                                <!-- <div class="border-t border-gray-line py-4">
                                     <div class="flex items-center mb-2">
                                         <span
                                             class="text-lg font-semibold text-gray-700"
@@ -194,9 +203,9 @@
                                         comfortable. However, I wish it came in
                                         more colors.
                                     </p>
-                                </div>
+                                </div> -->
                                 <!-- Review 3 -->
-                                <div class="border-t border-gray-line py-4">
+                                <!-- <div class="border-t border-gray-line py-4">
                                     <div class="flex items-center mb-2">
                                         <span
                                             class="text-lg font-semibold text-gray-700"
@@ -211,12 +220,12 @@
                                         and it looks great. Will definitely buy
                                         again.
                                     </p>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
                         <!-- Submit Review Form -->
-                        <div class="mt-8">
+                        <!-- <div class="mt-8">
                             <h3 class="text-lg font-semibold mb-4">
                                 Write a Review
                             </h3>
@@ -291,7 +300,7 @@
                                     </button>
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

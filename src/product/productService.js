@@ -5,39 +5,51 @@ async function fetchProductWithQuery(params, query) {
     let filters = { category: { name: params.category } };
     let orderBy = {};
 
+    // Filter by keyword search across name and description (OR logic for keywords)
+    const keywordFilters = [];
     if (query.keyword) {
-        filters.OR = [
+        keywordFilters.push(
             { name: { contains: query.keyword } },
-            {
-                description: {
-                    contains: query.keyword,
-                },
-            },
-        ];
+            { description: { contains: query.keyword } },
+        );
     }
 
     if (query.brand) {
-        if (query.brand.constructor === Array) {
-            filters.brand = { in: query.brand };
-        } else {
-            filters.brand = query.brand;
-        }
+        const brandList = query.brand.split(',');
+        filters.brand = { in: brandList };
     }
 
-    // if (query.status) {
-    //     if (query.status.constructor === Array) {
-    //         filters.status = { in: query.status };
-    //     } else {
-    //         filters.status = query.status;
-    //     }
-    // }
+    if (query.screen_size) {
+        const screenList = query.screen_size.split(',');
+        filters.screen_size = { in: screenList };
+    }
+
+    // Filter by CPU keywords (OR logic for CPUs)
+    const cpuFilters = [];
+    if (query.cpu) {
+        const cpuKeywords = query.cpu.split(','); // Assuming `cpu` is a comma-separated string
+        cpuKeywords.forEach((keyword) => {
+            cpuFilters.push({
+                cpu: { contains: keyword },
+            });
+        });
+    }
+
+    // Combine CPU and keyword filters using AND logic
+    if (cpuFilters.length > 0 && keywordFilters.length > 0) {
+        filters.AND = [{ OR: cpuFilters }, { OR: keywordFilters }];
+    } else if (cpuFilters.length > 0) {
+        filters.OR = cpuFilters;
+    } else if (keywordFilters.length > 0) {
+        filters.OR = keywordFilters;
+    }
 
     if (query.order) {
-        orderBy.price = query.order;
+        orderBy.price_sale = query.order;
     }
 
     if (query.minPrice || query.maxPrice) {
-        filters.price = {
+        filters.price_sale = {
             gte: query.minPrice ? Number(query.minPrice) : 0,
             lte: query.maxPrice ? Number(query.maxPrice) : 999999999,
         };
@@ -48,7 +60,7 @@ async function fetchProductWithQuery(params, query) {
             category: true,
             product_image: {
                 where: {
-                    is_profile_img: 1,
+                    is_profile_img: true,
                 },
             },
         },
@@ -66,7 +78,7 @@ async function fetchProductByID(productID) {
             category: true,
             product_image: {
                 where: {
-                    is_profile_img: 1,
+                    is_profile_img: true,
                 },
             },
         },
@@ -78,39 +90,46 @@ async function fetchProductByID(productID) {
 }
 
 // Function to fetch all featured products   ------  should be replaced by products are on big sale.
-async function fetchAllFeaturedProducts() {
-    const products = await prisma.product.findMany({
+async function fetchRecentProducts() {
+    return await prisma.product.findMany({
         include: {
             category: true, // Include related category data
             product_image: {
                 where: {
-                    is_profile_img: 1,
+                    is_profile_img: true,
                 },
             },
         },
-        // where: {
-        //     is_featured: true, // Filter for featured products
-        // },
+        orderBy: {
+            create_time: 'desc', // Sort by most recently added
+        },
+        take: 10,
     });
-
-    return products;
 }
 
-async function fetchAllSaleProducts() {
+async function fetchMostDiscountedProducts() {
     const products = await prisma.product.findMany({
         include: {
             category: true, // Include related category data
             product_image: {
                 where: {
-                    is_profile_img: 1,
+                    is_profile_img: true,
                 },
             },
         },
         where: {
-            NOT: {
-                price_sale: null,
-            },
+            price_sale: { lt: prisma.product.fields.price }, // Sale price less than original price
         },
+        orderBy: [
+            {
+                // Calculate discount percentage and sort by highest
+                price_sale: 'asc', // Lower sale price means higher discount
+            },
+            {
+                price: 'desc', // To prioritize products with larger price differences
+            },
+        ],
+        take: 10,
     });
 
     return products;
@@ -123,7 +142,7 @@ async function fetchProductsByCategory(categoryId) {
             category: true, // Include related category data
             product_image: {
                 where: {
-                    is_profile_img: 1,
+                    is_profile_img: true,
                 },
             },
         },
@@ -154,7 +173,7 @@ async function fetchProductByRelevant(singleProduct) {
                     url: true,
                 },
                 where: {
-                    is_profile_img: 1,
+                    is_profile_img: true,
                 },
             },
         },
@@ -168,8 +187,8 @@ async function fetchProductByRelevant(singleProduct) {
 export {
     fetchProductByID,
     fetchProductWithQuery,
-    fetchAllFeaturedProducts,
-    fetchAllSaleProducts,
+    fetchRecentProducts,
+    fetchMostDiscountedProducts,
     fetchProductsByCategory,
     fetchProductByRelevant,
 };

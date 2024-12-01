@@ -26,7 +26,8 @@ function setFilters() {
     };
 
     setCheckboxes('brand', params.brand); // Set brands
-    setCheckboxes('status', params.status); // Set CPUs
+    setCheckboxes('cpu', params.cpu); // Set CPUs
+    setCheckboxes('screen_size', params.screen_size); // Set screen sizes
 
     // Set single value inputs (e.g., minPrice and maxPrice)
     if (params.minPrice) {
@@ -112,19 +113,23 @@ const onFilterSubmit = function (e) {
 
     const brand = getCheckedValues('brand');
     const status = getCheckedValues('status');
+    const cpu = getCheckedValues('cpu');
+    const screen_size = getCheckedValues('screen_size');
 
     // Collect price range values
     const minPrice = document.getElementById('minPrice').value;
-    console.log(minPrice);
     const maxPrice = document.getElementById('maxPrice').value;
 
     // Construct query string
     const queryString = window.location.search;
     const queryParams = new URLSearchParams(queryString);
-    if (brand.length) queryParams.set('brand', brand.join(','));
-    if (status.length) queryParams.set('status', status.join(','));
-    if (minPrice) queryParams.set('minPrice', minPrice);
-    if (maxPrice) queryParams.set('maxPrice', maxPrice);
+
+    brand.length ? queryParams.set('brand', brand.join(',')) : queryParams.delete('brand');
+    status.length ? queryParams.set('status', status.join(',')) : queryParams.delete('status');
+    cpu.length ? queryParams.set('cpu', cpu.join(',')) : queryParams.delete('cpu');
+    screen_size.length ? queryParams.set('screen_size', screen_size.join(',')) : queryParams.delete('screen_size');
+    minPrice ? queryParams.set('minPrice', minPrice) : queryParams.delete('minPrice');
+    maxPrice ? queryParams.set('maxPrice', minPrice) : queryParams.delete('maxPrice');
 
     // Redirect
     const baseUrl = window.location.href.split('?')[0];

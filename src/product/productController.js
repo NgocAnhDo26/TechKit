@@ -19,6 +19,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:category', async (req, res) => {
+    console.log(req.query);
     service
         .fetchProductWithQuery(req.params, req.query)
         .then((products) => {

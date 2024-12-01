@@ -36,7 +36,7 @@ model product {
   product_image  product_image[]
   product_review product_review[]
 
-  @@index([category_id], map: "fk_category")
+  @@index([category_id], map: "idx_category")
 }
 
 model account {
@@ -82,7 +82,7 @@ model orders {
   id               Int             @id @default(autoincrement())
   account_id       Int
   shipping_address String?         @db.VarChar(100)
-  create_time      DateTime        @db.Timestamp(0)
+  create_time      DateTime        @default(now()) @db.Timestamp(0)
   status           String          @db.VarChar(20)
   order_product    order_product[]
   account          account         @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_ibfk_1")
@@ -93,7 +93,7 @@ model orders {
 model product_image {
   product_id     Int
   url            String  @db.VarChar(100)
-  is_profile_img Int?    @db.TinyInt
+  is_profile_img Boolean @default(false)
   product        product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_image_ibfk_1")
 
   @@id([product_id, url])
@@ -102,7 +102,7 @@ model product_image {
 model product_review {
   product_id  Int
   account_id  Int
-  create_time DateTime @db.Timestamp(0)
+  create_time DateTime @default(now()) @db.Timestamp(0)
   content     String   @db.Text
   product     product  @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_review_ibfk_1")
   account     account  @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_review_ibfk_2")

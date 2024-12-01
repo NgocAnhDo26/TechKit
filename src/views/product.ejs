@@ -12,11 +12,12 @@
         <% if (product.price_sale) { %>
             <span class="text-lg font-bold text-primary"><%= product.price_sale.toLocaleString() %>₫</span>
             <span class="text-sm font-bold line-through ml-2"><%= product.price.toLocaleString() %>₫</span>
+            <span class="text-sm font-bold text-primary ml-2">-<%= (100 - Math.round((product.price_sale / product.price) * 100)) %>%</span>
         <% } else { %>
             <span class="text-lg font-bold text-primary"><%= product.price.toLocaleString() %>₫</span>
         <% } %>
     </div>
     <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full">
-        Add to Cart
+        Thêm vào giỏ
     </button>
 </div>
