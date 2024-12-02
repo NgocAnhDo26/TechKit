@@ -100,12 +100,7 @@ async function fetchRecentProducts() {
                 },
             },
         },
-        // where: {
-        //     is_featured: true, // Filter for featured products
-        // },
     });
-
-    return products;
 }
 
 async function fetchMostDiscountedProducts() {

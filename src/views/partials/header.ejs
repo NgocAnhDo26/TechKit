@@ -16,7 +16,7 @@
             id="search-global"
             method="get"
             action="/shop"
-            class="mx-10 hidden w-full self-center rounded-md bg-white p-1 shadow-lg md:flex md:w-1/2"
+            class="mx-10 hidden w-full self-center rounded-md bg-white p-1 shadow-lg md:flex md:w-1/2 flex-auto"
         >
             <input
                 type="text"
@@ -30,105 +30,35 @@
             </button>
         </form>
 
-        <!-- Right section: Buttons (for mobile) -->
-        <div class="flex gap-3 md:hidden">
-            <a href="/cart" class="rounded-md border-2 px-2 py-2">
-                <img
-                    src="/images/icons/cart-shopping.svg"
-                    alt="Cart"
-                    class="h-6 w-6"
-                />
-            </a>
-            <!-- Login -->
-            <a
-                href="/auth/login"
-                class="login-register group w-max rounded-md bg-white px-3 py-2 text-primary"
-            >
-                <i class="fa-regular fa-user" style="color: #ff0042"></i>
-                <span class="ml-2 font-semibold">Đăng nhập</span>
-            </a>
-        </div>
-
         <!-- Right section: Buttons (for desktop) -->
-        <div class="relative hidden items-center space-x-4 md:flex">
-            <div class="cart-wrapper group relative mr-2 border-white border-2 p-2 rounded-md ">
-                <div class="flex w-max">
-                    <a href="/cart">
-                        <img
-                            src="/images/icons/cart-shopping.svg"
-                            alt="Cart"
-                            class="h-6 w-6"
-                        />
-                    </a>
-                    <a href="/cart" class="ml-2 font-semibold text-white"
-                        >Giỏ hàng (2)</a
-                    >
-                </div>
-
-                <!-- Cart dropdown -->
-                <div
-                    class="absolute right-0 mt-1 hidden w-80 rounded bg-white p-4 shadow-lg group-hover:block"
+        <div class="relative items-center space-x-4 flex">
+            <div class="flex w-max">
+                <a href="/cart">
+                    <img
+                        src="/images/icons/cart-shopping.svg"
+                        alt="Cart"
+                        class="min-h-6 min-w-6 max-h-6 max-w-6"
+                    />
+                </a>
+                <a href="/cart" class="ml-2 font-semibold text-white max-sm:hidden"
+                    >Giỏ hàng (2)</a
                 >
-                    <div class="space-y-4">
-                        <!-- product item -->
-                        <div
-                            class="flex items-center justify-between border-b border-gray-line pb-4"
-                        >
-                            <div class="flex items-center">
-                                <img
-                                    src="/images/single-product/1.png"
-                                    alt="Product"
-                                    class="mr-2 h-12 w-12 rounded object-cover"
-                                />
-                                <div>
-                                    <p class="font-semibold">
-                                        Summer black dress
-                                    </p>
-                                    <p class="text-sm">Quantity: 1</p>
-                                </div>
-                            </div>
-                            <p class="font-semibold">$25.00</p>
-                        </div>
-                        <!-- product item -->
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <img
-                                    src="/images/single-product/2.jpg"
-                                    alt="Product"
-                                    class="mr-2 h-12 w-12 rounded object-cover"
-                                />
-                                <div>
-                                    <p class="font-semibold">Black suit</p>
-                                    <p class="text-sm">Quantity: 1</p>
-                                </div>
-                            </div>
-                            <p class="font-semibold">$125.00</p>
-                        </div>
-                    </div>
-                    <a
-                        href="/cart"
-                        class="mt-4 block rounded-full border border-primary bg-primary py-2 text-center font-semibold text-white hover:bg-transparent hover:text-primary"
-                        >Xem giỏ hàng</a
-                    >
-                </div>
             </div>
 
             <!-- Login -->
             <% if (isAuth) { %>
-                <div>
-                    <a href="/auth/logout">
-                        <div
-                            class="login-register group w-max rounded-md bg-white px-3 py-2 text-primary "
-                        >
-                            <span class="font-semibold">Đăng xuất</span>
-                        </div>
-                    </a>
-                </div>
-                <a href="/profile"><img src="<%= avatar %>" alt="" class="w-10 h-10 bg-white rounded-full"></a>
+                <a href="/auth/logout">
+                    <div
+                        class="w-max rounded-md bg-white px-3 py-2 text-primary "
+                    >
+                        <span class="font-semibold">Đăng xuất</span>
+                    </div>
+                </a>
+                <a href="/profile"><img src="<%= avatar %>" alt="" class="min-w-10 min-h-10 max-w-10 max-h-10 bg-white rounded-full"></a>
             <% } else { %>
                 <a href="/auth/login">
                     <div
-                        class="login-register group w-max rounded-md bg-white px-3 py-2 text-primary"
+                        class="w-max rounded-md bg-white px-3 py-2 text-primary"
                     >
                         <i class="fa-regular fa-user" style="color: #ff0042"></i>
                         <span class="ml-2 font-semibold">Đăng nhập</span>
@@ -174,7 +104,7 @@
                     >
                 </li>
 
-                <!-- Men Dropdown -->
+                <!-- Gaming Dropdown -->
                 <li class="group relative" x-data="{ open: false }">
                     <a
                         href="/shop/gaming"
@@ -240,7 +170,7 @@
                 </li>
                 
 
-                <!-- Women Dropdown -->
+                <!-- Đồ Họa Dropdown -->
                 <li class="group relative" x-data="{ open: false }">
                     <a
                         href="/shop/graphic"
