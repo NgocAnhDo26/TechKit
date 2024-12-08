@@ -9,12 +9,13 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', (req, res, next) => {
+    // if ()
     register(req.body)
         .then((newUser) => {
+            // there is a error in when register
             if (typeof newUser === 'string') {
                 return res.render('register', { message: newUser });
             }
-            console.log(newUser);
 
             // Register successfully
             req.login(newUser, (err) => {

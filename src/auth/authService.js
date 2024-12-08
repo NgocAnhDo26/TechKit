@@ -5,12 +5,10 @@ import bcrypt from 'bcrypt';
 import { addNewAccount } from '../account/accountService.js';
 
 passport.serializeUser((user, done) => {
-    console.log("::::::This is serialize");
     done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
-    console.log('::::::This is deserialize');
     const user = await prisma.account.findUnique({
         where: { id: id },
     });
@@ -56,15 +54,17 @@ export async function register(userInfo) {
     }
 
     // Get email from db
-    if (
-        await prisma.account.findUnique({
-            where: {
-                email: email,
-            },
-        })
-    ) {
+    if (isEmailExist(email)) {
         return 'That email is already in use';
     }
 
     return await addNewAccount(name, email, password);
+}
+
+export async function isEmailExist(email) {
+    return await prisma.account.findUnique({
+        where: {
+            email: email,
+        },
+    });
 }

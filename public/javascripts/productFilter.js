@@ -124,12 +124,24 @@ const onFilterSubmit = function (e) {
     const queryString = window.location.search;
     const queryParams = new URLSearchParams(queryString);
 
-    brand.length ? queryParams.set('brand', brand.join(',')) : queryParams.delete('brand');
-    status.length ? queryParams.set('status', status.join(',')) : queryParams.delete('status');
-    cpu.length ? queryParams.set('cpu', cpu.join(',')) : queryParams.delete('cpu');
-    screen_size.length ? queryParams.set('screen_size', screen_size.join(',')) : queryParams.delete('screen_size');
-    minPrice ? queryParams.set('minPrice', minPrice) : queryParams.delete('minPrice');
-    maxPrice ? queryParams.set('maxPrice', minPrice) : queryParams.delete('maxPrice');
+    brand.length
+        ? queryParams.set('brand', brand.join(','))
+        : queryParams.delete('brand');
+    status.length
+        ? queryParams.set('status', status.join(','))
+        : queryParams.delete('status');
+    cpu.length
+        ? queryParams.set('cpu', cpu.join(','))
+        : queryParams.delete('cpu');
+    screen_size.length
+        ? queryParams.set('screen_size', screen_size.join(','))
+        : queryParams.delete('screen_size');
+    minPrice
+        ? queryParams.set('minPrice', minPrice)
+        : queryParams.delete('minPrice');
+    maxPrice
+        ? queryParams.set('maxPrice', maxPrice)
+        : queryParams.delete('maxPrice');
 
     // Redirect
     const baseUrl = window.location.href.split('?')[0];
