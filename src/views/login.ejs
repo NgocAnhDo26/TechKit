@@ -17,18 +17,25 @@
                         class="rounded-lg bg-white p-4 shadow-md md:m-10 md:w-1/2 md:p-10"
                     >
                         <h2 class="mb-10 text-2xl font-semibold">Login</h2>
-                        <% if (typeof message !== 'undefined') { %>
-                            <div class="bg-error border-error_second my-10 flex gap-4 max-w-sm rounded-md min-h-16 items-center shadow-md mx-auto">
-                                <img src="/images/icons/alert.png" alt="error" class="max-w-5 max-h-5 ml-4"/>
-                                <div class="flex-col">
-                                    <h2 class="font-bold text-lg">
-                                        We couldn't sign you in.
-                                    </h2>
-                                    <p class="text-sm font-medium"><%= message %></p>
-                                </div>
+
+                        <div
+                            class="error-submit-container-login mx-auto my-10 flex hidden min-h-16 max-w-sm items-center gap-4 rounded-md border-error_second bg-error shadow-md"
+                        >
+                            <img
+                                src="/images/icons/alert.png"
+                                alt="error"
+                                class="ml-4 max-h-5 max-w-5"
+                            />
+                            <div class="flex-col">
+                                <h2 class="text-lg font-bold">
+                                    We couldn't sign you in.
+                                </h2>
+                                <p
+                                    class="error-submit-login text-sm font-medium"
+                                ></p>
                             </div>
-                        <% } %>
-                        <form action="/auth/login" method="post">
+                        </div>
+                        <form>
                             <div class="mb-3">
                                 <label for="login-email" class="mb-2 block"
                                     >Email</label
@@ -73,7 +80,7 @@
 
                             <button
                                 type="submit"
-                                class="mt-5 w-full rounded-full border border-primary bg-primary px-3 py-2 text-white hover:bg-transparent hover:text-primary"
+                                class="login-submit mt-5 w-full rounded-full border border-primary bg-primary px-3 py-2 text-white hover:bg-transparent hover:text-primary"
                             >
                                 Login
                             </button>
@@ -85,5 +92,6 @@
 
         <!-- Footer -->
         <%- include('./partials/footer'); %>
+        <script src="/javascripts/authCheck.js"></script>
     </body>
 </html>

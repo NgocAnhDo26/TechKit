@@ -43,21 +43,7 @@ export default passport.use(
 );
 
 export async function register(userInfo) {
-    const { name, email, password, confirmPassword } = userInfo;
-
-    if (!password.length || !email.length) {
-        return 'The fields below must not be empty';
-    }
-
-    if (password !== confirmPassword) {
-        return 'Passwords do not match';
-    }
-
-    // Get email from db
-    if (isEmailExist(email)) {
-        return 'That email is already in use';
-    }
-
+    const { name, email, password } = userInfo;
     return await addNewAccount(name, email, password);
 }
 
