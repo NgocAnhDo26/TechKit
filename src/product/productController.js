@@ -22,10 +22,11 @@ router.get('/:category', async (req, res) => {
     console.log(req.query);
     service
         .fetchProductWithQuery(req.params, req.query)
-        .then((products) => {
+        .then((result) => {
             res.status(200).render('shop', {
                 category: req.params.category,
-                products,
+                products: result.products,
+                totalPage: result.totalPage
             });
         })
         .catch((e) => {
