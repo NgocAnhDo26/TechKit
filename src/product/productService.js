@@ -4,9 +4,6 @@ import { prisma } from '../config/config.js'; // Import prisma database connecti
 async function fetchProductWithQuery(params, query) {
     let filters = { category: { name: params.category } };
     let orderBy = {};
-    let page = Number(query.page) || 1;
-    let limit = Number(query.limit) || 6;
-    let offset = (page - 1) * limit;
 
     // Filter by keyword search across name and description (OR logic for keywords)
     const keywordFilters = [];
@@ -66,10 +63,7 @@ async function fetchProductWithQuery(params, query) {
         orderBy: orderBy,
         where: filters,
     });
-
-    let paginatedProducts = products.slice(offset, offset + limit);
-    let totalPage = products.length / limit;
-    return { products: paginatedProducts, totalPage: totalPage };
+    return products;
 }
 
 // Function to fetch product by product ID
