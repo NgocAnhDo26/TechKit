@@ -1,10 +1,18 @@
 import express from 'express';
-import * as service from '../product/productService.js';
+import * as service from '../product/productService.js'
 
 const router = express.Router();
 
-router.get('/products', async (req, res) => {
-    res.json(await service.fetchProductWithQuery(req.params, req.query));
+router.get('/products', (req, res) => {
+    service
+        .fetchProductWithQuery(req.params, req.query)
+        .then((result) => {
+            res.json(result);
+        })
+        .catch((e) => {
+            console.log(e);
+            res.status(500).json(e);
+        });
 });
 
 export default router;

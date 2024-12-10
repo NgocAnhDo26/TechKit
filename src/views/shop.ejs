@@ -68,6 +68,7 @@
                     <!-- Products grid -->
                     <div
                         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                        id="product-list"
                     >
                     <!-- Loop through products and display each one -->
                     <% if (products) { %>
@@ -80,40 +81,34 @@
                     <% } %>
                         
                     <!-- Pagination -->
-                    <!-- <div class="flex justify-center mt-8">
+                    <div class="flex justify-center mt-8">
                         <nav aria-label="Page navigation">
-                            <ul class="inline-flex space-x-2">
+                            <ul class="inline-flex space-x-2" id="product-pagination">
+                                <!-- Loop through pages -->
+                                <% for (let i = 1; i <= totalPage; i++) { %>
+                                    <li>
+                                        <a
+                                            href="?page=<%= i %>"
+                                            class="w-10 h-10 flex items-center justify-center rounded-full <%= i === 1 ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white' %>"
+                                            id=""
+                                        >
+                                            <%= i %>
+                                        </a>
+                                    </li>
+                                <% } %>
+
+                                <!-- "Next" button -->
                                 <li>
                                     <a
-                                        href="#"
-                                        class="bg-primary text-white w-10 h-10 flex items-center justify-center rounded-full"
-                                        >1</a
-                                    >
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary hover:text-white"
-                                        >2</a
-                                    >
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary hover:text-white"
-                                        >3</a
-                                    >
-                                </li>
-                                <li>
-                                    <a
-                                        href="#"
+                                        href="?page=<%= totalPage %>"
                                         class="w-10 h-10 flex items-center justify-center rounded-full"
-                                        >Next</a
                                     >
+                                        Next
+                                    </a>
                                 </li>
                             </ul>
                         </nav>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,3 +117,7 @@
         <%- include('./partials/footer'); %>
     </body>
 </html>
+
+<script>
+
+</script>

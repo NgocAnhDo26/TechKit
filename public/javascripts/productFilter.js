@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // };
 
 /* Filter submit */
-const onFilterSubmit = function (e) {
+const onFilterSubmit = async function (e) {
     e.preventDefault();
 
     // Collect checked values for brand and cpu
@@ -145,5 +145,51 @@ const onFilterSubmit = function (e) {
 
     // Redirect
     const baseUrl = window.location.href.split('?')[0];
-    window.location.href = `${baseUrl}${queryParams ? '?' : ''}${queryParams.toString()}`;
+    url = `${baseUrl}${queryParams ? '?' : ''}${queryParams.toString()}`;
+    window.history.replaceState(null,"", url);      
+
+    const api_url = `${window.location.protocol}//${window.location.host}/api/v1/products${queryParams ? '?' : ''}${queryParams.toString()}`;
+    try {
+        const response = await fetch(api_url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const {products, totalPage} = await response.json();
+
+        // Render products
+        const productList = document.getElementById('product-list');
+        productList.innerHTML = ''; // Clear existing products
+        products.forEach((product) => {
+            const productElement = document.createElement('div');
+            productElement.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow');
+            productElement.innerHTML = `
+                <img
+                    src="${product.product_image[0]?.url || ''}"
+                    alt="${product.name}"
+                    class="w-full object-cover mb-4 rounded-lg"
+                />
+                <a href="/shop/${product.category.name.toLowerCase()}/${product.id}" class="text-lg font-semibold mb-2">
+                    ${product.name}
+                </a>
+                <p class="my-2">${product.category.name}</p>
+                <div class="flex items-center mb-4">
+                    ${
+                        product.price_sale
+                            ? `
+                        <span class="text-lg font-bold text-primary">${product.price_sale.toLocaleString()}₫</span>
+                        <span class="text-sm font-bold line-through ml-2">${product.price.toLocaleString()}₫</span>
+                        <span class="text-sm font-bold text-primary ml-2">-${100 - Math.round((product.price_sale / product.price) * 100)}%</span>
+                    `
+                            : `<span class="text-lg font-bold text-primary">${product.price.toLocaleString()}₫</span>`
+                    }
+                </div>
+                <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full">
+                    Thêm vào giỏ
+                </button>
+            `;
+            productList.appendChild(productElement);
+        });
+    } catch (error) {
+        console.error('Error fetching or rendering products:', error.message);
+    }
 };
