@@ -6,10 +6,12 @@ const router = express.Router();
 router.get('/', (req, res) => {
     service
         .fetchProductWithQuery(req.params, req.query)
-        .then((products) => {
+        .then((result) => {
             res.status(200).render('shop', {
                 category: req.params.category,
-                products,
+                products: result.products,
+                totalPage: result.totalPage,
+                currentPage: result.currentPage
             });
         })
         .catch((e) => {
@@ -26,7 +28,8 @@ router.get('/:category', async (req, res) => {
             res.status(200).render('shop', {
                 category: req.params.category,
                 products: result.products,
-                totalPage: result.totalPage
+                totalPage: result.totalPage,
+                currentPage: result.currentPage
             });
         })
         .catch((e) => {

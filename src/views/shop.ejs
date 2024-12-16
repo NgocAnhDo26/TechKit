@@ -80,44 +80,61 @@
                         <h1>No products found...</h1>
                     <% } %>
                         
-                    <!-- Pagination -->
                     <div class="flex justify-center mt-8">
                         <nav aria-label="Page navigation">
                             <ul class="inline-flex space-x-2" id="product-pagination">
-                                <!-- Loop through pages -->
-                                <% for (let i = 1; i <= totalPage; i++) { %>
-                                    <li>
-                                        <a
-                                            href="?page=<%= i %>"
-                                            class="w-10 h-10 flex items-center justify-center rounded-full <%= i === 1 ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white' %>"
-                                            id=""
-                                        >
-                                            <%= i %>
-                                        </a>
-                                    </li>
-                                <% } %>
-
-                                <!-- "Next" button -->
-                                <li>
-                                    <a
-                                        href="?page=<%= totalPage %>"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full"
-                                    >
-                                        Next
-                                    </a>
-                                </li>
+                                <!-- Pagination -->
+                                <div class="flex justify-center mt-8">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="inline-flex space-x-2" id="product-pagination">
+                                            <% if (currentPage > 1) { %>
+                                                <!-- "Previous" button -->
+                                                <li>
+                                                    <button
+                                                        class="w-10 h-10 flex items-center justify-center rounded-full pagination-link"
+                                                        
+                                                    >
+                                                        Previous
+                                                    </button>
+                                                </li>
+                                            <% } %>
+                                            <!-- Loop through pages -->
+                                            <% for (let i = currentPage; i <= currentPage + 5 && i <= totalPage; i++) { %>
+                                                <li>
+                                                    <button
+                                                        class="w-10 h-10 flex items-center justify-center rounded-full <%= i === currentPage ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white' %> pagination-link"
+                                                        
+                                                    >
+                                                        <%= i %>
+                                                    </button>
+                                                </li>
+                                            <% } %>
+                                            <% if (currentPage < totalPage) { %>
+                                                <!-- "Next" button -->
+                                                <li>
+                                                    <button
+                                                        class="w-10 h-10 flex items-center justify-center rounded-full pagination-link"
+                                                        
+                                                    >
+                                                        Next
+                                                    </button>
+                                                </li>
+                                            <% } %>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </ul>
                         </nav>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Footer -->
         <%- include('./partials/footer'); %>
     </body>
 </html>
+    
 
-<script>
-
-</script>
+       
+    
+    
