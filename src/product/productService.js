@@ -69,7 +69,7 @@ async function fetchProductWithQuery(params, query) {
 
     let paginatedProducts = products.slice(offset, offset + limit);
     let totalPage = products.length / limit;
-    return { products: paginatedProducts, totalPage: totalPage };
+    return { products: paginatedProducts, totalPage: totalPage, currentPage: page};
 }
 
 // Function to fetch product by product ID

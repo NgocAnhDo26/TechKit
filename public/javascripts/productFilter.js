@@ -143,6 +143,7 @@ const onFilterSubmit = async function (e) {
         ? queryParams.set('maxPrice', maxPrice)
         : queryParams.delete('maxPrice');
 
+    queryParams.delete('page');
     // Redirect
     const baseUrl = window.location.href.split('?')[0];
     url = `${baseUrl}${queryParams ? '?' : ''}${queryParams.toString()}`;
@@ -154,8 +155,8 @@ const onFilterSubmit = async function (e) {
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
-        const {products, totalPage} = await response.json();
-
+        const {products,totalPage,currentPage} = await response.json();
+        console.log(products);
         // Render products
         const productList = document.getElementById('product-list');
         productList.innerHTML = ''; // Clear existing products
@@ -187,6 +188,7 @@ const onFilterSubmit = async function (e) {
                     Thêm vào giỏ
                 </button>
             `;
+            updatePaginationUI(currentPage,totalPage);
             productList.appendChild(productElement);
         });
     } catch (error) {
