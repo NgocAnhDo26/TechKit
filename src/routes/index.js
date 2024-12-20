@@ -4,8 +4,6 @@ import serviceRoute from './users.js';
 
 const router = express.Router();
 
-const api = process.env.API;
-
 router.use(`/api`, apiRoute);
 router.use('', serviceRoute);
 
