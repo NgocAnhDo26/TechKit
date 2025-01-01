@@ -1,8 +1,9 @@
-import { prisma } from '../config/config.js'; // Import prisma database connection
+import { prisma, redisClient } from '../config/config.js';
 import passport from 'passport';
 import { Strategy } from 'passport-local';
 import bcrypt from 'bcrypt';
-import { addNewAccount } from '../account/accountService.js';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -42,15 +43,32 @@ export default passport.use(
     }),
 );
 
-export async function register(userInfo) {
-    const { name, email, password } = userInfo;
-    return await addNewAccount(name, email, password);
+export async function sendActivationEmail(user) {
+    const token = crypto.randomBytes(32).toString('hex');
+    await redisClient.json.set(token, '$', user, { EX: 3600 }); // 1-hour expiry
+    const activateLink = `http://localhost:1111/auth/activate?token=${token}`;
+
+    const transporter = nodemailer.createTransport({
+        host: process.env.MAIL_HOST,
+        service: process.env.MAIL_SERVICE,
+        port: process.env.MAIL_PORT,
+        secure: process.env.MAIL_SECURE,
+        auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASS,
+        },
+    });
+
+    await transporter.sendMail({
+        from: '"TechKit" <no-reply@techkit.com>',
+        to: user.email,
+        subject: 'Activate Your TechKit Account',
+        text: `Please visit: ${activateLink}`,
+    });
 }
 
 export async function isEmailExist(email) {
     return await prisma.account.findUnique({
-        where: {
-            email: email,
-        },
+        where: { email: email },
     });
 }

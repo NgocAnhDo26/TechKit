@@ -19,6 +19,11 @@ if (registerSubmit && registerForm) {
             errorContainer = document.querySelector(
                 '.error-submit-container-register',
             );
+
+        setTimeout(() => {
+            errorContainer.classList.add('hidden');
+        }, 5000);
+
         if (
             !password.length ||
             !email.length ||
@@ -39,7 +44,6 @@ if (registerSubmit && registerForm) {
             error.textContent = 'Please check your responses and try again';
             return;
         }
-
         // Submit registration
         await fetch(`/auth/register`, {
             method: 'POST',
@@ -53,17 +57,11 @@ if (registerSubmit && registerForm) {
             }),
         })
             .then((res) => res.json())
-            .then((data) => {
-                if (data.success) {
-                    // Registration successful, redirect to '/'
-                    window.location.href = data.redirectUrl;
-                } else {
-                    // Handle errors, display error messages to the user
-                    errorContainer.classList.remove('hidden');
-                    error.textContent =
-                        data.message ||
-                        'Registration failed. Please try again.';
-                }
+            .then((err) => {
+                // Handle errors, display error messages to the user
+                errorContainer.classList.remove('hidden');
+                error.textContent =
+                    err.message || 'Registration failed. Please try again.';
             });
     });
 
@@ -143,6 +141,11 @@ if (loginSubmit) {
             errorContainer = document.querySelector(
                 '.error-submit-container-login',
             );
+
+        setTimeout(() => {
+            errorContainer.classList.add('hidden');
+        }, 5000);
+
         if (!email.length || !password.length) {
             errorContainer.classList.remove('hidden');
             error.textContent = 'The fields below must not be empty';

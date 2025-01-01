@@ -1,5 +1,4 @@
-import { prisma } from '../config/config.js';
-import { cloudinary } from '../config/config.js';
+import { cloudinary, prisma } from '../config/config.js';
 import bcrypt from 'bcrypt';
 
 export const findAccountByQuery = async (query) => {
@@ -43,7 +42,7 @@ export const getUrl = (address) =>
         fetch_format: 'auto',
         quality: 'auto',
     });
-    
+
 // Upload image to cloudinary
 // Const uploadResult = await cloudinary.uploader
 //     .upload('public/images/profile.png', {
