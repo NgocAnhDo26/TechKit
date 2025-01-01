@@ -32,38 +32,37 @@
 
         <!-- Right section: Buttons (for desktop) -->
         <div class="relative items-center space-x-4 flex">
-            <div class="flex w-max">
-                <a href="/cart">
-                    <img
-                        src="/images/icons/cart-shopping.svg"
-                        alt="Cart"
-                        class="min-h-6 min-w-6 max-h-6 max-w-6"
-                    />
-                </a>
-                <a href="/cart" class="ml-2 font-semibold text-white max-sm:hidden"
-                    >Giỏ hàng (2)</a
-                >
-            </div>
+            <a class="flex w-max border-2 border-white rounded-md p-2" href="/cart">
+                <img
+                    src="/images/icons/cart-shopping.svg"
+                    alt="Cart"
+                    class="min-h-6 min-w-6 max-h-6 max-w-6"
+                />
+                <p class="ml-2 font-semibold text-white max-sm:hidden">
+                    Giỏ hàng
+                </p>
+            </a>
 
             <!-- Login -->
             <% if (isAuth) { %>
-                <a href="/auth/logout">
-                    <div
-                        class="w-max rounded-md bg-white px-3 py-2 text-primary "
-                    >
-                        <span class="font-semibold">Đăng xuất</span>
-                    </div>
-                </a>
-                <a href="/profile"><img src="<%= avatar %>" alt="" class="min-w-10 min-h-10 max-w-10 max-h-10 bg-white rounded-full"></a>
+            <a href="/auth/logout">
+                <div class="w-max rounded-md bg-white px-3 py-2 text-primary border-2 border-white">
+                    <span class="font-semibold">Đăng xuất</span>
+                </div>
+            </a>
+            <a href="/profile"
+                ><img
+                    src="<%= avatar %>"
+                    alt=""
+                    class="min-w-10 min-h-10 max-w-10 max-h-10 bg-white rounded-full"
+            /></a>
             <% } else { %>
-                <a href="/auth/login">
-                    <div
-                        class="w-max rounded-md bg-white px-3 py-2 text-primary"
-                    >
-                        <i class="fa-regular fa-user" style="color: #ff0042"></i>
-                        <span class="ml-2 font-semibold">Đăng nhập</span>
-                    </div>
-                </a>
+            <a href="/auth/login">
+                <div class="w-max rounded-md bg-white px-3 py-2 text-primary">
+                    <i class="fa-regular fa-user" style="color: #ff0042"></i>
+                    <span class="ml-2 font-semibold">Đăng nhập</span>
+                </div>
+            </a>
             <% } %>
         </div>
     </div>
@@ -168,7 +167,6 @@
                         >Văn Phòng</a
                     >
                 </li>
-                
 
                 <!-- Đồ Họa Dropdown -->
                 <li class="group relative" x-data="{ open: false }">

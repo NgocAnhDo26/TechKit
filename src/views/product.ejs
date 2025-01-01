@@ -1,23 +1,71 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+    function addToCart(productId) {
+        fetch('/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                productId: parseInt(productId),
+                quantity: 1,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thêm vào giỏ hàng thành công',
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            })
+            .catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Đã xảy ra lỗi, vui lòng thử lại sau',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            });
+    }
+</script>
+
 <div class="bg-white p-4 rounded-lg shadow">
     <img
         src="<%= product.product_image[0].url %>"
         alt="<%= product.name %>"
         class="w-full object-cover mb-4 rounded-lg"
     />
-    <a href="/shop/<%= product.category.name.toLowerCase() %>/<%= product.id %>" class="text-lg font-semibold mb-2">
+    <a
+        href="/shop/<%= product.category.name.toLowerCase() %>/<%= product.id %>"
+        class="text-lg font-semibold mb-2"
+    >
         <%= product.name %>
     </a>
     <p class="my-2"><%= product.category.name %></p>
     <div class="flex items-center mb-4">
         <% if (product.price_sale) { %>
-            <span class="text-lg font-bold text-primary"><%= product.price_sale.toLocaleString() %>₫</span>
-            <span class="text-sm font-bold line-through ml-2"><%= product.price.toLocaleString() %>₫</span>
-            <span class="text-sm font-bold text-primary ml-2">-<%= Math.round((1 - product.price_sale / product.price) * 100) %>%</span>
+        <span class="text-lg font-bold text-primary"
+            ><%= product.price_sale.toLocaleString() %>₫</span
+        >
+        <span class="text-sm font-bold line-through ml-2"
+            ><%= product.price.toLocaleString() %>₫</span
+        >
+        <span class="text-sm font-bold text-primary ml-2"
+            >-<%= Math.round((1 - product.price_sale / product.price) * 100)
+            %>%</span
+        >
         <% } else { %>
-            <span class="text-lg font-bold text-primary"><%= product.price.toLocaleString() %>₫</span>
+        <span class="text-lg font-bold text-primary"
+            ><%= product.price.toLocaleString() %>₫</span
+        >
         <% } %>
     </div>
-    <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full">
+    <button
+        onclick="addToCart('<%= product.id %>')"
+        class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full"
+    >
         Thêm vào giỏ
     </button>
 </div>

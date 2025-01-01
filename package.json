@@ -29,6 +29,7 @@
         "passport": "^0.7.0",
         "passport-local": "^1.0.0",
         "prettier": "^3.4.2",
+        "prettier-plugin-ejs": "^1.0.3",
         "prettier-plugin-tailwindcss": "^0.6.9",
         "prisma": "^6.1.0",
         "redis": "^4.7.0",
