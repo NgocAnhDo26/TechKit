@@ -1,12 +1,14 @@
 const registerForm = document.getElementById('register-form');
 const registerSubmit = document.querySelector('.register-submit');
 const loginSubmit = document.querySelector('.login-submit');
+const forgotPasswordSubmit = document.querySelector('.forgot-password-submit');
 
-const emailPattern = /^\S+@\S+\.\S+$/;
-const passwordPattern = /^(?=.*?[0-9])(?=.*?[A-Za-z]).{8,32}$/;
-
+// Register
 // Check if this page has register submit button
 if (registerSubmit && registerForm) {
+    const emailPattern = /^\S+@\S+\.\S+$/;
+    const passwordPattern = /^(?=.*?[0-9])(?=.*?[A-Za-z]).{8,32}$/;
+
     registerSubmit.addEventListener('click', async (e) => {
         e.preventDefault();
         const name = document.getElementById('register-name').value,
@@ -20,9 +22,11 @@ if (registerSubmit && registerForm) {
                 '.error-submit-container-register',
             );
 
-        setTimeout(() => {
-            errorContainer.classList.add('hidden');
-        }, 5000);
+        if (!errorContainer.classList.contains('hidden')) {
+            setTimeout(() => {
+                errorContainer.classList.add('hidden');
+            }, 5000);
+        }
 
         if (
             !password.length ||
@@ -143,6 +147,7 @@ if (registerSubmit && registerForm) {
     );
 }
 
+// Login
 // Check if this page has login submit button
 if (loginSubmit) {
     loginSubmit.addEventListener('click', async (e) => {
@@ -154,9 +159,11 @@ if (loginSubmit) {
                 '.error-submit-container-login',
             );
 
-        setTimeout(() => {
-            errorContainer.classList.add('hidden');
-        }, 5000);
+        if (!errorContainer.classList.contains('hidden')) {
+            setTimeout(() => {
+                errorContainer.classList.add('hidden');
+            }, 5000);
+        }
 
         if (!email.length || !password.length) {
             errorContainer.classList.remove('hidden');
@@ -178,20 +185,77 @@ if (loginSubmit) {
             .then((res) => res.json())
             .then((data) => {
                 if (data.success) {
-                    // Login successful, redirect to '/'
-                    window.location.href = data.redirectUrl;
                     Swal.fire({
                         icon: 'success',
                         title: 'Login successful',
                         showConfirmButton: false,
                         timer: 1500,
                         timerProgressBar: true,
+                    }).then(() => {
+                        // Redirect to '/'
+                        window.location.href = data.redirectUrl;
                     });
                 } else {
                     // Handle errors, display error messages to the user
                     errorContainer.classList.remove('hidden');
                     error.textContent =
                         data.message || 'Login failed. Please try again.';
+                }
+            });
+    });
+}
+
+// Forgot Password
+if (forgotPasswordSubmit) {
+    forgotPasswordSubmit.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('forgot-password-email').value,
+            error = document.querySelector('.error-submit-forgot-password'),
+            errorContainer = document.querySelector(
+                '.error-submit-container-forgot-password',
+            );
+
+        if (!errorContainer.classList.contains('hidden')) {
+            setTimeout(() => {
+                errorContainer.classList.add('hidden');
+            }, 5000);
+        }
+
+        if (!email.length) {
+            errorContainer.classList.remove('hidden');
+            error.textContent = 'The fields below must not be empty';
+            return;
+        }
+
+        // Submit reset password
+        await fetch(`/auth/forgot-password`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'New password sent to your email address',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                    }).then(() => {
+                        // Redirect to login page
+                        window.location.href = '/auth/login';
+                    });
+                } else {
+                    // Handle errors, display error messages to the user
+                    errorContainer.classList.remove('hidden');
+                    error.textContent =
+                        data.message ||
+                        'Reset password failed. Please try again.';
                 }
             });
     });

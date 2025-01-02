@@ -17,6 +17,8 @@
                         class="rounded-lg bg-white p-4 shadow-md md:m-10 md:w-1/2 md:p-10"
                     >
                         <h2 class="mb-10 text-2xl font-semibold">Register</h2>
+
+                        <!-- Alert -->
                         <div
                             class="error-submit-container-register mx-auto my-10 flex hidden min-h-16 max-w-sm items-center gap-4 rounded-md border-error_second bg-error shadow-md"
                         >
@@ -97,6 +99,23 @@
                                 <div
                                     class="error-register confirmPassword hidden text-primary"
                                 ></div>
+                            </div>
+                            <div class="my-5 flex flex-row">
+                                <div class="grow">
+                                    <a
+                                        href="/auth/forgot-password"
+                                        class="text-primary hover:underline"
+                                        >Forgot Password?</a
+                                    >
+                                </div>
+
+                                <div class="flex grow justify-end">
+                                    <a
+                                        href="/auth/login"
+                                        class="text-primary hover:underline"
+                                        >Already have an account?</a
+                                    >
+                                </div>
                             </div>
                             <button
                                 type="submit"

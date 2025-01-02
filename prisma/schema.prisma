@@ -47,7 +47,7 @@ model account {
   address        String?          @db.VarChar(100)
   birthdate      DateTime?        @db.DateTime(0)
   sex            String?          @db.VarChar(50)
-  avatar         String           @default("avatar/default") @db.VarChar(100)
+  avatar         String           @default("TechKit/avatar/default") @db.VarChar(100)
   create_time    DateTime         @default(now()) @db.Timestamp(0)
   is_lock        Boolean          @default(false)
   is_admin       Boolean          @default(false)
@@ -85,6 +85,9 @@ model orders {
   shipping_address String?         @db.VarChar(100)
   create_time      DateTime        @default(now()) @db.Timestamp(0)
   status           String          @db.VarChar(20)
+  customer_name    String?         @db.VarChar(50)
+  customer_phone   String?         @db.VarChar(12)
+  customer_email   String?         @db.VarChar(45)
   order_product    order_product[]
   account          account         @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_ibfk_1")
 

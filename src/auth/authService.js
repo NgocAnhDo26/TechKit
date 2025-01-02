@@ -26,20 +26,22 @@ passport.use(
     new Strategy({ usernameField: 'email' }, async (email, password, done) => {
         try {
             const user = await prisma.account.findUnique({
-                where: { email: email },
+                where: { email },
             });
 
+            // If user is found and had logged in with local strategy
             if (user && user.password) {
-                bcrypt
-                    .compare(password, user.password)
-                    .then(() => done(null, user));
+                const match = await bcrypt.compare(password, user.password);
+                if (match) {
+                    return done(null, user);
+                }
             }
 
             return done(null, false, {
                 message: 'Incorrect email or password.',
             });
         } catch (err) {
-            done(err);
+            return done(err);
         }
     }),
 );
@@ -107,7 +109,30 @@ export async function sendActivationEmail(user) {
     const token = crypto.randomBytes(32).toString('hex');
     await redisClient.json.set(token, '$', user, { EX: 3600 }); // 1-hour expiry
     const activateLink = `http://localhost:1111/auth/activate?token=${token}`;
+    sendMail(
+        user.email,
+        'Activate Your TechKit Account',
+        `Please visit: ${activateLink}`,
+    );
+}
 
+export async function handleForgotPassword(email) {
+    const newPassword = crypto.randomBytes(32).toString('hex');
+    const hashPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.account.update({
+        where: { email: email },
+        data: { password: hashPassword },
+    });
+
+    sendMail(
+        email,
+        'Reset Your TechKit Password',
+        `Your new password is: ${newPassword}`,
+    );
+}
+
+async function sendMail(email, subject, text) {
     const transporter = nodemailer.createTransport({
         host: process.env.MAIL_HOST,
         service: process.env.MAIL_SERVICE,
@@ -121,14 +146,8 @@ export async function sendActivationEmail(user) {
 
     await transporter.sendMail({
         from: '"TechKit" <no-reply@techkit.com>',
-        to: user.email,
-        subject: 'Activate Your TechKit Account',
-        text: `Please visit: ${activateLink}`,
-    });
-}
-
-export async function isEmailExist(email) {
-    return await prisma.account.findUnique({
-        where: { email: email },
+        to: email,
+        subject: subject,
+        text: text,
     });
 }

@@ -1,7 +1,13 @@
 import express from 'express';
-import passport, { isEmailExist, sendActivationEmail } from './authService.js';
+import passport, {
+    handleForgotPassword,
+    sendActivationEmail,
+} from './authService.js';
 import { redisClient } from '../config/config.js';
-import { addNewAccount } from '../account/accountService.js';
+import {
+    addNewAccount,
+    fetchAccountByEmail,
+} from '../account/accountService.js';
 
 const router = express.Router();
 
@@ -9,12 +15,14 @@ const router = express.Router();
 router.get('/register', (req, res) => {
     if (req.query.email) {
         // Check if email exists
-        return isEmailExist(req.query.email)
+        return fetchAccountByEmail(req.query.email)
             .then((result) => {
                 if (result) {
-                    return res.json({ error: 'Email already exists' });
+                    return res
+                        .status(400)
+                        .json({ error: 'Email already exists' });
                 }
-                return res.json({ success: true });
+                return res.status(200).json({ success: true });
             })
             .catch((err) => {
                 console.error(err);
@@ -29,7 +37,7 @@ router.get('/register', (req, res) => {
 // Handle registration
 router.post('/register', (req, res, next) => {
     sendActivationEmail(req.body)
-        .then(() => res.json({ success: true }))
+        .then(() => res.status(200).json({ success: true }))
         .catch((err) => {
             console.error(err);
             res.status(500).json({
@@ -76,13 +84,15 @@ router.post('/login', (req, res, next) => {
         }
         if (!user) {
             // Authentication failed
-            return res.json({ success: false, message: info.message });
+            return res
+                .status(400)
+                .json({ success: false, message: info.message });
         }
         // Save lastUrl before logging in
         const lastUrl = req.session.lastUrl;
         req.login(user, (err) => {
             if (err) return next(err);
-            return res.json({
+            return res.status(200).json({
                 success: true,
                 redirectUrl: lastUrl || '/',
             });
@@ -102,11 +112,38 @@ router.get(
     '/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     function (req, res) {
-        console.log(req.session);
         // Successful authentication, redirect last url or home page
         res.redirect(req.session.lastUrl || '/');
     },
 );
+
+// Render forgot password page
+router.get('/forgot-password', (req, res) => {
+    res.render('forgotPassword');
+});
+
+// Handle login
+router.post('/forgot-password', (req, res) => {
+    fetchAccountByEmail(req.body.email)
+        .then((user) => {
+            if (!user) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Email not found',
+                });
+            }
+            handleForgotPassword(user.email).then(() =>
+                res.status(200).json({ success: true }),
+            );
+        })
+        .catch((err) => {
+            console.error(err);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal server error',
+            });
+        });
+});
 
 // Handle logout
 router.get('/logout', (req, res, next) => {
