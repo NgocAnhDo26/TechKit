@@ -43,7 +43,7 @@ model account {
   id             Int              @id @default(autoincrement())
   name           String           @db.VarChar(70)
   email          String           @unique(map: "email") @db.VarChar(254)
-  password       String           @db.VarChar(72)
+  password       String?          @db.VarChar(72)
   address        String?          @db.VarChar(100)
   birthdate      DateTime?        @db.DateTime(0)
   sex            String?          @db.VarChar(50)
@@ -51,13 +51,14 @@ model account {
   create_time    DateTime         @default(now()) @db.Timestamp(0)
   is_lock        Boolean          @default(false)
   is_admin       Boolean          @default(false)
-  cart           cart?
+  google_id      String?          @unique(map: "google_id") @db.VarChar(100)
+  cart           cart[]
   orders         orders[]
   product_review product_review[]
 }
 
 model cart {
-  account_id Int     @unique(map: "account_id")
+  account_id Int
   product_id Int
   quantity   Int
   account    account @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_ibfk_1")

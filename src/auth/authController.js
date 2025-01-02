@@ -28,23 +28,24 @@ router.get('/register', (req, res) => {
 
 // Handle registration
 router.post('/register', (req, res, next) => {
-    sendActivationEmail(req.body).catch((err) => {
-        console.error(err);
-        res.status(500).json({
-            message: 'There are problems when sending activation email',
+    sendActivationEmail(req.body)
+        .then(() => res.json({ success: true }))
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({
+                message: 'There are problems when sending activation email',
+            });
         });
-    });
 });
 
 // Handle account activation
 router.get('/activate', async (req, res, next) => {
     const { token } = req.query;
-    if (!token) return res.status(400).json({ error: 'Missing token' });
+    if (!token) return res.status(400).send('Missing token');
 
     try {
         const user = await redisClient.json.get(token);
-        if (!user)
-            return res.status(400).json({ error: 'Invalid or expired token' });
+        if (!user) return res.status(400).send('Invalid or expired token');
 
         // Register account
         const { name, email, password } = user;
@@ -74,7 +75,7 @@ router.post('/login', (req, res, next) => {
             return next(err);
         }
         if (!user) {
-            // Authentication failed, send JSON response with error message
+            // Authentication failed
             return res.json({ success: false, message: info.message });
         }
         // Save lastUrl before logging in
@@ -88,6 +89,24 @@ router.post('/login', (req, res, next) => {
         });
     })(req, res, next);
 });
+
+router.get(
+    '/google',
+    passport.authenticate('google', {
+        prompt: 'select_account', // Force to select account
+        scope: ['email', 'profile'],
+    }),
+);
+
+router.get(
+    '/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function (req, res) {
+        console.log(req.session);
+        // Successful authentication, redirect last url or home page
+        res.redirect(req.session.lastUrl || '/');
+    },
+);
 
 // Handle logout
 router.get('/logout', (req, res, next) => {

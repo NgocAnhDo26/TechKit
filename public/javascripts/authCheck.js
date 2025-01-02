@@ -57,11 +57,23 @@ if (registerSubmit && registerForm) {
             }),
         })
             .then((res) => res.json())
-            .then((err) => {
-                // Handle errors, display error messages to the user
-                errorContainer.classList.remove('hidden');
-                error.textContent =
-                    err.message || 'Registration failed. Please try again.';
+            .then((data) => {
+                if (data.success) {
+                    // Registration successful
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Activation email sent to your email address',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                } else {
+                    // Handle errors, display error messages to the user
+                    errorContainer.classList.remove('hidden');
+                    error.textContent =
+                        data.message ||
+                        'Registration failed. Please try again.';
+                }
             });
     });
 
@@ -168,6 +180,13 @@ if (loginSubmit) {
                 if (data.success) {
                     // Login successful, redirect to '/'
                     window.location.href = data.redirectUrl;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login successful',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                    });
                 } else {
                     // Handle errors, display error messages to the user
                     errorContainer.classList.remove('hidden');

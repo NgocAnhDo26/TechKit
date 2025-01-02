@@ -5,7 +5,7 @@ import session from 'express-session';
 import { RedisStore } from 'connect-redis';
 import { redisClient } from './src/config/config.js';
 import passport from 'passport';
-import { getUrl } from './src/account/accountService.js';
+import { getUrl } from './src/util/util.js';
 
 const app = express();
 const __dirname = import.meta.dirname;
