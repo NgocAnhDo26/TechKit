@@ -9,7 +9,7 @@
     <script>
         const removeFromCart = async (productId) => {
             try {
-                const response = await fetch(`/cart/${productId}`, {
+                const response = await fetch(`/api/cart/${productId}`, {
                     method: 'DELETE',
                 });
 
@@ -45,11 +45,15 @@
                                 document.getElementById('clear-cart-btn');
                             clearCartBtn.classList.add('hidden');
                         }
+
+                        await updateCartCount();
                     }
                 } else {
+                    const message = await response.text();
                     Swal.fire({
                         icon: 'error',
-                        title: 'Đã xảy ra lỗi khi xóa sản phẩm, vui lòng thử lại sau',
+                        title: 'Thất bại',
+                        text: message,
                         showConfirmButton: false,
                         timer: 2500,
                     });
@@ -58,7 +62,8 @@
                 console.log(error);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Đã xảy ra lỗi, vui lòng thử lại sau',
+                    title: 'Thất bại',
+                    text: 'Đã xảy ra lỗi, vui lòng thử lại sau',
                     showConfirmButton: false,
                     timer: 2500,
                 });
@@ -67,7 +72,7 @@
 
         const clearCart = async () => {
             try {
-                const response = await fetch('/cart', {
+                const response = await fetch('/api/cart', {
                     method: 'DELETE',
                 });
 
@@ -83,11 +88,11 @@
 
                         const totalPrice =
                             document.getElementById('total-price');
-                        totalPrice.innerHTML = "0 ₫";
+                        totalPrice.innerHTML = '0 ₫';
 
                         const finalPrice =
                             document.getElementById('final-price');
-                        finalPrice.innerHTML = "0 ₫"
+                        finalPrice.innerHTML = '0 ₫';
 
                         const emptyNotify =
                             document.getElementById('empty-notify');
@@ -96,11 +101,15 @@
                         const clearCartBtn =
                             document.getElementById('clear-cart-btn');
                         clearCartBtn.classList.add('hidden');
+
+                        await updateCartCount();
                     }
                 } else {
+                    const message = await response.text();
                     Swal.fire({
                         icon: 'error',
-                        title: 'Đã xảy ra lỗi khi xóa giỏ hàng, vui lòng thử lại sau',
+                        title: 'Thất bại',
+                        text: message,
                         showConfirmButton: false,
                         timer: 2500,
                     });
@@ -109,7 +118,8 @@
                 console.log(error);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Đã xảy ra lỗi, vui lòng thử lại sau',
+                    title: 'Thất bại',
+                    text: 'Đã xảy ra lỗi, vui lòng thử lại sau',
                     showConfirmButton: false,
                     timer: 2500,
                 });
@@ -117,8 +127,11 @@
         };
 
         const updateCart = async (productId, type) => {
-            let newQuantity = parseInt(document.getElementById(`product-quantity-${productId}`).innerHTML);
-            if (type === "increase") {
+            let newQuantity = parseInt(
+                document.getElementById(`product-quantity-${productId}`)
+                    .innerHTML,
+            );
+            if (type === 'increase') {
                 newQuantity += 1;
             } else {
                 newQuantity -= 1;
@@ -128,7 +141,7 @@
             }
 
             try {
-                const response = await fetch(`/cart/${productId}`, {
+                const response = await fetch(`/api/cart/${productId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -144,12 +157,14 @@
                             currency: 'VND',
                         });
 
-                        const productQuantity =
-                            document.getElementById(`product-quantity-${productId}`);
+                        const productQuantity = document.getElementById(
+                            `product-quantity-${productId}`,
+                        );
                         productQuantity.innerHTML = newQuantity;
 
-                        const productTotal =
-                            document.getElementById(`product-total-${productId}`);
+                        const productTotal = document.getElementById(
+                            `product-total-${productId}`,
+                        );
                         productTotal.innerHTML = vnd.format(data.productTotal);
 
                         const totalQuantity =
@@ -163,11 +178,15 @@
                         const finalPrice =
                             document.getElementById('final-price');
                         finalPrice.innerHTML = vnd.format(data.totalPrice);
+
+                        await updateCartCount();
                     }
                 } else {
+                    const message = await response.text();
                     Swal.fire({
                         icon: 'error',
-                        title: 'Đã xảy ra lỗi khi cập nhật số lượng, vui lòng thử lại sau',
+                        title: 'Thất bại',
+                        text: message,
                         showConfirmButton: false,
                         timer: 2500,
                     });
