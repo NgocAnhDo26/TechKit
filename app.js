@@ -6,6 +6,7 @@ import { RedisStore } from 'connect-redis';
 import { redisClient } from './src/config/config.js';
 import passport from 'passport';
 import { getUrl } from './src/account/accountService.js';
+import { getCartCount } from './src/cart/cartService.js';
 
 const app = express();
 const __dirname = import.meta.dirname;
@@ -34,16 +35,29 @@ app.use(passport.session());
 // Middleware to save last visited URL
 app.use((req, res, next) => {
     // Don't store url for authentication (login, register, logout) or other method except GET
-    if (!req.url.startsWith('/auth') && req.method === 'GET') {
+    if (!req.url.includes('/auth') && !req.url.includes('/api') && req.method === 'GET') {
         req.session.lastUrl = req.originalUrl;
     }
     next();
 });
 
-// Set local variables to use in all view engine templates
+// Middleware for initializing guest cart
 app.use((req, res, next) => {
+    if (!req.session.guestCart) {
+        req.session.guestCart = [];
+    }
+
+    next();
+});
+
+// Set local variables to use in all view engine templates
+app.use(async (req, res, next) => {
     res.locals.isAuth = req.user ? true : false;
     res.locals.avatar = req.user ? getUrl(req.user.avatar) : '';
+
+    // Cart count (distinct product count)
+    res.locals.cartCount = req.user ? await getCartCount(req.user.id) : req.session.guestCart.length;
+
     next();
 });
 

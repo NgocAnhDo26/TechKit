@@ -1,8 +1,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
-    const addToCart = async (productId) => {
+    const addToCartSingle = async (productId) => {
         try {
-            const response = await fetch('/cart', {
+            const response = await fetch('/api/cart', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -24,6 +24,8 @@
                         timer: 2000,
                     });
                 }
+
+                await updateCartCount();
             } else {
                 const message = await response.text();
                 Swal.fire({
@@ -78,7 +80,7 @@
         <% } %>
     </div>
     <button
-        onclick="addToCart('<%= product.id %>')"
+        onclick="addToCartSingle('<%= product.id %>')"
         class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full"
     >
         Thêm vào giỏ

@@ -32,21 +32,26 @@
 
         <!-- Right section: Buttons (for desktop) -->
         <div class="relative items-center space-x-4 flex">
-            <a class="flex w-max border-2 border-white rounded-md p-2" href="/cart">
+            <a
+                class="flex w-max border-2 border-white rounded-md p-2"
+                href="/cart"
+            >
                 <img
                     src="/images/icons/cart-shopping.svg"
                     alt="Cart"
                     class="min-h-6 min-w-6 max-h-6 max-w-6"
                 />
                 <p class="ml-2 font-semibold text-white max-sm:hidden">
-                    Giỏ hàng
+                    Giỏ hàng <span id="cart-count" class="<% if (cartCount === 0) { %> hidden <% } %>">(<%= cartCount %>)</span>
                 </p>
             </a>
 
             <!-- Login -->
             <% if (isAuth) { %>
             <a href="/auth/logout">
-                <div class="w-max rounded-md bg-white px-3 py-2 text-primary border-2 border-white">
+                <div
+                    class="w-max rounded-md bg-white px-3 py-2 text-primary border-2 border-white"
+                >
                     <span class="font-semibold">Đăng xuất</span>
                 </div>
             </a>
@@ -235,4 +240,28 @@
             </ul>
         </nav>
     </div>
+
+    <script>
+        function updateCartCount() {
+            fetch('/api/cart/count', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.count === 0) {
+                        // Hide the cart count badge
+                        document.getElementById('cart-count').classList.add('hidden');
+                        return;
+                    }
+                    const cartCountElement =
+                        document.getElementById('cart-count');
+                    cartCountElement.innerText = `(${data.count})`;
+                    cartCountElement.classList.remove('hidden');
+                })
+                .catch((error) =>
+                    console.error('Error updating cart count:', error),
+                );
+        }
+    </script>
 </header>
