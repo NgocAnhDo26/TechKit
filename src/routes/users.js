@@ -1,5 +1,6 @@
 import express from 'express';
 import productController from '../product/productController.js';
+import userController from '../user/userController.js';
 import * as productService from '../product/productService.js';
 import authController from '../auth/authController.js';
 import cartController from '../cart/cartController.js';
@@ -26,11 +27,11 @@ router.use('/cart', (req, res, next) => {
         : res.status(401).json('You must be logged in!');
 }, cartController);
 
-router.get('/profile', (req, res) => {
+router.use('/profile', (req, res) => {
     req.user
         ? res.status(200).json('HI!')
         : res.status(401).json('You must be logged in!');
-});
+},userController);
 
 router.use('/shop', productController);
 
