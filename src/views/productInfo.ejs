@@ -1,3 +1,4 @@
+
 <!-- Breadcrumbs -->
 <section id="breadcrumbs" class="py-6">
     <div class="container mx-auto px-4">
@@ -23,7 +24,7 @@
 <section id="product-info" class="mx-5 md:mx-20 rounded-lg py-5 bg-white">
     <div class="container mx-auto">
         <div class="py-6">
-            <div class="flex flex-col lg:flex-row gap-6">
+            <div class="flex flex-col lg:flex-row gap-10">
                 <!-- Image Section -->
                 <div class="w-full lg:w-1/2">
                     <div class="flex flex-col gap-4">
@@ -62,23 +63,23 @@
                             <p class="mb-2">✔ Hỗ trợ đổi mới trong 7 ngày.</p>
                             <p class="mb-2">✔ Miễn phí giao hàng toàn quốc.</p>
                         </div>
-                        <div class="text-4xl font-semibold mb-8 text-primary">
+                        <div class="text-4xl font-semibold mb-8">
                             <% if (product.price_sale) { %>
-                                <span> <%= product.price_sale.toLocaleString() %>₫ </span>
+                                <span class="text-primary"> <%= product.price_sale.toLocaleString() %>₫ </span>
                                 <s
-                                    class="text-3xl text-gray-400 font-light stroke-gray-line ml-3"
+                                    class="text-2xl text-gray-400 font-light stroke-gray-line ml-3 text-gray-txt"
                                 >
                                 <%= product.price.toLocaleString() %>₫
                                 </s>
-                                <span class="text-2xl ml-7">-<%= (100 - Math.round((product.price_sale / product.price) * 100)) %>%</span>
+                                <span class="text-2xl ml-5 text-primary">-<%= (100 - Math.round((product.price_sale / product.price) * 100)) %>%</span>
                             <% } else { %>
-                                <span> <%= product.price.toLocaleString() %>₫ </span>
+                                <span class="text-primary"> <%= product.price.toLocaleString() %>₫ </span>
                             <% } %>
                         </div>
                         <div class="flex items-center mb-8 border-2 w-min">
                             <button
                                 id="decrease"
-                                class="text-black text-xl font-semibold w-10 h-10 flex items-center justify-center"
+                                class="text-primary text-xl font-semibold w-10 h-10 flex items-center justify-center hover:bg-primary hover:text-white"
                                 disabled
                             >
                                 -
@@ -86,18 +87,19 @@
                             <input
                                 id="quantity"
                                 type="text"
-                                value="1"
+                                Value="1"
                                 class="w-auto min-w-10 max-w-10 py-2 text-center justify-center self-center"
                                 readonly
                             />
                             <button
                                 id="increase"
-                                class="text-black text-xl w-10 h-10 items-center justify-center"
+                                class="text-primary text-xl w-10 h-10 items-center justify-center hover:bg-primary hover:text-white"
                             >
                                 +
                             </button>
                         </div>
                         <button
+                            id="add-to-cart"
                             class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary py-2 px-4 rounded-md w-full"
                         >
                             <div class="font-bold mt-1">THÊM VÀO GIỎ</div>
@@ -128,13 +130,22 @@
                         Mô tả
                     </button>
                     <button
+                        id="specs-tab"
+                        role="tab"
+                        aria-controls="specs-content"
+                        aria-selected="false"
+                        class="tab"
+                    >
+                        Thông số chi tiết
+                    </button>
+                    <button
                         id="reviews-tab"
                         role="tab"
                         aria-controls="reviews-content"
                         aria-selected="false"
                         class="tab"
                     >
-                        Thông số chi tiết
+                        Đánh giá
                     </button>
                 </div>
                 <div class="mt-8">
@@ -154,14 +165,13 @@
                     </div>
 
                     <div
-                        id="reviews-content"
+                        id="specs-content"
                         role="tabpanel"
-                        aria-labelledby="reviews-tab"
-                        class="tab-content hidden"
+                        aria-labelledby="specs-tab"
+                        class="tab-content"
                     >
-                        <!-- Reviews List -->
-                        <div class="space-y-6">
-                            <div id="reviews-list">
+                        <div class="flex flex-col lg:flex-row lg:space-x-8">
+                            <div class="w-full">
                                 <ul>
                                     <li><span class="font-bold">CPU: </span><%= product.cpu %></li>
                                     <li><span class="font-bold">Dung lượng: </span><%= product.storage %></li>
@@ -170,8 +180,21 @@
                                     <li><span class="font-bold">Kích thước màn hình: </span><%= product.screen_size %> inch</li>
                                     <li><span class="font-bold">Độ phân giải: </span><%= product.resolution %></li>
                                 </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        id="reviews-content"
+                        role="tabpanel"
+                        aria-labelledby="reviews-tab"
+                        class="tab-content hidden"
+                    >
+                        <!-- Reviews List -->
+                        <div class="space-y-6">
+                            <div id="reviews-list">
                                 <!-- Review 1 -->
-                                <!-- <div class="py-4">
+                                <div class="py-4">
                                     <div class="flex items-center mb-2">
                                         <span
                                             class="text-lg font-semibold text-gray-700"
@@ -186,9 +209,9 @@
                                         material feels premium. Highly recommend
                                         this t-shirt.
                                     </p>
-                                </div> -->
+                                </div>
                                 <!-- Review 2 -->
-                                <!-- <div class="border-t border-gray-line py-4">
+                                <div class="border-t border-gray-line py-4">
                                     <div class="flex items-center mb-2">
                                         <span
                                             class="text-lg font-semibold text-gray-700"
@@ -203,9 +226,9 @@
                                         comfortable. However, I wish it came in
                                         more colors.
                                     </p>
-                                </div> -->
+                                </div>
                                 <!-- Review 3 -->
-                                <!-- <div class="border-t border-gray-line py-4">
+                                <div class="border-t border-gray-line py-4">
                                     <div class="flex items-center mb-2">
                                         <span
                                             class="text-lg font-semibold text-gray-700"
@@ -220,12 +243,12 @@
                                         and it looks great. Will definitely buy
                                         again.
                                     </p>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
 
                         <!-- Submit Review Form -->
-                        <!-- <div class="mt-8">
+                        <div class="mt-8">
                             <h3 class="text-lg font-semibold mb-4">
                                 Write a Review
                             </h3>
@@ -300,10 +323,99 @@
                                     </button>
                                 </div>
                             </form>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    // Change tab content
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(item => item.classList.remove('active'));
+            tab.classList.add('active');
+
+            const target = tab.getAttribute('aria-controls');
+            tabContents.forEach(content => {
+                if (content.getAttribute('id') === target) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+        });
+    });
+
+    // Increase and decrease quantity
+    const decrease = document.getElementById('decrease');
+    const increase = document.getElementById('increase');
+    const quantity = document.getElementById('quantity');
+
+    decrease.addEventListener('click', () => {
+        let value = parseInt(quantity.value);
+        if (value > 1) {
+            value--;
+            quantity.value = value;
+            if (value === 1) {
+                decrease.disabled = true;
+            }
+        }
+    });
+
+    // Handle add to cart
+    const addToCart = async (productId) => {
+        try {
+            const response = await fetch('/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productId: parseInt(productId),
+                    quantity: parseInt(quantity.value),
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công',
+                        text: 'Sản phẩm đã được thêm vào giỏ hàng',
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                }
+            } else {
+                const message = await response.text();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại',
+                    text: message,
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Thất bại',
+                text: 'Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng',
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        }
+    }
+
+    // Add event listener to add to cart btn
+    document.getElementById('add-to-cart').addEventListener('click', () => {
+        addToCart('<%= product.id %>');
+    });
+</script>

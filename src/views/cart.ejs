@@ -2,8 +2,181 @@
 <html lang="en">
     <head>
         <%- include('./partials/head'); %>
-        <title>TechKit - Shopping Cart</title>
+        <title>TechKit - Giỏ hàng</title>
     </head>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const removeFromCart = async (productId) => {
+            try {
+                const response = await fetch(`/cart/${productId}`, {
+                    method: 'DELETE',
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data) {
+                        const product = document.getElementById(productId);
+                        product.remove();
+
+                        const totalQuantity =
+                            document.getElementById('total-quantity');
+                        totalQuantity.innerHTML = data.totalQuantity;
+
+                        const vnd = new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                        });
+
+                        const totalPrice =
+                            document.getElementById('total-price');
+                        totalPrice.innerHTML = vnd.format(data.totalPrice);
+
+                        const finalPrice =
+                            document.getElementById('final-price');
+                        finalPrice.innerHTML = vnd.format(data.totalPrice);
+
+                        if (data.totalQuantity === 0) {
+                            const emptyNotify =
+                                document.getElementById('empty-notify');
+                            emptyNotify.classList.remove('hidden');
+
+                            const clearCartBtn =
+                                document.getElementById('clear-cart-btn');
+                            clearCartBtn.classList.add('hidden');
+                        }
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Đã xảy ra lỗi khi xóa sản phẩm, vui lòng thử lại sau',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Đã xảy ra lỗi, vui lòng thử lại sau',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            }
+        };
+
+        const clearCart = async () => {
+            try {
+                const response = await fetch('/cart', {
+                    method: 'DELETE',
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data) {
+                        const cartItems = document.getElementById('cart-items');
+                        cartItems.innerHTML = '';
+
+                        const totalQuantity =
+                            document.getElementById('total-quantity');
+                        totalQuantity.innerHTML = 0;
+
+                        const totalPrice =
+                            document.getElementById('total-price');
+                        totalPrice.innerHTML = "0 ₫";
+
+                        const finalPrice =
+                            document.getElementById('final-price');
+                        finalPrice.innerHTML = "0 ₫"
+
+                        const emptyNotify =
+                            document.getElementById('empty-notify');
+                        emptyNotify.classList.remove('hidden');
+
+                        const clearCartBtn =
+                            document.getElementById('clear-cart-btn');
+                        clearCartBtn.classList.add('hidden');
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Đã xảy ra lỗi khi xóa giỏ hàng, vui lòng thử lại sau',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                }
+            } catch (error) {
+                console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Đã xảy ra lỗi, vui lòng thử lại sau',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            }
+        };
+
+        const updateCart = async (productId, type) => {
+            let newQuantity = parseInt(document.getElementById(`product-quantity-${productId}`).innerHTML);
+            if (type === "increase") {
+                newQuantity += 1;
+            } else {
+                newQuantity -= 1;
+                if (newQuantity < 1) {
+                    return;
+                }
+            }
+
+            try {
+                const response = await fetch(`/cart/${productId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ quantity: newQuantity }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data) {
+                        const vnd = new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                        });
+
+                        const productQuantity =
+                            document.getElementById(`product-quantity-${productId}`);
+                        productQuantity.innerHTML = newQuantity;
+
+                        const productTotal =
+                            document.getElementById(`product-total-${productId}`);
+                        productTotal.innerHTML = vnd.format(data.productTotal);
+
+                        const totalQuantity =
+                            document.getElementById('total-quantity');
+                        totalQuantity.innerHTML = data.totalQuantity;
+
+                        const totalPrice =
+                            document.getElementById('total-price');
+                        totalPrice.innerHTML = vnd.format(data.totalPrice);
+
+                        const finalPrice =
+                            document.getElementById('final-price');
+                        finalPrice.innerHTML = vnd.format(data.totalPrice);
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Đã xảy ra lỗi khi cập nhật số lượng, vui lòng thử lại sau',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+    </script>
 
     <body>
         <!-- Header -->
@@ -12,7 +185,7 @@
         <!-- Cart -->
         <section id="cart-page" class="bg-white py-16">
             <div class="container mx-auto px-4">
-                <h1 class="text-2xl font-semibold mb-4">Shopping Cart</h1>
+                <h1 class="text-2xl font-semibold mb-4">Giỏ hàng</h1>
                 <div class="flex flex-col md:flex-row gap-4">
                     <div class="md:w-3/4">
                         <div class="bg-white rounded-lg shadow-md p-6 mb-4">
@@ -23,28 +196,35 @@
                                             <th
                                                 class="text-center md:text-left font-semibold"
                                             >
-                                                Product
+                                                Sản phẩm
                                             </th>
                                             <th
                                                 class="text-center font-semibold"
                                             >
-                                                Price
+                                                Thành tiền
                                             </th>
                                             <th
                                                 class="text-center font-semibold"
                                             >
-                                                Quantity
+                                                Số lượng
                                             </th>
                                             <th
                                                 class="text-center md:text-right font-semibold"
                                             >
-                                                Total
+                                                Tổng cộng
                                             </th>
+                                            <th
+                                                class="text-center md:text-right font-semibold"
+                                            ></th>
                                         </tr>
                                     </thead>
                                     <tbody id="cart-items">
+                                        <!-- Loop through products and display each one -->
+                                        <% if (products.length > 0) { %> <%
+                                        products.forEach(product => { %>
                                         <tr
                                             class="pb-4 border-b border-gray-line"
+                                            id="<%= product.id %>"
                                         >
                                             <td class="px-1 py-4">
                                                 <div
@@ -52,116 +232,85 @@
                                                 >
                                                     <img
                                                         class="h-16 w-16 md:h-24 md:w-24 sm:mr-8 mb-4 sm:mb-0"
-                                                        src="/images/single-product/1.png"
+                                                        src="<%= product.image %>"
                                                         alt="Product image"
                                                     />
-                                                    <p
+                                                    <a
                                                         class="text-sm md:text-base md:font-semibold"
                                                     >
-                                                        Summer black dress
-                                                    </p>
+                                                        <%= product.name %>
+                                                    </a>
                                                 </div>
                                             </td>
-                                            <td class="px-1 py-4 text-center">
-                                                $19.99
+                                            <td
+                                                class="px-1 py-4 text-center"
+                                                id="product-price"
+                                            >
+                                                <%=
+                                                formatPrice(product.price_sale)
+                                                %>
                                             </td>
-                                            <td class="px-1 py-4 text-center">
+                                            <td class="px-4 py-4 text-center">
                                                 <div
-                                                    class="flex items-center justify-center"
+                                                    class="flex items-center justify-center border-2 border-black rounded-md"
                                                 >
                                                     <button
-                                                        class="cart-decrement border border-primary bg-primary text-white hover:bg-transparent hover:text-primary rounded-full w-10 h-10 flex items-center justify-center"
+                                                        class="cart-decrement text-primary hover:bg-primary hover:text-white flex items-center justify-center py-1 px-2"
+                                                        onclick="updateCart('<%= product.id %>', 'decrease')"
                                                     >
                                                         -
                                                     </button>
                                                     <p
                                                         class="quantity text-center w-8"
+                                                        id="product-quantity-<%= product.id %>"
                                                     >
-                                                        1
+                                                        <%= product.quantity %>
                                                     </p>
                                                     <button
-                                                        class="cart-increment border border-primary bg-primary text-white hover:bg-transparent hover:text-primary rounded-full w-10 h-10 flex items-center justify-center"
+                                                        class="cart-increment text-primary hover:bg-primary hover:text-white flex items-center justify-center py-1 px-2"
+                                                        onclick="updateCart('<%= product.id %>', 'increase')"
                                                     >
                                                         +
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td class="px-1 py-4 text-right">
-                                                $19.99
+                                            <td
+                                                class="px-1 py-4 text-right"
+                                                id="product-total-<%= product.id %>"
+                                            >
+                                                <%= formatPrice(product.total)
+                                                %>
+                                            </td>
+                                            <td class="px-3 py-4 text-right">
+                                                <button
+                                                    class="cart-remove text-primary hover:text-red-500"
+                                                    onclick="removeFromCart('<%= product.id %>')"
+                                                >
+                                                    Xóa
+                                                </button>
                                             </td>
                                         </tr>
-                                        <tr class="pb-4">
-                                            <td class="px-1 py-4">
-                                                <div
-                                                    class="flex items-center flex-col sm:flex-row text-center sm:text-left"
-                                                >
-                                                    <img
-                                                        class="h-16 w-16 md:h-24 md:w-24 sm:mr-8 mb-4 sm:mb-0"
-                                                        src="/images/single-product/2.jpg"
-                                                        alt="Product image"
-                                                    />
-                                                    <p
-                                                        class="text-sm md:text-base md:font-semibold"
-                                                    >
-                                                        Black suit
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td class="px-1 py-4 text-center">
-                                                $19.99
-                                            </td>
-                                            <td class="px-1 py-4 text-center">
-                                                <div
-                                                    class="flex items-center justify-center"
-                                                >
-                                                    <button
-                                                        class="cart-decrement border border-primary bg-primary text-white hover:bg-transparent hover:text-primary rounded-full w-10 h-10 flex items-center justify-center"
-                                                    >
-                                                        -
-                                                    </button>
-                                                    <p
-                                                        class="quantity text-center w-8"
-                                                    >
-                                                        1
-                                                    </p>
-                                                    <button
-                                                        class="cart-increment border border-primary bg-primary text-white hover:bg-transparent hover:text-primary rounded-full w-10 h-10 flex items-center justify-center"
-                                                    >
-                                                        +
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td class="px-1 py-4 text-right">
-                                                $19.99
-                                            </td>
-                                        </tr>
+                                        <% }); }%>
                                     </tbody>
                                 </table>
+
+                                <h1
+                                    id="empty-notify"
+                                    class="text-center mt-10 <% if (products.length > 0) { %> hidden <% } %>"
+                                >
+                                    Giỏ hàng trống...
+                                </h1>
+
                                 <div
                                     class="px-1 flex flex-col lg:flex-row justify-between items-center mt-10"
                                 >
-                                    <div class="flex items-center">
-                                        <input
-                                            type="text"
-                                            placeholder="Coupon code"
-                                            class="border border-gray-300 rounded-l-full py-2 px-4 focus:outline-none"
-                                        />
-                                        <button
-                                            class="bg-primary text-white border border-primary hover:bg-transparent hover:text-primary rounded-r-full py-2 px-4"
-                                        >
-                                            Apply Coupon
-                                        </button>
-                                    </div>
                                     <div class="mt-4 lg:mt-0 flex space-x-2">
                                         <button
-                                            class="bg-primary text-white border border-primary hover:bg-transparent hover:text-primary rounded-full py-2 px-4"
+                                            id="clear-cart-btn"
+                                            class="bg-primary text-white border border-primary hover:bg-transparent hover:text-primary rounded-full py-2 px-4 <% if (products.length === 0) { %> hidden <% } %>"
+                                            onclick="clearCart()"
                                         >
-                                            Empty Cart
-                                        </button>
-                                        <button
-                                            class="bg-primary text-white border border-primary hover:bg-transparent hover:text-primary rounded-full py-2 px-4"
-                                        >
-                                            Update Cart
+                                            Xóa giỏ hàng
                                         </button>
                                     </div>
                                 </div>
@@ -170,29 +319,31 @@
                     </div>
                     <div class="md:w-1/4">
                         <div class="bg-white rounded-lg shadow-md p-6">
-                            <h2 class="text-lg font-semibold mb-4">Summary</h2>
+                            <h2 class="text-lg font-semibold mb-4">
+                                Tổng quan
+                            </h2>
                             <div class="flex justify-between mb-4">
-                                <p>Subtotal</p>
-                                <p>$19.99</p>
-                            </div>
-                            <div class="flex justify-between mb-4">
-                                <p>Taxes</p>
-                                <p>$1.99</p>
+                                <p>Tổng số lượng</p>
+                                <p id="total-quantity"><%= totalQuantity %></p>
                             </div>
                             <div
                                 class="flex justify-between mb-4 pb-4 border-b border-gray-line"
                             >
-                                <p>Shipping</p>
-                                <p>$0.00</p>
+                                <p>Tổng tiền</p>
+                                <p id="total-price">
+                                    <%= formatPrice(totalPrice) %>
+                                </p>
                             </div>
                             <div class="flex justify-between mb-2">
-                                <p class="font-semibold">Total</p>
-                                <p class="font-semibold">$21.98</p>
+                                <p class="font-semibold">Tổng cộng</p>
+                                <p class="font-semibold" id="final-price">
+                                    <%= formatPrice(totalPrice) %>
+                                </p>
                             </div>
                             <a
                                 href="/checkout"
-                                class="bg-primary text-white border hover:border-primary hover:bg-transparent hover:text-primary py-2 px-4 rounded-full mt-4 w-full text-center block"
-                                >Proceed to checkout</a
+                                class="bg-primary text-white border hover:border-primary hover:bg-transparent hover:text-primary py-2 px-4 rounded-full mt-10 w-full text-center block"
+                                >Thanh toán</a
                             >
                         </div>
                     </div>

@@ -51,13 +51,13 @@ model account {
   create_time    DateTime         @default(now()) @db.Timestamp(0)
   is_lock        Boolean          @default(false)
   is_admin       Boolean          @default(false)
-  cart           cart?
+  cart           cart[]
   orders         orders[]
   product_review product_review[]
 }
 
 model cart {
-  account_id Int     @unique(map: "account_id")
+  account_id Int
   product_id Int
   quantity   Int
   account    account @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_ibfk_1")

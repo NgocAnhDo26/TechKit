@@ -2,6 +2,7 @@ import express from 'express';
 import productController from '../product/productController.js';
 import * as productService from '../product/productService.js';
 import authController from '../auth/authController.js';
+import cartController from '../cart/cartController.js';
 
 const router = express.Router();
 
@@ -19,11 +20,11 @@ router.get('/contact', (req, res) => {
     res.render('contact');
 });
 
-router.get('/cart', (req, res) => {
+router.use('/cart', (req, res, next) => {
     req.user
-        ? res.status(200).render('cart')
+        ? next()
         : res.status(401).json('You must be logged in!');
-});
+}, cartController);
 
 router.get('/profile', (req, res) => {
     req.user
