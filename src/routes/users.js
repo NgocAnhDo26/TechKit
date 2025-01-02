@@ -3,7 +3,7 @@ import productController from '../product/productController.js';
 import userController from '../user/userController.js';
 import * as productService from '../product/productService.js';
 import authController from '../auth/authController.js';
-import cartController from '../cart/cartController.js';
+import { renderCartPage } from '../cart/cartController.js';
 
 const router = express.Router();
 
@@ -21,11 +21,10 @@ router.get('/contact', (req, res) => {
     res.render('contact');
 });
 
-router.use('/cart', (req, res, next) => {
-    req.user
-        ? next()
-        : res.status(401).json('You must be logged in!');
-}, cartController);
+router.use('/cart', (req, res) => {
+    res.set('Cache-Control', 'no-store');
+    renderCartPage(req, res);
+});
 
 router.use('/profile', (req, res) => {
     req.user

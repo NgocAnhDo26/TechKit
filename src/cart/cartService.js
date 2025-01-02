@@ -1,5 +1,25 @@
 import { prisma } from '../config/config.js'; // Import prisma database connection
 
+// Get unique product count from user's cart
+export async function getCartCount(user_id) {
+    const count = await prisma.cart.count({
+        where: { account_id: user_id },
+    });
+
+    return count;
+}
+
+// Get cart quantity + product id from user's cart
+export async function getCartItems(user_id) {
+    return await prisma.cart.findMany({
+        where: { account_id: user_id },
+        select: {
+            product_id: true,
+            quantity: true,
+        },
+    });
+}
+
 // Fetch all products from user's cart
 export async function fetchCartProducts(user_id) {
     let products = await prisma.cart.findMany({
@@ -37,6 +57,42 @@ export async function fetchCartProducts(user_id) {
 
 
     return { totalQuantity, totalPrice, products };
+}
+
+// Fetch all products from cart of guest user
+export async function fetchGuestCartProducts(cart) {
+    const products = cart.map(async (item) => {
+        const product = await prisma.product.findUnique({
+            where: { id: item.productId },
+            include: {
+                product_image: {
+                    select: {
+                        url: true,
+                    },
+                    where: {
+                        is_profile_img: true,
+                    },
+                },
+            },
+        });
+
+        return {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            price_sale: product.price_sale,
+            image: product.product_image[0].url,
+            quantity: item.quantity,
+            total: product.price_sale * item.quantity,
+        };
+    });
+
+    const resolvedProducts = await Promise.all(products);
+
+    const totalPrice = resolvedProducts.reduce((acc, product) => acc + product.total, 0);
+    const totalQuantity = resolvedProducts.reduce((acc, product) => acc + product.quantity, 0);
+
+    return { totalQuantity, totalPrice, products: resolvedProducts };
 }
 
 // Add product to user's cart
@@ -131,5 +187,46 @@ export async function updateProductQuantity(user_id, product_id, quantity) {
 export async function clearCart(user_id) {
     return await prisma.cart.deleteMany({
         where: { account_id: user_id },
+    });
+}
+
+// Merge guest cart with user cart
+export async function mergeGuestCartWithUserCart(user_id, guestCart) {
+    // Get products from user's cart
+    const cartItems = await getCartItems(user_id);
+
+    // Merge guest cart with user cart
+    guestCart.map((item) => {
+        const existingItem = cartItems.find((cartItem) => cartItem.product_id === item.productId);
+
+        // If product already exists in user's cart, update product quantity
+        if (existingItem) {
+            existingItem.quantity += item.quantity;
+        } else {
+            cartItems.push({
+                product_id: item.productId,
+                quantity: item.quantity,
+            });
+        }
+    });
+
+    // Save merged cart to the database
+    cartItems.forEach(async (item) => {
+        await prisma.cart.upsert({
+            where: {
+                account_id_product_id: {
+                    account_id: user_id,
+                    product_id: item.product_id,
+                },
+            },
+            update: {
+                quantity: item.quantity,
+            },
+            create: {
+                account_id: user_id,
+                product_id: item.product_id,
+                quantity: item.quantity,
+            },
+        });
     });
 }

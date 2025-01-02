@@ -2,6 +2,7 @@ import express from 'express';
 import passport, { isEmailExist, sendActivationEmail } from './authService.js';
 import { redisClient } from '../config/config.js';
 import { addNewAccount } from '../account/accountService.js';
+import { mergeCart } from '../cart/cartController.js';
 
 const router = express.Router();
 
@@ -50,6 +51,10 @@ router.get('/activate', async (req, res, next) => {
         const { name, email, password } = user;
         const newUser = await addNewAccount(name, email, password);
 
+        // Merge guest cart with user cart
+        const guestCart = req.session.guestCart || [];
+        await mergeCart(req, user.id, guestCart);
+
         req.login(newUser, async (err) => {
             if (err) return next(err);
 
@@ -69,7 +74,7 @@ router.get('/login', (req, res) => {
 
 // Handle login
 router.post('/login', (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
+    passport.authenticate('local', async (err, user, info) => {
         if (err) {
             return next(err);
         }
@@ -79,8 +84,14 @@ router.post('/login', (req, res, next) => {
         }
         // Save lastUrl before logging in
         const lastUrl = req.session.lastUrl;
-        req.login(user, (err) => {
+        const guestCart = req.session.guestCart || [];
+
+        // Merge guest cart with user cart
+        await mergeCart(req, user.id, guestCart);
+
+        req.login(user, async (err) => {
             if (err) return next(err);
+
             return res.json({
                 success: true,
                 redirectUrl: lastUrl || '/',
