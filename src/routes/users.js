@@ -1,5 +1,6 @@
 import express from 'express';
 import productController from '../product/productController.js';
+import {renderProfilePage} from '../user/userController.js';
 import * as productService from '../product/productService.js';
 import authController from '../auth/authController.js';
 import { forbidRoute, authorize } from '../auth/authService.js';
@@ -21,14 +22,22 @@ router.get('/contact', (req, res) => {
   res.render('contact');
 });
 
-router.use('/cart', (req, res) => {
-  res.set('Cache-Control', 'no-store');
-  renderCartPage(req, res);
+router.get('/cart', (req, res) => {
+    res.set('Cache-Control', 'no-store');
+    renderCartPage(req, res);
 });
 
-router.get('/profile', authorize, (req, res) => {
-  res.status(200).send('Profile page');
-});
+router.get('/profile', (req,res,next) => {
+    req.user
+        ? next()
+        : res.redirect('/auth/login')
+}, renderProfilePage);
+
+router.get('/profile/info', (req,res,next) => {
+    req.user
+        ? next()
+        : res.redirect('/auth/login')
+}, renderProfilePage);
 
 router.use('/shop', productController);
 
