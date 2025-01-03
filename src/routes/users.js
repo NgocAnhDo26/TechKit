@@ -2,6 +2,7 @@ import express from 'express';
 import productController from '../product/productController.js';
 import * as productService from '../product/productService.js';
 import authController from '../auth/authController.js';
+import { forbidRoute, authorize } from '../auth/authService.js';
 import { renderCartPage } from '../cart/cartController.js';
 
 const router = express.Router();
@@ -25,14 +26,16 @@ router.use('/cart', (req, res) => {
     renderCartPage(req, res);
 });
 
-router.get('/profile', (req, res) => {
-    req.user
-        ? res.status(200).json('HI!')
-        : res.status(401).json('You must be logged in!');
+router.get('/profile', authorize(), (req, res) => {
+    res.status(200).send('Profile page');
+});
+
+router.get('/admin', authorize(true), (req, res) => {
+    res.status(200).send('Admin page');
 });
 
 router.use('/shop', productController);
 
-router.use('/auth', authController);
+router.use('/auth', forbidRoute, authController);
 
 export default router;

@@ -5,8 +5,8 @@ import session from 'express-session';
 import { RedisStore } from 'connect-redis';
 import { redisClient } from './src/config/config.js';
 import passport from 'passport';
-import { getUrl } from './src/account/accountService.js';
 import { getCartCount } from './src/cart/cartService.js';
+import { getUrl } from './src/util/util.js';
 
 const app = express();
 const __dirname = import.meta.dirname;
@@ -34,10 +34,31 @@ app.use(passport.session());
 
 // Middleware to save last visited URL
 app.use((req, res, next) => {
-    // Don't store url for authentication (login, register, logout) or other method except GET
-    if (!req.url.includes('/auth') && !req.url.includes('/api') && req.method === 'GET') {
+    // Exclude certain paths or non-GET methods
+    const isExcludedPath =
+        req.url.startsWith('/auth') ||
+        req.url.startsWith('/api') ||
+        req.method !== 'GET';
+
+    // Block storing lastUrl if user is not logged in and tries /profile or /admin, or user is not admin for /admin
+    const isForbiddenProfileOrAdmin =
+        (!req.user && req.url.startsWith('/profile')) ||
+        (!req.user?.is_admin && req.url.startsWith('/admin'));
+
+    // Only store if not excluded and not forbidden
+    if (!isExcludedPath && !isForbiddenProfileOrAdmin) {
         req.session.lastUrl = req.originalUrl;
     }
+
+    next();
+});
+
+// Middleware for initializing guest cart
+app.use((req, res, next) => {
+    if (!req.session.guestCart) {
+        req.session.guestCart = [];
+    }
+
     next();
 });
 
