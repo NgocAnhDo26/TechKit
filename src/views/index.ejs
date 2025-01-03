@@ -1,147 +1,148 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <%- include('./partials/head'); %>
-        <title>TechKit - Homepage</title>
-    </head>
+  <head>
+    <%- include('./partials/head'); %>
+    <title>TechKit - Trang Chủ</title>
+  </head>
 
-    <body>
-        <!-- Header -->
-        <%- include('./partials/header'); %>
+  <body>
+    <!-- Header -->
+    <%- include('./partials/header'); %>
 
-        <!-- Slider -->
-        <div class="banner flex flex-row min-h-80 bg-white w-full">
-            <div class="flex flex-col justify-center items-center align-middle grow">
-                <h2
-                    class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4"
-                >
-                    TECHKIT
-                </h2>
-                <p class="mb-4 text-white md:text-2xl">
-                    The realm of technology advancements
-                </p>
-                <a
-                    href="/"
-                    class="bg-primary mt-5 hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block"
-                    >Shop now</a
-                >
-            </div>
-        </div>
-
-        <!-- Product banner section -->
-        <section id="product-banners">
-            <div class="container mx-auto py-10">
-                <div class="flex flex-wrap -mx-4 justify-around">
-                    <!-- Category 1 -->
-                    <a href="/shop/gaming" class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110 grow">
-                            <div
-                            class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
-                            >
-                                <img
-                                src="https://res.cloudinary.com/dqi9dab5p/image/upload/v1732945882/1_1.png"
-                                alt="Category 1"
-                                class="w-full h-36 object-cover"
-                                />
-                                <div
-                                class="absolute inset-0 bg-gray-light bg-opacity-50"
-                                ></div>
-                                <div
-                                class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4"
-                                >
-                                    <h2 class="text-2xl md:text-3xl font-bold mb-4">
-                                    Laptop Gaming
-                                    </h2>
-                                </div>
-                            </div>
-                    </a>
-                    <!-- Category 2 -->
-                    <a href="/shop/office" class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110 grow">
-                        <div
-                            class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
-                        >
-                            <img
-                                src="https://res.cloudinary.com/dqi9dab5p/image/upload/v1733042576/1-danh-gia-laptop-lg-gram_xizpqz.jpg"
-                                alt="Category 2"
-                                class="w-full h-auto sm:h-36 object-cover"
-                            />
-                            <div
-                                class="absolute inset-0 bg-gray-light bg-opacity-50"
-                            ></div>
-                            <div
-                                class="category-text absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 transition duration-300"
-                            >
-                                <h2 class="text-2xl md:text-3xl font-bold mb-4">
-                                    Laptop Văn phòng
-                                </h2>
-                            </div>
-                        </div>
-                    </a>
-                    <!-- Category 3 -->
-                    <a href="/shop/graphic" class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110 grow">
-                        <div
-                            class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
-                        >
-                            <img
-                                src="https://res.cloudinary.com/dqi9dab5p/image/upload/v1733042691/mua-do-hoa-2d-cho-dan-thiet-ke-4_ffliyq.jpg"
-                                alt="Category 3"
-                                class="w-full h-auto sm:h-36 object-cover"
-                            />
-                            <div
-                                class="absolute inset-0 bg-gray-light bg-opacity-50"
-                            ></div>
-                            <div
-                                class="category-text absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 transition duration-300"
-                            >
-                                <h2 class="text-2xl md:text-3xl font-bold mb-4">
-                                    Laptop Đồ họa
-                                </h2>
-                            </div>
-                        </div>
-                    </a> 
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured product section -->
-        <%- include('featuredProducts', { title: 'Sản phẩm nổi bật', featured_products }); %>
-
-        <!-- Sale product section -->
-        <%- include('featuredProducts', { title: 'Deal cực sốc', featured_products: sale_products }); %>
-
-        <!-- Subscribe section -->
-        <section
-            id="subscribe"
-            class="py-6 lg:py-24 bg-white border-t border-gray-line"
+    <!-- Slider -->
+    <div class="banner flex flex-row min-h-80 bg-white w-full">
+      <div class="flex flex-col justify-center items-center align-middle grow">
+        <h2 class="text-3xl md:text-7xl font-bold text-white mb-2 md:mb-4">
+          TECHKIT
+        </h2>
+        <p class="mb-4 text-white md:text-2xl">
+          The realm of technology advancements
+        </p>
+        <a
+          href="/"
+          class="bg-primary mt-5 hover:bg-transparent text-white hover:text-white border border-transparent hover:border-white font-semibold px-4 py-2 rounded-full inline-block"
+          >Shop now</a
         >
-            <div class="container mx-auto">
-                <div class="flex flex-col items-center rounded-lg p-4 sm:p-0">
-                    <div class="mb-8">
-                        <h2
-                            class="text-center text-xl font-bold sm:text-2xl lg:text-left lg:text-3xl"
-                        >
-                            Join our newsletter and
-                            <span class="text-primary">get $50 discount</span>
-                            for your first order
-                        </h2>
-                    </div>
-                    <div class="flex flex-col items-center w-96">
-                        <form class="flex w-full gap-2">
-                            <input
-                                placeholder="Enter your email address"
-                                class="w-full flex-1 rounded-full px-3 py-2 border border-gray-300 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary"
-                            />
-                            <button
-                                class="bg-primary border border-primary hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full"
-                            >
-                                Subscribe
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+      </div>
+    </div>
 
-        <!-- Footer -->
-        <%- include('./partials/footer'); %>
-    </body>
+    <!-- Product banner section -->
+    <section id="product-banners">
+      <div class="container mx-auto py-10">
+        <div class="flex flex-wrap -mx-4 justify-around">
+          <!-- Category 1 -->
+          <a
+            href="/shop/gaming"
+            class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110 grow"
+          >
+            <div
+              class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
+            >
+              <img
+                src="https://res.cloudinary.com/dqi9dab5p/image/upload/v1735888363/TechKit/product/category_gaming.webp"
+                alt="Category 1"
+                class="w-full h-36 object-cover"
+              />
+              <div class="absolute inset-0 bg-gray-light bg-opacity-50"></div>
+              <div
+                class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4"
+              >
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">
+                  Laptop Gaming
+                </h2>
+              </div>
+            </div>
+          </a>
+          <!-- Category 2 -->
+          <a
+            href="/shop/office"
+            class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110 grow"
+          >
+            <div
+              class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
+            >
+              <img
+                src="https://res.cloudinary.com/dqi9dab5p/image/upload/v1733042576/1-danh-gia-laptop-lg-gram_xizpqz.jpg"
+                alt="Category 2"
+                class="w-full h-auto sm:h-36 object-cover"
+              />
+              <div class="absolute inset-0 bg-gray-light bg-opacity-50"></div>
+              <div
+                class="category-text absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 transition duration-300"
+              >
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">
+                  Laptop Văn phòng
+                </h2>
+              </div>
+            </div>
+          </a>
+          <!-- Category 3 -->
+          <a
+            href="/shop/graphic"
+            class="w-full sm:w-1/5 px-4 mb-8 transition duration-300 hover:scale-110 grow"
+          >
+            <div
+              class="category-banner relative overflow-hidden rounded-lg shadow-lg group"
+            >
+              <img
+                src="https://res.cloudinary.com/dqi9dab5p/image/upload/v1733042691/mua-do-hoa-2d-cho-dan-thiet-ke-4_ffliyq.jpg"
+                alt="Category 3"
+                class="w-full h-auto sm:h-36 object-cover"
+              />
+              <div class="absolute inset-0 bg-gray-light bg-opacity-50"></div>
+              <div
+                class="category-text absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 transition duration-300"
+              >
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">
+                  Laptop Đồ họa
+                </h2>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured product section -->
+    <%- include('featuredProducts', { title: 'Sản phẩm nổi bật', featured_products }); %>
+
+    <!-- Sale product section -->
+    <%- include('featuredProducts', { title: 'Deal cực sốc', featured_products: sale_products }); %>
+
+    <!-- Subscribe section -->
+    <section
+      id="subscribe"
+      class="py-6 lg:py-24 bg-white border-t border-gray-line"
+    >
+      <div class="container mx-auto">
+        <div class="flex flex-col items-center rounded-lg p-4 sm:p-0">
+          <div class="mb-8">
+            <h2
+              class="text-center text-xl font-bold sm:text-2xl lg:text-left lg:text-3xl"
+            >
+              Join our newsletter and
+              <span class="text-primary">get $50 discount</span>
+              for your first order
+            </h2>
+          </div>
+          <div class="flex flex-col items-center w-96">
+            <form class="flex w-full gap-2">
+              <input
+                placeholder="Enter your email address"
+                class="w-full flex-1 rounded-full px-3 py-2 border border-gray-300 text-gray-700 placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary"
+              />
+              <button
+                class="bg-primary border border-primary hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <%- include('./partials/footer'); %>
+  </body>
 </html>

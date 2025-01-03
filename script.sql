@@ -5,11 +5,23 @@ CREATE TABLE category (
   name VARCHAR(50) NOT NULL UNIQUE
 );
 
+CREATE TABLE category_product (
+  category_id TINYINT,
+  product_id INT,
+  PRIMARY KEY (category_id, product_id),
+  FOREIGN KEY (category_id) REFERENCES category(id),
+  FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
+CREATE TABLE brand (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL UNIQUE
+);
+
 CREATE TABLE product (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(70) NOT NULL UNIQUE,
-  category_id TINYINT NOT NULL,
-  brand VARCHAR(70) NOT NULL,
+  brand_id INT NOT NULL,
   storage VARCHAR(10) NOT NULL,
   cpu VARCHAR(30) NOT NULL,
   screen_size VARCHAR(20) NOT NULL,
@@ -22,12 +34,12 @@ CREATE TABLE product (
   in_stock INT NOT NULL,
   sales INT NOT NULL,
   create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (category_id) REFERENCES category(id)
+  FOREIGN KEY (brand_id) REFERENCES brand(id)
 );
 
 CREATE TABLE product_image (
   product_id INT,
-  url VARCHAR(50),
+  public_id VARCHAR(50),
   is_profile_img BOOL NOT NULL DEFAULT FALSE,
   PRIMARY KEY (product_id, address),
   FOREIGN KEY (product_id) REFERENCES product(id)
@@ -37,14 +49,15 @@ CREATE TABLE account (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(70) NOT NULL,
   email VARCHAR(254) NOT NULL UNIQUE,
-  password VARCHAR(60) NOT NULL,
+  password VARCHAR(60),
   address VARCHAR(100),
   birthdate DATETIME,
   sex VARCHAR(50),
   avatar VARCHAR(100) NOT NULL,
   create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   is_lock BOOL NOT NULL,
-  is_admin BOOL NOT NULL
+  is_admin BOOL NOT NULL,
+  google_id VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE product_review (

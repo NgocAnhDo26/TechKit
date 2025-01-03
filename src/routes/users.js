@@ -9,17 +9,17 @@ import { renderCartPage } from '../cart/cartController.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const featured_products = await productService.fetchRecentProducts();
-    const sale_products = await productService.fetchMostDiscountedProducts();
-    res.render('index', { featured_products, sale_products });
+  const featured_products = await productService.fetchFeatureProducts();
+  const sale_products = await productService.fetchBestSellersProducts();
+  res.render('index', { featured_products, sale_products });
 });
 
 router.get('/about', (req, res) => {
-    res.render('about');
+  res.render('about');
 });
 
 router.get('/contact', (req, res) => {
-    res.render('contact');
+  res.render('contact');
 });
 
 router.get('/cart', (req, res) => {

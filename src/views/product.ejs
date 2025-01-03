@@ -1,88 +1,88 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
-    const addToCartSingle = async (productId) => {
-        try {
-            const response = await fetch('/api/cart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    productId: parseInt(productId),
-                    quantity: 1,
-                }),
-            });
+  const addToCartSingle = async (productId) => {
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId: parseInt(productId),
+          quantity: 1,
+        }),
+      });
 
-            if (response.ok) {
-                const data = await response.json();
-                if (data) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Thành công',
-                        text: 'Sản phẩm đã được thêm vào giỏ hàng',
-                        showConfirmButton: false,
-                        timer: 2000,
-                    });
-                }
-
-                await updateCartCount();
-            } else {
-                const message = await response.text();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Thất bại',
-                    text: message,
-                    showConfirmButton: false,
-                    timer: 2000,
-                });
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Thất bại',
-                text: 'Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng',
-                showConfirmButton: false,
-                timer: 2000,
-            });
+      if (response.ok) {
+        const data = await response.json();
+        if (data) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: 'Sản phẩm đã được thêm vào giỏ hàng',
+            showConfirmButton: false,
+            timer: 2000,
+          });
         }
+
+        await updateCartCount();
+      } else {
+        const message = await response.text();
+        Swal.fire({
+          icon: 'error',
+          title: 'Thất bại',
+          text: message,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Thất bại',
+        text: 'Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng',
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
+  };
 </script>
 
 <div class="bg-white p-4 rounded-lg shadow self-stretch flex flex-col">
-    <img
-        src="<%= product.product_image[0].url %>"
-        alt="<%= product.name %>"
-        class="w-full object-cover mb-4 rounded-lg"
-    />
-    <a
-        href="/shop/<%= product.category.name.toLowerCase() %>/<%= product.id %>"
-        class="text-lg font-semibold"
+  <img
+    src="<%= product.profile_img.url %>"
+    alt="<%= product.name %>"
+    class="w-full object-cover mb-4 rounded-lg"
+  />
+  <a
+    href="/shop/<%= product.category.toLowerCase() %>/<%= product.id %>"
+    class="text-lg font-semibold"
+  >
+    <%= product.name %>
+  </a>
+  <p class="my-2"><%= product.category %></p>
+  <div class="flex items-center mb-4 mt-auto">
+    <% if (product.price_sale) { %>
+    <span class="text-lg font-bold text-primary"
+      ><%= product.price_sale.toLocaleString() %>₫</span
     >
-        <%= product.name %>
-    </a>
-    <p class="my-2"><%= product.category.name %></p>
-    <div class="flex items-center mb-4 mt-auto">
-        <% if (product.price_sale) { %>
-        <span class="text-lg font-bold text-primary"
-            ><%= product.price_sale.toLocaleString() %>₫</span
-        >
-        <span class="text-sm font-bold line-through ml-2"
-            ><%= product.price.toLocaleString() %>₫</span
-        >
-        <span class="text-sm font-bold text-primary ml-2"
-            >-<%= Math.round((1 - product.price_sale / product.price) * 100)
+    <span class="text-sm font-bold line-through ml-2"
+      ><%= product.price.toLocaleString() %>₫</span
+    >
+    <span class="text-sm font-bold text-primary ml-2"
+      >-<%= Math.round((1 - product.price_sale / product.price) * 100)
             %>%</span
-        >
-        <% } else { %>
-        <span class="text-lg font-bold text-primary"
-            ><%= product.price.toLocaleString() %>₫</span
-        >
-        <% } %>
-    </div>
-    <button
-        onclick="addToCartSingle('<%= product.id %>')"
-        class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full"
     >
-        Thêm vào giỏ
-    </button>
+    <% } else { %>
+    <span class="text-lg font-bold text-primary"
+      ><%= product.price.toLocaleString() %>₫</span
+    >
+    <% } %>
+  </div>
+  <button
+    onclick="addToCartSingle('<%= product.id %>')"
+    class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full"
+  >
+    Thêm vào giỏ
+  </button>
 </div>

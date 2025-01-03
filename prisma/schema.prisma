@@ -17,6 +17,7 @@ model product {
   id             Int              @id @default(autoincrement())
   name           String           @unique(map: "name") @db.VarChar(70)
   brand_id       Int?
+  category_id    Int?
   storage        String           @db.VarChar(10)
   cpu            String           @db.VarChar(30)
   screen_size    String           @db.VarChar(20)

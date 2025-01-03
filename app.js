@@ -7,6 +7,7 @@ import { redisClient } from './src/config/config.js';
 import passport from 'passport';
 import { getCartCount } from './src/cart/cartService.js';
 import { getUrl } from './src/util/util.js';
+import { stat } from 'fs';
 
 const app = express();
 const __dirname = import.meta.dirname;
@@ -19,87 +20,83 @@ app.use(express.urlencoded({ extended: false })); // Parse URL-encoded bodies
 app.use(express.json()); // Parse JSON bodies
 app.use(express.static(path.join(__dirname, 'public'))); // Use static files
 app.use(
-    session({
-        store: new RedisStore({ client: redisClient }), // Store session in memory in 1 day using redis
-        secret: JSON.parse(process.env.SECRET),
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            maxAge: 60000 * 60, // Cookie live for 1 hour
-        },
-    }),
+  session({
+    store: new RedisStore({ client: redisClient }), // Store session in memory in 1 day using redis
+    secret: JSON.parse(process.env.SECRET),
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 60000 * 60, // Cookie live for 1 hour
+    },
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware to save last visited URL
 app.use((req, res, next) => {
-    // Exclude certain paths or non-GET methods
-    const isExcludedPath =
-        req.url.startsWith('/auth') ||
-        req.url.startsWith('/api') ||
-        req.method !== 'GET';
+  // Exclude certain paths or non-GET methods
+  const isExcludedPath =
+    req.url.startsWith('/auth') ||
+    req.url.startsWith('/api') ||
+    req.method !== 'GET';
 
-    // Block storing lastUrl if user is not logged in and tries /profile or /admin, or user is not admin for /admin
-    const isForbiddenProfileOrAdmin =
-        (!req.user && req.url.startsWith('/profile')) ||
-        (!req.user?.is_admin && req.url.startsWith('/admin'));
+  // Block storing lastUrl if user is not logged in and tries /profile
+  const isForbiddenProfile = !req.user && req.url.startsWith('/profile');
 
-    // Only store if not excluded and not forbidden
-    if (!isExcludedPath && !isForbiddenProfileOrAdmin) {
-        req.session.lastUrl = req.originalUrl;
-    }
+  // Only store if not excluded and not forbidden
+  if (!isExcludedPath && !isForbiddenProfile) {
+    req.session.lastUrl = req.originalUrl;
+  }
 
-    next();
+  next();
 });
 
 // Middleware for initializing guest cart
 app.use((req, res, next) => {
-    if (!req.session.guestCart) {
-        req.session.guestCart = [];
-    }
+  if (!req.session.guestCart) {
+    req.session.guestCart = [];
+  }
 
-    next();
-});
-
-// Middleware for initializing guest cart
-app.use((req, res, next) => {
-    if (!req.session.guestCart) {
-        req.session.guestCart = [];
-    }
-
-    next();
+  next();
 });
 
 // Set local variables to use in all view engine templates
 app.use(async (req, res, next) => {
-    res.locals.isAuth = req.user ? true : false;
-    res.locals.avatar = req.user ? getUrl(req.user.avatar) : '';
+  res.locals.isAuth = req.user ? true : false;
+  res.locals.avatar = req.user ? getUrl(req.user.avatar) : '';
 
-    // Cart count (distinct product count)
-    res.locals.cartCount = req.user ? await getCartCount(req.user.id) : req.session.guestCart.length;
+  // Cart count (distinct product count)
+  res.locals.cartCount = req.user
+    ? await getCartCount(req.user.id)
+    : req.session.guestCart.length;
 
-    next();
+  next();
 });
 
 app.use(router); // Init routes
 
 // Handing errors
 app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send('Something broke!');
+  console.error(err);
+  res
+    .status(500)
+    .render('error', {
+      message: 'Đã có lỗi xảy ra, vui lòng thử lại sau',
+      status: 500,
+    });
 });
 
 const PORT = process.env.PORT ?? 1111; // Server setup
 
 const server = app.listen(PORT, () => {
-    console.log(`TechKit starts at port http://localhost:${PORT}`);
+  console.log(`TechKit starts at port http://localhost:${PORT}`);
 });
 
 process.on('SIGINT', () => {
-    server.close(() => {
-        console.log('Exit Server Express');
-    });
+  server.close(() => {
+    console.log('Exit Server Express');
+  });
 });
 
 export default app;
