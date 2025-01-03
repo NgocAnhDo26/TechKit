@@ -8,30 +8,30 @@ import { renderCartPage } from '../cart/cartController.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const featured_products = await productService.fetchRecentProducts();
-    const sale_products = await productService.fetchMostDiscountedProducts();
-    res.render('index', { featured_products, sale_products });
+  const featured_products = await productService.fetchFeatureProducts();
+  const sale_products = await productService.fetchBestSellersProducts();
+  res.render('index', { featured_products, sale_products });
 });
 
 router.get('/about', (req, res) => {
-    res.render('about');
+  res.render('about');
 });
 
 router.get('/contact', (req, res) => {
-    res.render('contact');
+  res.render('contact');
 });
 
 router.use('/cart', (req, res) => {
-    res.set('Cache-Control', 'no-store');
-    renderCartPage(req, res);
+  res.set('Cache-Control', 'no-store');
+  renderCartPage(req, res);
 });
 
 router.get('/profile', authorize(), (req, res) => {
-    res.status(200).send('Profile page');
+  res.status(200).send('Profile page');
 });
 
 router.get('/admin', authorize(true), (req, res) => {
-    res.status(200).send('Admin page');
+  res.status(200).send('Admin page');
 });
 
 router.use('/shop', productController);

@@ -1,109 +1,99 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <%- include('./partials/head'); %>
-        <title>TechKit - Login</title>
-    </head>
+  <head>
+    <%- include('./partials/head'); %>
+    <title>TechKit - Login</title>
+  </head>
 
-    <body>
-        <!-- Header -->
-        <%- include('./partials/header'); %>
+  <body>
+    <!-- Header -->
+    <%- include('./partials/header'); %>
 
-        <!-- Login -->
-        <section id="login-page" class="bg-white py-5">
-            <div class="container mx-auto px-4">
-                <div class="flex flex-col justify-center gap-4 md:flex-row">
-                    <div
-                        class="rounded-lg bg-white p-4 shadow-md md:m-10 md:w-1/2 md:p-10"
-                    >
-                        <h2 class="mb-10 text-2xl font-semibold">Login</h2>
+    <!-- Login -->
+    <section id="login-page" class="bg-white py-5">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col justify-center gap-4 md:flex-row">
+          <div
+            class="rounded-lg bg-white p-4 shadow-md md:m-10 md:w-1/2 md:p-10"
+          >
+            <h2 class="mb-10 text-2xl font-semibold">Login</h2>
 
-                        <!-- Alert -->
-                        <div
-                            class="error-container-login mx-auto my-10 flex hidden min-h-16 max-w-sm items-center gap-4 rounded-md border-error_second bg-error shadow-md"
-                        >
-                            <img
-                                src="/images/icons/alert.png"
-                                alt="error"
-                                class="ml-4 max-h-5 max-w-5"
-                            />
-                            <div class="flex-col">
-                                <h2 class="text-lg font-bold">
-                                    We couldn't sign you in.
-                                </h2>
-                                <p
-                                    class="error-text-login text-sm font-medium"
-                                ></p>
-                            </div>
-                        </div>
-                        <form>
-                            <div class="mb-3">
-                                <label for="login-email" class="mb-2 block"
-                                    >Email</label
-                                >
-                                <input
-                                    type="email"
-                                    id="login-email"
-                                    name="email"
-                                    class="w-full rounded-full border px-3 py-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
-                                    required
-                                />
-                            </div>
-                            <div class="mb-3">
-                                <label for="login-password" class="mb-2 block"
-                                    >Password</label
-                                >
-                                <input
-                                    type="password"
-                                    name="password"
-                                    id="login-password"
-                                    class="w-full rounded-full border px-3 py-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
-                                    required
-                                />
-                            </div>
-                            <div class="my-5 flex flex-row">
-                                <div class="grow">
-                                    <a
-                                        href="/auth/forgot-password"
-                                        class="text-primary hover:underline"
-                                        >Forgot Password?</a
-                                    >
-                                </div>
-
-                                <div class="flex grow justify-end">
-                                    <a
-                                        href="/auth/register"
-                                        class="text-primary hover:underline"
-                                        >Don't have an account?</a
-                                    >
-                                </div>
-                            </div>
-
-                            <button
-                                type="submit"
-                                class="login-submit mt-5 w-full rounded-full border border-primary bg-primary px-3 py-2 text-white hover:bg-transparent hover:text-primary"
-                            >
-                                Login
-                            </button>
-                            <a
-                                href="/auth/google"
-                                class="mt-10 flex items-center justify-center gap-2 rounded-full border border-gray-txt p-2 transition-all hover:bg-gray-line"
-                            >
-                                <img
-                                    src="/images/social_icons/google.svg"
-                                    alt="google"
-                                    class="mx-2 h-8 w-8"
-                                />
-                                <p class="text-primary">Login with Google</p>
-                            </a>
-                        </form>
-                    </div>
-                </div>
+            <!-- Alert -->
+            <div
+              class="error-container-login mx-auto my-10 flex hidden min-h-16 max-w-sm items-center gap-4 rounded-md border-error_second bg-error shadow-md"
+            >
+              <img
+                src="/images/icons/alert.png"
+                alt="error"
+                class="ml-4 max-h-5 max-w-5"
+              />
+              <div class="flex-col">
+                <h2 class="text-lg font-bold">We couldn't sign you in.</h2>
+                <p class="error-text-login text-sm font-medium"></p>
+              </div>
             </div>
-        </section>
+            <form>
+              <div class="mb-3">
+                <label for="login-email" class="mb-2 block">Email</label>
+                <input
+                  type="email"
+                  id="login-email"
+                  name="email"
+                  class="w-full rounded-full border px-3 py-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="login-password" class="mb-2 block">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  id="login-password"
+                  class="w-full rounded-full border px-3 py-1 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                />
+              </div>
+              <div class="my-5 flex flex-row">
+                <div class="grow">
+                  <a
+                    href="/auth/forgot-password"
+                    class="text-primary hover:underline"
+                    >Forgot Password?</a
+                  >
+                </div>
 
-        <!-- Footer -->
-        <%- include('./partials/footer'); %>
-        <script src="/javascripts/authCheck.js"></script>
-    </body>
+                <div class="flex grow justify-end">
+                  <a href="/auth/register" class="text-primary hover:underline"
+                    >Don't have an account?</a
+                  >
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                class="login-submit mt-5 w-full rounded-full border border-primary bg-primary px-3 py-2 text-white hover:bg-transparent hover:text-primary"
+              >
+                Login
+              </button>
+              <a
+                href="/auth/google"
+                class="mt-10 flex items-center justify-center gap-2 rounded-full border border-gray-txt p-2 transition-all hover:bg-gray-line"
+              >
+                <img
+                  src="/images/social_icons/google.svg"
+                  alt="google"
+                  class="mx-2 h-8 w-8"
+                />
+                <p class="text-primary">Login with Google</p>
+              </a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <%- include('./partials/footer'); %>
+    <script src="/javascripts/authCheck.js"></script>
+  </body>
 </html>
