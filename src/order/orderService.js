@@ -4,7 +4,7 @@ import { clearCart, fetchCartProducts } from '../cart/cartService.js';
 // Create order
 export const createOrder = async (userId, order) => {
   const orderDetails = order;
-  orderDetails.account_id = userId; 
+  orderDetails.account_id = userId;
   orderDetails.status = 'Đang xử lý';
 
   const { totalPrice, products } = await fetchCartProducts(userId);
@@ -39,7 +39,7 @@ export const createOrder = async (userId, order) => {
       // Ensure that the product in_stock > 0 before updating the quantity
       await Promise.all(
         products.map(async (product) => {
-          const productData = await tx.products.findUnique({
+          const productData = await tx.product.findUnique({
             where: {
               id: product.id,
             },
@@ -49,7 +49,7 @@ export const createOrder = async (userId, order) => {
             const newQuantity = productData.in_stock - product.quantity;
             const newSales = productData.sales + product.quantity;
 
-            await tx.products.update({
+            await tx.product.update({
               where: {
                 id: product.id,
               },
@@ -66,10 +66,8 @@ export const createOrder = async (userId, order) => {
 
       // Clear the cart
       await clearCart(order.customer_id);
-
-      
     });
-    
+
     return { status: 'success', message: 'Đơn hàng đã được tạo thành công!', orderId };
   } catch (e) {
     console.error(e);
@@ -85,7 +83,7 @@ export const createOrder = async (userId, order) => {
 export const fetchOrders = async (customer_id) => {
   return await prisma.orders.findMany({
     where: {
-      customer_id,
+      account_id: customer_id,
     },
   });
 };

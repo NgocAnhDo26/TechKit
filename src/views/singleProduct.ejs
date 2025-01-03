@@ -1,21 +1,21 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <%- include('./partials/head'); %>
-        <title>TechKit - Product</title>
-    </head>
+  <head>
+    <%- include('./partials/head'); %>
+    <title>TechKit - Sản Phẩm</title>
+  </head>
 
-    <body>
-        <!-- Header -->
-        <%- include('./partials/header'); %>
-        
-        <!-- Product Info -->
-        <%- include('productInfo', { product }); %>
+  <body>
+    <!-- Header -->
+    <%- include('./partials/header'); %>
 
-        <!-- Related-products -->
-        <%- include('relevantProducts', { products: related_products, title: 'Sản phẩm liên quan' } ); %>
+    <!-- Product Info -->
+    <%- include('productInfo', { product }); %>
 
-        <!-- Footer -->
-        <%- include('./partials/footer'); %>
-    </body>
+    <!-- Related-products -->
+    <%- include('relevantProducts', { products: related_products, title: 'Sản phẩm liên quan' } ); %>
+
+    <!-- Footer -->
+    <%- include('./partials/footer'); %>
+  </body>
 </html>

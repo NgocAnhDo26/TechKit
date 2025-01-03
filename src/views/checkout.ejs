@@ -7,9 +7,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <body>
-        <!-- Header -->
-        <%- include('./partials/header'); %>
+  <body>
+    <!-- Header -->
+    <%- include('./partials/header'); %>
 
         <!-- Checkout -->
         <section id="checkout-page" class="bg-white pb-16 pt-10 font-manrope">
@@ -361,9 +361,7 @@
                     },
                 });
 
-                // Simulate the payment process
-                if (paymentMethod === 'cod') {
-                    // Create the order
+                // Create the order
                     const order = {
                         customer_name: billingName,
                         customer_phone: billingPhone,
@@ -372,6 +370,8 @@
                         payment_method: paymentMethod,
                     };
 
+                // Simulate the payment process
+                if (paymentMethod === 'cod') {
                     await createOrder(order);
                 } else {
                     // Open up a new window for the payment

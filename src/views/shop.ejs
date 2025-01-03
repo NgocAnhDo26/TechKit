@@ -1,140 +1,129 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <%- include('./partials/head'); %>
-        <title>TechKit - Shop</title>
-    </head>
-    
-    <body>
-        <!-- Header -->
-        <%- include('./partials/header'); %>
+  <head>
+    <%- include('./partials/head'); %>
+    <title>TechKit - Cửa Hàng</title>
+  </head>
 
-        <div class="container mx-auto mb-10">
-            <!-- Top Filter -->
-            <div
-                class="flex flex-col md:flex-row justify-between items-center py-4"
-            >
-                <div class="flex items-center space-x-4">
-                    <h2 class="font-bold text-xl">Bộ lọc:</h2>
-                </div>
-                <div class="flex mt-5 md:mt-0 space-x-4">
-                    <div class="relative">
-                        <select
-                            id="sort-price"
-                            onchange="sortByPrice();"
-                            class="block appearance-none w-full bg-white border hover:border-primary px-4 py-2 pr-8 rounded-full shadow leading-tight focus:outline-none focus:shadow-outline"
-                        >
-                            <option value="">Xếp theo:</option>
-                            <option value="asc">Xếp theo: Giá tăng dần</option>
-                            <option value="desc">Xếp theo: Giá giảm dần</option>
-                        </select>
-                        <div
-                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center justify-center px-2"
-                        >
-                            <img
-                                id="arrow-down"
-                                class="h-4 w-4"
-                                src="/images/icons/filter-down-arrow.svg"
-                                alt="filter arrow"
-                            />
-                            <img
-                                id="arrow-up"
-                                class="h-4 w-4 hidden"
-                                src="/images/icons/filter-up-arrow.svg"
-                                alt="filter arrow"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <body>
+    <!-- Header -->
+    <%- include('./partials/header'); %>
 
-            <!-- Filter Toggle Button for Mobile -->
-            <div class="block md:hidden text-center mb-4">
-                <button
-                    id="products-toggle-filters"
-                    class="bg-primary text-white py-2 px-4 rounded-full focus:outline-none"
-                >
-                    Hiện Bộ lọc
-                </button>
-            </div>
-
-            <div class="flex flex-col md:flex-row">
-                <!-- Filters -->
-                <%- include('./filters'); %>
-                
-                
-                <!-- Products List -->
-                <div class="w-full md:w-3/4 p-4">
-                    <!-- Products grid -->
-                    <div
-                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-                        id="product-list"
-                    >
-                    <!-- Loop through products and display each one -->
-                    <% if (products) { %>
-                        <% products.forEach(product => { %>
-                            <%- include('product', { product }); %>
-                        <% }); %>
-                    </div>
-                    <% } else { %>
-                        <h1>No products found...</h1>
-                    <% } %>
-                        
-                    <div class="flex justify-center mt-8">
-                        <nav aria-label="Page navigation">
-                            <ul class="inline-flex space-x-2" id="product-pagination">
-                                <!-- Pagination -->
-                                <div class="flex justify-center mt-8">
-                                    <nav aria-label="Page navigation">
-                                        <ul class="inline-flex space-x-2" id="product-pagination">
-                                            <% if (currentPage > 1) { %>
-                                                <!-- "Previous" button -->
-                                                <li>
-                                                    <button
-                                                        class="w-10 h-10 flex items-center justify-center rounded-full pagination-link"
-                                                        
-                                                    >
-                                                        Previous
-                                                    </button>
-                                                </li>
-                                            <% } %>
-                                            <!-- Loop through pages -->
-                                            <% for (let i = currentPage; i <= currentPage + 5 && i <= totalPage; i++) { %>
-                                                <li>
-                                                    <button
-                                                        class="w-10 h-10 flex items-center justify-center rounded-full <%= i === currentPage ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white' %> pagination-link"
-                                                        
-                                                    >
-                                                        <%= i %>
-                                                    </button>
-                                                </li>
-                                            <% } %>
-                                            <% if (currentPage < totalPage) { %>
-                                                <!-- "Next" button -->
-                                                <li>
-                                                    <button
-                                                        class="w-10 h-10 flex items-center justify-center rounded-full pagination-link"
-                                                        
-                                                    >
-                                                        Next
-                                                    </button>
-                                                </li>
-                                            <% } %>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
+    <div class="container mx-auto mb-10">
+      <!-- Top Filter -->
+      <div class="flex flex-col md:flex-row justify-between items-center py-4">
+        <div class="flex items-center space-x-4">
+          <h2 class="font-bold text-xl">Bộ lọc:</h2>
         </div>
-        <!-- Footer -->
-        <%- include('./partials/footer'); %>
-    </body>
-</html>
-    
+        <div class="flex mt-5 md:mt-0 space-x-4">
+          <div class="relative">
+            <select
+              id="sort-price"
+              onchange="sortByPrice();"
+              class="block appearance-none w-full bg-white border hover:border-primary px-4 py-2 pr-8 rounded-full shadow leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="">Xếp theo:</option>
+              <option value="asc">Xếp theo: Giá tăng dần</option>
+              <option value="desc">Xếp theo: Giá giảm dần</option>
+            </select>
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center justify-center px-2"
+            >
+              <img
+                id="arrow-down"
+                class="h-4 w-4"
+                src="/images/icons/filter-down-arrow.svg"
+                alt="filter arrow"
+              />
+              <img
+                id="arrow-up"
+                class="h-4 w-4 hidden"
+                src="/images/icons/filter-up-arrow.svg"
+                alt="filter arrow"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
-       
-    
-    
+      <!-- Filter Toggle Button for Mobile -->
+      <div class="block md:hidden text-center mb-4">
+        <button
+          id="products-toggle-filters"
+          class="bg-primary text-white py-2 px-4 rounded-full focus:outline-none"
+        >
+          Hiện Bộ lọc
+        </button>
+      </div>
+
+      <div class="flex flex-col md:flex-row">
+        <!-- Filters -->
+        <%- include('./filters'); %>
+
+        <!-- Products List -->
+        <div class="w-full md:w-3/4 p-4">
+          <!-- Products grid -->
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            id="product-list"
+          >
+            <!-- Loop through products and display each one -->
+            <% if (products) { %>
+            <% products.forEach(product => { %>
+            <%- include('product', { product }); %>
+            <% }); %>
+          </div>
+          <% } else { %>
+          <h1>No products found...</h1>
+          <% } %>
+
+          <div class="flex justify-center mt-8">
+            <nav aria-label="Page navigation">
+              <ul class="inline-flex space-x-2" id="product-pagination">
+                <!-- Pagination -->
+                <div class="flex justify-center mt-8">
+                  <nav aria-label="Page navigation">
+                    <ul class="inline-flex space-x-2" id="product-pagination">
+                      <% if (currentPage > 1) { %>
+                      <!-- "Previous" button -->
+                      <li>
+                        <button
+                          class="w-10 h-10 flex items-center justify-center rounded-full pagination-link"
+                        >
+                          Previous
+                        </button>
+                      </li>
+                      <% } %>
+                      <!-- Loop through pages -->
+                      <% for (let i = currentPage; i <= currentPage + 5 && i <= totalPage; i++) { %>
+                      <li>
+                        <button
+                          class="w-10 h-10 flex items-center justify-center rounded-full <%= i === currentPage ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white' %> pagination-link"
+                        >
+                          <%= i %>
+                        </button>
+                      </li>
+                      <% } %>
+                      <% if (currentPage < totalPage) { %>
+                      <!-- "Next" button -->
+                      <li>
+                        <button
+                          class="w-10 h-10 flex items-center justify-center rounded-full pagination-link"
+                        >
+                          Next
+                        </button>
+                      </li>
+                      <% } %>
+                    </ul>
+                  </nav>
+                </div>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <%- include('./partials/footer'); %>
+  </body>
+</html>

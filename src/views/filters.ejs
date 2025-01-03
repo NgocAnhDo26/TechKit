@@ -1,165 +1,165 @@
 <!-- Filters -->
 <form
-    onsubmit="onFilterSubmit(event);"
-    id="product-filters"
-    class="hidden w-full p-4 md:block md:w-1/4"
+  onsubmit="onFilterSubmit(event);"
+  id="product-filters"
+  class="hidden w-full p-4 md:block md:w-1/4"
 >
-    <!-- Laptop Brand Filter -->
-    <div class="mb-6 border-b border-gray-line pb-8">
-        <h3 class="mb-6 text-lg font-semibold">Thương hiệu</h3>
-        <div class="space-y-2">
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="brand"
-                    value="Asus"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">ASUS</span>
-            </label>
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="brand"
-                    value="Lenovo"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">Lenovo</span>
-            </label>
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="brand"
-                    value="Acer"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">Acer</span>
-            </label>
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="brand"
-                    value="MSI"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">MSI</span>
-            </label>
-        </div>
+  <!-- Laptop Brand Filter -->
+  <div class="mb-6 border-b border-gray-line pb-8">
+    <h3 class="mb-6 text-lg font-semibold">Thương hiệu</h3>
+    <div class="space-y-2">
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="brand"
+          value="Asus"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">ASUS</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="brand"
+          value="Lenovo"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">Lenovo</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="brand"
+          value="Acer"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">Acer</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="brand"
+          value="MSI"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">MSI</span>
+      </label>
     </div>
+  </div>
 
-    <!-- CPU -->
-    <div class="mb-6 border-b border-gray-line pb-8">
-        <h3 class="mb-6 text-lg font-semibold">CPU</h3>
-        <div class="space-y-2">
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="cpu"
-                    value="i5"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">Intel Core i5</span>
-            </label>
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="cpu"
-                    value="i7"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">Intel Core i7</span>
-            </label>
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="cpu"
-                    value="U7"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">Intel Core Ultra 7</span>
-            </label>
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="cpu"
-                    value="R5"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">AMD Ryzen 5</span>
-            </label>
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="cpu"
-                    value="R7"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">AMD Ryzen 7</span>
-            </label>
-        </div>
+  <!-- CPU -->
+  <div class="mb-6 border-b border-gray-line pb-8">
+    <h3 class="mb-6 text-lg font-semibold">CPU</h3>
+    <div class="space-y-2">
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="cpu"
+          value="i5"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">Intel Core i5</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="cpu"
+          value="i7"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">Intel Core i7</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="cpu"
+          value="U7"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">Intel Core Ultra 7</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="cpu"
+          value="R5"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">AMD Ryzen 5</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="cpu"
+          value="R7"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">AMD Ryzen 7</span>
+      </label>
     </div>
+  </div>
 
-    <!-- Screen Size -->
-    <div class="mb-6 border-b border-gray-line pb-8">
-        <h3 class="mb-6 text-lg font-semibold">Kích thước màn hình</h3>
-        <div class="space-y-2">
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="screen_size"
-                    value="14"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">14 inch</span>
-            </label>
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="screen_size"
-                    value="15.6"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">15.6 inch</span>
-            </label>
-            <label class="flex items-center">
-                <input
-                    type="checkbox"
-                    name="screen_size"
-                    value="16"
-                    class="form-checkbox custom-checkbox"
-                />
-                <span class="ml-2">16 inch</span>
-            </label>
-        </div>
+  <!-- Screen Size -->
+  <div class="mb-6 border-b border-gray-line pb-8">
+    <h3 class="mb-6 text-lg font-semibold">Kích thước màn hình</h3>
+    <div class="space-y-2">
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="screen_size"
+          value="14"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">14 inch</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="screen_size"
+          value="15.6"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">15.6 inch</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          name="screen_size"
+          value="16"
+          class="form-checkbox custom-checkbox"
+        />
+        <span class="ml-2">16 inch</span>
+      </label>
     </div>
+  </div>
 
-    <div class="mb-6 border-b border-gray-line pb-8">
-        <h3 class="mb-6 text-lg font-semibold">Khoảng giá</h3>
-        <div class="grid grid-cols-2 grid-rows-2 items-center space-y-2">
-            <span>Thấp nhất:</span>
-            <input
-                type="number"
-                min="0"
-                max="999999999"
-                id="minPrice"
-                name="minPrice"
-                class="rounded-md border-2 py-1 pl-2"
-            />
-            <span>Cao nhất:</span>
-            <input
-                type="number"
-                max="999999999"
-                id="maxPrice"
-                name="maxPrice"
-                class="rounded-md border-2 py-1 pl-2"
-            />
-        </div>
+  <div class="mb-6 border-b border-gray-line pb-8">
+    <h3 class="mb-6 text-lg font-semibold">Khoảng giá</h3>
+    <div class="grid grid-cols-2 grid-rows-2 items-center space-y-2">
+      <span>Thấp nhất:</span>
+      <input
+        type="number"
+        min="0"
+        max="999999999"
+        id="minPrice"
+        name="minPrice"
+        class="rounded-md border-2 py-1 pl-2"
+      />
+      <span>Cao nhất:</span>
+      <input
+        type="number"
+        max="999999999"
+        id="maxPrice"
+        name="maxPrice"
+        class="rounded-md border-2 py-1 pl-2"
+      />
     </div>
+  </div>
 
-    <button
-        type="submit"
-        class="w-full rounded-full border border-transparent bg-primary px-4 py-2 font-semibold text-white hover:border-primary hover:bg-transparent hover:text-primary"
-    >
-        Áp dụng
-    </button>
+  <button
+    type="submit"
+    class="w-full rounded-full border border-transparent bg-primary px-4 py-2 font-semibold text-white hover:border-primary hover:bg-transparent hover:text-primary"
+  >
+    Áp dụng
+  </button>
 </form>

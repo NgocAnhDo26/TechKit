@@ -7,4 +7,11 @@ const router = express.Router();
 router.use(`/api`, apiRoute);
 router.use('', serviceRoute);
 
+// Handle 404 - Not Found
+router.use((req, res, next) => {
+  res.status(404).render('error', {
+    message: 'Xin lỗi, trang bạn yêu cầu không tồn tại',
+    status: 404,
+  });
+});
 export default router;
