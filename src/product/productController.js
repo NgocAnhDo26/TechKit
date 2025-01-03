@@ -46,7 +46,10 @@ router.get('/:category_id/:product_id', async (req, res) => {
     );
 
     if (!product) {
-      return res.render('error', { message: 'Không tìm thấy sản phẩm' });
+      return res.status(404).render('error', {
+        message: 'Không tìm thấy sản phẩm',
+        status: 404,
+      });
     }
 
     // Fetch related products and exclude the current product by comparing product_id
@@ -55,8 +58,9 @@ router.get('/:category_id/:product_id', async (req, res) => {
     res.render('singleProduct', { product, related_products });
   } catch (e) {
     console.error(e);
-    res.render('error', {
+    res.status(500).render('error', {
       message: 'Đã có lỗi xảy ra, vui lòng thử lại sau',
+      status: 500,
     });
   }
 });

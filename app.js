@@ -7,6 +7,7 @@ import { redisClient } from './src/config/config.js';
 import passport from 'passport';
 import { getCartCount } from './src/cart/cartService.js';
 import { getUrl } from './src/util/util.js';
+import { stat } from 'fs';
 
 const app = express();
 const __dirname = import.meta.dirname;
@@ -40,13 +41,11 @@ app.use((req, res, next) => {
     req.url.startsWith('/api') ||
     req.method !== 'GET';
 
-  // Block storing lastUrl if user is not logged in and tries /profile or /admin, or user is not admin for /admin
-  const isForbiddenProfileOrAdmin =
-    (!req.user && req.url.startsWith('/profile')) ||
-    (!req.user?.is_admin && req.url.startsWith('/admin'));
+  // Block storing lastUrl if user is not logged in and tries /profile
+  const isForbiddenProfile = !req.user && req.url.startsWith('/profile');
 
   // Only store if not excluded and not forbidden
-  if (!isExcludedPath && !isForbiddenProfileOrAdmin) {
+  if (!isExcludedPath && !isForbiddenProfile) {
     req.session.lastUrl = req.originalUrl;
   }
 
@@ -82,7 +81,10 @@ app.use((err, req, res, next) => {
   console.error(err);
   res
     .status(500)
-    .render('error', { message: 'Đã có lỗi xảy ra, vui lòng thử lại sau' });
+    .render('error', {
+      message: 'Đã có lỗi xảy ra, vui lòng thử lại sau',
+      status: 500,
+    });
 });
 
 const PORT = process.env.PORT ?? 1111; // Server setup

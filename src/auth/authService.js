@@ -151,20 +151,13 @@ async function sendMail(email, subject, text) {
   });
 }
 
-export function authorize(isAdmin = false) {
-  return (req, res, next) => {
-    if (!req.user) {
-      return res
-        .status(401)
-        .render('error', { message: 'Vui lòng đăng nhập trước' });
-    }
-    if (isAdmin && !req.user.is_admin) {
-      return res
-        .status(403)
-        .render('error', { message: 'Trang này chỉ dành cho admin.' });
-    }
-    return next();
-  };
+export function authorize(req, res, next) {
+  if (!req.user) {
+    return res
+      .status(401)
+      .render('error', { message: 'Vui lòng đăng nhập trước', status: 401 });
+  }
+  return next();
 }
 
 export function forbidRoute(req, res, next) {
@@ -174,7 +167,9 @@ export function forbidRoute(req, res, next) {
   // Logged in but accessing something other than '/logout'
   // Or not logged in but accessing '/logout'
   if ((isLoggedIn && !isLogout) || (!isLoggedIn && isLogout)) {
-    return res.status(403).render('error', { message: 'Trang này bị chặn' });
+    return res
+      .status(403)
+      .render('error', { message: 'Trang này bị chặn', status: 403 });
   }
   return next();
 }

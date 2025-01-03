@@ -163,7 +163,7 @@ router.post('/forgot-password', (req, res) => {
 
 // Handle logout
 router.get('/logout', (req, res, next) => {
-  const forbiddenPaths = ['/profile/', '/admin/']; // Prevent redirect to these paths after logout
+  const forbiddenPaths = ['/profile/']; // Prevent redirect to these paths after logout
   const lastUrl = forbiddenPaths.some((path) =>
     path.includes(req.session.lastUrl),
   )

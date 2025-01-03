@@ -26,12 +26,8 @@ router.use('/cart', (req, res) => {
   renderCartPage(req, res);
 });
 
-router.get('/profile', authorize(), (req, res) => {
+router.get('/profile', authorize, (req, res) => {
   res.status(200).send('Profile page');
-});
-
-router.get('/admin', authorize(true), (req, res) => {
-  res.status(200).send('Admin page');
 });
 
 router.use('/shop', productController);
