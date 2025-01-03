@@ -1,6 +1,6 @@
 import express from 'express';
 import productController from '../product/productController.js';
-import userController from '../user/userController.js';
+import {renderProfilePage} from '../user/userController.js';
 import * as productService from '../product/productService.js';
 import authController from '../auth/authController.js';
 import { renderCartPage } from '../cart/cartController.js';
@@ -21,16 +21,16 @@ router.get('/contact', (req, res) => {
     res.render('contact');
 });
 
-router.use('/cart', (req, res) => {
+router.get('/cart', (req, res) => {
     res.set('Cache-Control', 'no-store');
     renderCartPage(req, res);
 });
 
-router.use('/profile', (req, res) => {
+router.get('/profile', (req,res,next) => {
     req.user
-        ? res.status(200).json('HI!')
-        : res.status(401).json('You must be logged in!');
-},userController);
+        ? next()
+        : res.redirect('/auth/login')
+}, renderProfilePage);
 
 router.use('/shop', productController);
 

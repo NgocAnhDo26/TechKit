@@ -43,14 +43,15 @@ model account {
   id             Int              @id @default(autoincrement())
   name           String           @db.VarChar(70)
   email          String           @unique(map: "email") @db.VarChar(254)
-  password       String           @db.VarChar(72)
+  password       String?          @db.VarChar(72)
   address        String?          @db.VarChar(100)
   birthdate      DateTime?        @db.DateTime(0)
   sex            String?          @db.VarChar(50)
-  avatar         String           @default("avatar/default") @db.VarChar(100)
+  avatar         String           @default("TechKit/avatar/default") @db.VarChar(100)
   create_time    DateTime         @default(now()) @db.Timestamp(0)
   is_lock        Boolean          @default(false)
   is_admin       Boolean          @default(false)
+  google_id      String?          @unique(map: "google_id") @db.VarChar(100)
   cart           cart[]
   orders         orders[]
   product_review product_review[]
@@ -71,6 +72,7 @@ model order_product {
   order_id   Int
   product_id Int
   quantity   Int
+  price      Int
   orders     orders  @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_product_ibfk_1")
   product    product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_product_ibfk_2")
 
@@ -84,6 +86,11 @@ model orders {
   shipping_address String?         @db.VarChar(100)
   create_time      DateTime        @default(now()) @db.Timestamp(0)
   status           String          @db.VarChar(20)
+  customer_name    String?         @db.VarChar(50)
+  customer_phone   String?         @db.VarChar(12)
+  customer_email   String?         @db.VarChar(45)
+  payment_method   String?         @db.VarChar(20)
+  total_price      Int             @default(0)
   order_product    order_product[]
   account          account         @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_ibfk_1")
 
