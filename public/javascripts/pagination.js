@@ -4,36 +4,51 @@ const renderProducts = (data) => {
 
   data.products.forEach((product) => {
     productContainer.innerHTML += `
-            <div class="bg-white p-4 rounded-lg shadow">
-                <img
-                    src="${product.product_image[0].url}"
-                    alt="${product.name}"
-                    class="w-full object-cover mb-4 rounded-lg"
-                />
-                <a href="/shop/${product.category.name.toLowerCase()}/${product.id}" class="text-lg font-semibold mb-2">
-                    ${product.name}
-                </a>
-                <p class="my-2">${product.category.name}</p>
-                <div class="flex items-center mb-4">
-                    ${
-                      product.price_sale
-                        ? `
-                        <span class="text-lg font-bold text-primary">${product.price_sale.toLocaleString()}₫</span>
-                        <span class="text-sm font-bold line-through ml-2">${product.price.toLocaleString()}₫</span>
-                        <span class="text-sm font-bold text-primary ml-2">-${100 - Math.round((product.price_sale / product.price) * 100)}%</span>
-                    `
-                        : `
-                        <span class="text-lg font-bold text-primary">${product.price.toLocaleString()}₫</span>
-                    `
-                    }
-                </div>
-                <button class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full">
-                    Thêm vào giỏ
-                </button>
-            </div>
-        `;
+      <div class="bg-white p-4 rounded-lg shadow self-stretch flex flex-col">
+        <img
+          src="${product.profile_img.url}"
+          alt="${product.name}"
+          class="w-full object-cover mb-4 rounded-lg"
+        />
+        <a
+          href="/shop/${product.category}/${product.id}"
+          class="text-lg font-semibold mb-2"
+        >
+          ${product.name}
+        </a>
+        <p class="my-2">${product.category}</p>
+        <div class="flex items-center mb-4 mt-auto">
+          ${
+            product.price_sale
+              ? `
+                <span class="text-lg font-bold text-primary">
+                  ${product.price_sale.toLocaleString()}₫
+                </span>
+                <span class="text-sm font-bold line-through ml-2">
+                  ${product.price.toLocaleString()}₫
+                </span>
+                <span class="text-sm font-bold text-primary ml-2">
+                  -${100 - Math.round((product.price_sale / product.price) * 100)}%
+                </span>
+              `
+              : `
+                <span class="text-lg font-bold text-primary">
+                  ${product.price.toLocaleString()}₫
+                </span>
+              `
+          }
+        </div>
+        <button
+          onclick="addToCartSingle(${product.id})"
+          class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full"
+        >
+          Thêm vào giỏ
+        </button>
+      </div>
+    `;
   });
 };
+
 
 const updatePaginationUI = (currentPage, totalPage) => {
   console.log(currentPage, totalPage);
@@ -80,22 +95,22 @@ const updatePaginationUI = (currentPage, totalPage) => {
 };
 
 // Attach event listeners for pagination
-document.addEventListener('DOMContentLoaded', () => {
-  const paginationLinks = document.querySelectorAll('.pagination-link');
-  paginationLinks.forEach((link) => {
-    link.addEventListener('click', (e) => {
-      const page = Number(link.textContent);
-      onPageChange(e, page);
-    });
-  });
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//   const paginationLinks = document.querySelectorAll('.pagination-link');
+//   paginationLinks.forEach((link) => {
+//     link.addEventListener('click', (e) => {
+//       const page = Number(link.textContent);
+//       onPageChange(e, page);
+//     });
+//   });
+// });
 
 const onPageChange = async function (e, page) {
   e.preventDefault();
 
   // Get the current URL and extract query parameters
   const currentUrl = new URL(window.location.href);
-  const apiUrl = new URL(`${currentUrl.origin}/api/v1/products`);
+  const apiUrl = new URL(`${currentUrl.origin}/api/product`);
 
   // Copy existing query parameters to the API URL, excluding 'page'
   currentUrl.searchParams.forEach((value, key) => {

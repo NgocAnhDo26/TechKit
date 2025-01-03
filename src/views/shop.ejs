@@ -85,34 +85,48 @@
                   <nav aria-label="Page navigation">
                     <ul class="inline-flex space-x-2" id="product-pagination">
                       <% if (currentPage > 1) { %>
-                      <!-- "Previous" button -->
-                      <li>
-                        <button
-                          class="w-10 h-10 flex items-center justify-center rounded-full pagination-link"
-                        >
-                          Previous
-                        </button>
-                      </li>
+                        <!-- "Previous" button -->
+                        <li>
+                          <button
+                            onclick="onPageChange(event, <%= currentPage - 1 %>);"
+                            class="w-10 h-10 flex items-center justify-center rounded-full pagination-link"
+                          >
+                            Previous
+                          </button>
+                        </li>
                       <% } %>
-                      <!-- Loop through pages -->
-                      <% for (let i = currentPage; i <= currentPage + 5 && i <= totalPage; i++) { %>
-                      <li>
-                        <button
-                          class="w-10 h-10 flex items-center justify-center rounded-full <%= i === currentPage ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white' %> pagination-link"
-                        >
-                          <%= i %>
-                        </button>
-                      </li>
+                    
+                      <!-- Loop through pages dynamically based on currentPage and totalPage -->
+                      <% 
+                        // Calculate the range of pages to show (up to 3 pages before and after the current page)
+                        let startPage = currentPage - 1;
+                        let endPage = currentPage + 1;
+                        if (startPage < 1) startPage = 1;
+                        if (endPage > totalPage) endPage = totalPage;
+
+                        // Loop to generate page buttons
+                        for (let i = startPage; i <= endPage; i++) {
+                      %>
+                        <li>
+                          <button
+                            onclick="onPageChange(event, <%= i %>);"
+                            class="w-10 h-10 flex items-center justify-center rounded-full <%= i === currentPage ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white' %> pagination-link"
+                          >
+                            <%= i %>
+                          </button>
+                        </li>
                       <% } %>
+                    
                       <% if (currentPage < totalPage) { %>
-                      <!-- "Next" button -->
-                      <li>
-                        <button
-                          class="w-10 h-10 flex items-center justify-center rounded-full pagination-link"
-                        >
-                          Next
-                        </button>
-                      </li>
+                        <!-- "Next" button -->
+                        <li>
+                          <button
+                            onclick="onPageChange(event, <%= currentPage + 1 %>);"
+                            class="w-10 h-10 flex items-center justify-center rounded-full pagination-link"
+                          >
+                            Next
+                          </button>
+                        </li>
                       <% } %>
                     </ul>
                   </nav>
