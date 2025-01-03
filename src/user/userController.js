@@ -96,8 +96,14 @@ async function updateProfile(req, res) {
         });
     }
 
+    // Validate and handle the sex field
+    let validSex = sex;
+    if (sex !== 'Nam' && sex !== 'Nữ') {
+        validSex = ''; 
+    }
+
     try {
-        const result = await service.updateProfileInfoByID(account_id, { name, address, birthdate, sex, phone });
+        const result = await service.updateProfileInfoByID(account_id, { name, address, birthdate, sex: validSex, phone });
         return res.status(200).json(result);
     } catch (error) {
         console.error('Error updating profile:', error);

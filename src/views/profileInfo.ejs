@@ -48,10 +48,12 @@
             <div class="flex flex-col gap-2 lg:w-1/2">
                 <label for="sex">Giới tính</label>
                 <select id="sex" name="sex" class="border border-gray-300 rounded-md p-2 opacity-60" disabled>
-                    <option value="male" <%= account.sex === 'male' ? 'selected' : '' %>>Nam</option>
-                    <option value="female" <%= account.sex === 'female' ? 'selected' : '' %>>Nữ</option>
+                    <option value="" <%= !account.sex ? 'selected' : '' %>>Chọn giới tính</option>
+                    <option value="Nam" <%= account.sex === 'Nam' ? 'selected' : '' %>>Nam</option>
+                    <option value="Nữ" <%= account.sex === 'Nữ' ? 'selected' : '' %>>Nữ</option>
                 </select>
-            </div>            
+            </div>
+                        
 
             <button id="update" type="button"
                 class="text-primary border-primary border-2 hover:scale-105 0 rounded-md py-2 px-5 w-fit">
