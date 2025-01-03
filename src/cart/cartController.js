@@ -44,14 +44,17 @@ router.post('/', async (req, res) => {
   const { productId, quantity } = req.body;
 
   if (req.user) {
-    service
-      .addProductToCart(req.user.id, parseInt(productId), parseInt(quantity))
+    service.addProductToCart(req.user.id, parseInt(productId), parseInt(quantity))
       .then((result) => {
+        if (result === null) {
+          res.status(400).send("Không còn đủ sản phẩm trong kho.");
+          return;
+        }
         res.status(200).json(result);
       })
       .catch((e) => {
         console.error(e);
-        res.status(500).send('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.');
+        res.status(500).send("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.");
       });
   } else {
     const product = await fetchProductByID(parseInt(productId));
@@ -126,7 +129,7 @@ router.put('/:productId', async (req, res) => {
       .updateProductQuantity(req.user.id, productId, quantity)
       .then((result) => {
         if (result === null) {
-          res.status(400).send('Số lượng sản phẩm không hợp lệ!');
+          res.status(400).send('Số lượng sản phẩm không hợp lệ hoặc không còn đủ hàng trong kho.');
           return;
         }
         res.status(200).json(result);

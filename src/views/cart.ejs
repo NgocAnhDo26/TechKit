@@ -210,8 +210,8 @@
                   </thead>
                   <tbody id="cart-items">
                     <!-- Loop through products and display each one -->
-                    <% if (products.length > 0) { %> <% products.forEach(product
-                    => { %>
+                    <% if (products.length > 0) { %> 
+                    <% products.forEach(product => { %>
                     <tr
                       class="pb-4 border-b border-gray-line"
                       id="<%= product.id %>"
@@ -261,8 +261,7 @@
                         class="px-1 py-4 text-right"
                         id="product-total-<%= product.id %>"
                       >
-                        <%= formatPrice(product.total)
-                                                %>
+                        <%= formatPrice(product.total) %>
                       </td>
                       <td class="px-3 py-4 text-right">
                         <button

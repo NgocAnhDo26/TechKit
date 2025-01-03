@@ -110,7 +110,6 @@ export async function fetchProductByID(productID) {
   const product = await prisma.product.findUnique({
     where: {
       id: productID,
-      in_stock: { gt: 0 },
     },
     include: {
       brand: {

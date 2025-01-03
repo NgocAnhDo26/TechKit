@@ -1,6 +1,7 @@
 import express from 'express';
 import * as service from './userService.js';
 import bcrypt from 'bcrypt';
+import { fetchOrders } from '../order/orderService.js';
 
 const router = express.Router();
 
@@ -44,16 +45,25 @@ export async function renderProfilePage(req, res) {
         if (!account) {
             return res.status(404).send('Account not found');
         }
-        res.status(200).render('profile', { account });
+        res.status(200).render('profile', { section: 'info', account });
     } catch (error) {
         console.error('Error fetching account:', error);
         res.status(500).send('Error occured when fetching account');
     }
 }
 
+export async function renderOrdersPage(req, res) {
+    try {
+        const orders = await fetchOrders(req.user.id);
+        res.status(200).render('profile', { section: 'orders', orders });
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        res.status(500).send('Error occured when fetching orders');
+    }
+}
 
 router.get('/info', async (req, res) => {
-    const { account_id } = req.user.id; 
+    const { account_id } = req.user.id;
 
     if (!account_id) {
         return res.status(400).json({
@@ -115,7 +125,7 @@ async function updateProfile(req, res) {
 }
 
 // POST /info - Update profile information
-router.post('',updateProfile);
+router.post('', updateProfile);
 
 router.post('/info', updateProfile);
 
@@ -127,17 +137,17 @@ router.post('/password', async (req, res) => {
     }
 
     const account = await service.fetchAccountByID(account_id);
-    if(!account) {
+    if (!account) {
         return res.status(400).json({ success: false, message: 'User not found' });
     }
 
     const match = await bcrypt.compare(oldPassword, account.password);
     if (!match) {
-        return res.status(401).json({success:false, message: "Old password is incorrect" })
+        return res.status(401).json({ success: false, message: "Old password is incorrect" })
     }
 
     if (oldPassword === newPassword) {
-        return res.status(401).json({success:false, message: "New password must be different from old password" })
+        return res.status(401).json({ success: false, message: "New password must be different from old password" })
     }
 
     if (confirmPassword !== newPassword) {

@@ -1,4 +1,5 @@
 import { prisma } from '../config/config.js'; // Import prisma database connection
+import { getImage } from '../util/util.js'; // Import getImage function
 
 // Get unique product count from user's cart
 export async function getCartCount(user_id) {
@@ -45,7 +46,7 @@ export async function fetchCartProducts(user_id) {
     name: product.product.name,
     price: product.product.price,
     price_sale: product.product.price_sale,
-    image: product.product.product_image[0].public_id,
+    image: getImage(product.product.product_image[0].public_id).url,
     quantity: product.quantity,
     total: product.product.price_sale * product.quantity,
   }));
@@ -81,7 +82,7 @@ export async function fetchGuestCartProducts(cart) {
       name: product.name,
       price: product.price,
       price_sale: product.price_sale,
-      image: product.product_image[0].public_id,
+      image: getImage(product.product_image[0].public_id).url,
       quantity: item.quantity,
       total: product.price_sale * item.quantity,
     };
@@ -103,6 +104,15 @@ export async function fetchGuestCartProducts(cart) {
 
 // Add product to user's cart
 export async function addProductToCart(user_id, product_id, quantity) {
+  // Check if the product in_stock >= quantity
+  const productData = await prisma.product.findUnique({
+    where: { id: product_id },
+  });
+
+  if (!productData || productData.in_stock < quantity) {
+    return null;
+  }
+
   // Check if product already exists in user's cart
   const product = await prisma.cart.findUnique({
     where: {
@@ -160,6 +170,15 @@ export async function removeProductFromCart(user_id, product_id) {
 // Update product quantity in user's cart
 export async function updateProductQuantity(user_id, product_id, quantity) {
   if (!quantity || quantity <= 0) {
+    return null;
+  }
+
+  // Check if the product in_stock >= quantity
+  const productData = await prisma.product.findUnique({
+    where: { id: product_id },
+  });
+
+  if (!productData || productData.in_stock < quantity) {
     return null;
   }
 
