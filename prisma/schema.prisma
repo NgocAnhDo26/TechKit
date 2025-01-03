@@ -30,7 +30,7 @@ model product {
   in_stock       Int              @default(1)
   sales          Int              @default(1)
   create_time    DateTime         @default(now()) @db.Timestamp(0)
-  status         String           @db.VarChar(20)
+  status         String           @default("on stock") @db.VarChar(20)
   cart           cart[]
   order_product  order_product[]
   brand          brand?           @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_brand")

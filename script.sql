@@ -34,6 +34,7 @@ CREATE TABLE product (
   in_stock INT NOT NULL,
   sales INT NOT NULL,
   create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  status VARCHAR(20) NOT NULL DEFAULT 'on stock',
   FOREIGN KEY (brand_id) REFERENCES brand(id)
 );
 
