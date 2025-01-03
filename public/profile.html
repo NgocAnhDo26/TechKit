@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <body>
+        <div class="flex gap-5">
+            <!-- Sidebar -->
+            <aside class="rounded-md shadow-md p-5">
+                <nav class="flex flex-col gap-2 items-stretch">
+                    <a class="rounded-md border border-primary text-white p-2 text-center" href="/">
+                        Thông tin tài khoản
+                    </a>
+                    <a class="rounded-md border border-primary text-white p-2 text-center" href="/orders">
+                        Đơn hàng của tôi
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main section -->
+            <div
+                class="flex-1 flex flex-col border-md shadow-md rounded-md p-5 text-lg pt-10"
+            >
+                <h1 class="font-bold">Thông tin cá nhân</h1>
+
+                <form>
+                    <div class="flex flex-col gap-5 mt-5">
+                        <div class="flex gap-10">
+                            <p>Ảnh đại diện:</p>
+                            <img src="" alt="Avatar" class="rounded-full w-16 object-cover" />
+                        </div>
+
+                        <div id="choose-img" class="hidden items-center">
+                            <input
+                                type="file"
+                                id="avatar"
+                                name="avatar"
+                                class="border border-gray-300 rounded-md p-2"
+                                accept="image/*"
+                                required
+                            />
+
+                            <img
+                                id="preview"
+                                src=""
+                                alt="Preview"
+                                class="rounded-md w-14 object-cover m-2"
+                            />
+                        </div>
+
+                        <div class="flex flex-col gap-2 lg:w-1/2">
+                            <label for="name">Họ và tên</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                class="border border-gray-300 rounded-md p-2 opacity-60"
+                                value="Nguyễn Văn A"
+                                readonly
+                                required
+                            />
+                        </div>
+
+                        <div class="flex flex-col gap-2 lg:w-1/2">
+                            <label for="email">Email</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="border border-gray-300 rounded-md p-2 opacity-60"
+                                value="nguyenvana@gmail.com"
+                                readonly
+                            />
+                        </div>
+
+                        <div class="flex flex-col gap-2 lg:w-1/2">
+                            <label for="phone">Số điện thoại</label>
+                            <input
+                                type="text"
+                                id="phone"
+                                name="phone"
+                                class="border border-gray-300 rounded-md p-2 opacity-60"
+                                value="0987654321"
+                                readonly
+                            />
+                        </div>
+
+                        <div class="flex flex-col gap-2 lg:w-1/2">
+                            <label for="birthday">Ngày sinh</label>
+                            <input
+                                type="date"
+                                id="birthday"
+                                name="birthday"
+                                class="border border-gray-300 rounded-md p-2 opacity-60"
+                                value="2000-01-01"
+                                readonly
+                            />
+                        </div>
+
+                        <div class="flex flex-col gap-2 lg:w-1/2">
+                            <label for="address">Địa chỉ</label>
+                            <input
+                                type="text"
+                                id="address"
+                                name="address"
+                                class="border border-gray-300 rounded-md p-2 opacity-60"
+                                value="123 Đường ABC, Quận XYZ, TP. HCM"
+                                readonly
+                            />
+                        </div>
+
+                        <button
+                            id="update"
+                            type="button"
+                            class="text-primary border-primary border-2 hover:scale-105 0 rounded-md py-2 px-5 w-fit"
+                        >
+                            Cập nhật
+                        </button>
+                        <div class="flex gap-5">
+                            <button
+                                id="apply"
+                                type="submit"
+                                class="text-primary border-primary border-2 hover:scale-105 rounded-md py-2 px-5 hidden w-fit"
+                            >
+                                Áp dụng
+                            </button>
+                            <button
+                                id="cancel"
+                                type="button"
+                                class="text-white bg-primary border-2 hover:scale-105 rounded-md py-2 px-5 hidden w-fit"
+                            >
+                                Hủy
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <h1 class="font-bold mt-10 mb-5">Cập nhật mật khẩu</h1>
+                <form>
+                    <div class="flex flex-col gap-2 lg:w-1/2 mb-2">
+                        <label for="old-password">Mật khẩu cũ</label>
+                        <input
+                            type="password"
+                            id="old-password"
+                            name="old-password"
+                            class="border border-gray-300 rounded-md p-2"
+                            required
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-2 lg:w-1/2 mb-2">
+                        <label for="new-password">Mật khẩu mới</label>
+                        <input
+                            type="password"
+                            id="new-password"
+                            name="new-password"
+                            class="border border-gray-300 rounded-md p-2"
+                            required
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-2 lg:w-1/2 mb-2">
+                        <label for="confirm-password">Xác nhận mật khẩu</label>
+                        <input
+                            type="password"
+                            id="confirm-password"
+                            name="confirm-password"
+                            class="border border-gray-300 rounded-md p-2"
+                            required
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="text-primary border-primary border-2 hover:scale-105 rounded-md py-2 px-5 w-fit mt-5"
+                    >
+                        Cập nhật mật khẩu
+                    </button>
+
+            </div>
+
+            <div
+                class="flex-1 flex flex-col shadow-md rounded-md p-5 text-lg pt-10"
+            >
+                <h2>Đơn hàng của tôi</h2>
+
+                <table class="w-full mt-5 rounded-lg border-separate border-tools-table-outline border-2 border-gray-300 text-center">
+                    <thead>
+                        <tr>
+                            <th class="p-2">Mã đơn hàng</th>
+                            <th class="p-2">Ngày đặt hàng</th>
+                            <th class="p-2">Tổng tiền</th>
+                            <th class="p-2">Trạng thái</th>
+                            <th class="p-2">Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-2">1</td>
+                            <td class="p-2">2021-01-01</td>
+                            <td class="p-2">100,000 VND</td>
+                            <td class="p-2">Đã giao hàng</td>
+                            <td class="p-2"><a>Xem chi tiết</a></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2">2</td>
+                            <td class="p-2">2021-01-02</td>
+                            <td class="p-2">200,000 VND</td>
+                            <td class="p-2">Đã giao hàng</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2">3</td>
+                            <td class="p-2">2021-01-03</td>
+                            <td class="p-2">300,000 VND</td>
+                            <td class="p-2">Đã giao hàng</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        // Image preview
+        const avatar = document.getElementById('avatar');
+        const preview = document.getElementById('preview');
+
+        avatar.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        // Click update button, enable all input fields (except email)
+        const updateButton = document.getElementById('update');
+        const applyButton = document.getElementById('apply');
+        const cancelButton = document.getElementById('cancel');
+
+        updateButton.addEventListener('click', () => {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach((input) => {
+                if (input.id !== 'email') {
+                    input.removeAttribute('readonly');
+                    input.classList.remove('opacity-60');
+                }
+            });
+
+            // Open image preview
+            const chooseImg = document.getElementById('choose-img');
+            chooseImg.style.display = 'flex';
+
+
+            updateButton.classList.add('hidden');
+            applyButton.classList.remove('hidden');
+            cancelButton.classList.remove('hidden');
+        });
+
+        // Click cancel button, disable all input fields
+        cancelButton.addEventListener('click', () => {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach((input) => {
+                input.setAttribute('readonly', '');
+                input.classList.add('opacity-60');
+            });
+
+            // Hide image preview
+            const chooseImg = document.getElementById('choose-img');
+            chooseImg.style.display = 'none';
+
+            updateButton.classList.remove('hidden');
+            applyButton.classList.add('hidden');
+            cancelButton.classList.add('hidden');
+        });
+    </script>
+</html>

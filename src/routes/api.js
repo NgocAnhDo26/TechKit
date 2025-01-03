@@ -1,6 +1,7 @@
 import express from 'express';
 import * as service from '../product/productService.js'
 import cartController from '../cart/cartController.js';
+import checkoutController from '../checkout/checkoutController.js';
 
 const router = express.Router();
 
@@ -17,5 +18,11 @@ router.get('/products', (req, res) => {
 });
 
 router.use('/cart', cartController);
+
+router.use('/checkout', (req, res, next) => {
+    req.user
+        ? next()
+        : res.redirect('/auth/login');
+}, checkoutController);
 
 export default router;

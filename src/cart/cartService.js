@@ -97,6 +97,16 @@ export async function fetchGuestCartProducts(cart) {
 
 // Add product to user's cart
 export async function addProductToCart(user_id, product_id, quantity) {
+    // Check if the product in_stock >= quantity
+    const productData = await prisma.product.findUnique({
+        where: { id: product_id },
+    });
+
+    if (!productData || productData.in_stock < quantity) {
+        return null;
+    }
+
+
     // Check if product already exists in user's cart
     const product = await prisma.cart.findUnique({
         where: {
@@ -151,6 +161,15 @@ export async function removeProductFromCart(user_id, product_id) {
 // Update product quantity in user's cart
 export async function updateProductQuantity(user_id, product_id, quantity) {
     if (!quantity || quantity <= 0) {
+        return null;
+    }
+
+    // Check if the product in_stock >= quantity
+    const productData = await prisma.product.findUnique({
+        where: { id: product_id },
+    });
+
+    if (!productData || productData.in_stock < quantity) {
         return null;
     }
 

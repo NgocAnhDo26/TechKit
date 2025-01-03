@@ -39,6 +39,10 @@ router.post('/', async (req, res) => {
     if (req.user) {
         service.addProductToCart(req.user.id, parseInt(productId), parseInt(quantity))
             .then((result) => {
+                if (result === null) {
+                    res.status(400).send("Không còn đủ sản phẩm trong kho.");
+                    return;
+                }
                 res.status(200).json(result);
             })
             .catch((e) => {
@@ -106,7 +110,7 @@ router.put('/:productId', async (req, res) => {
         service.updateProductQuantity(req.user.id, productId, quantity)
             .then((result) => {
                 if (result === null) {
-                    res.status(400).send("Số lượng sản phẩm không hợp lệ!");
+                    res.status(400).send("Số lượng sản phẩm không hợp lệ hoặc không còn đủ hàng trong kho.");
                     return;
                 }
                 res.status(200).json(result);

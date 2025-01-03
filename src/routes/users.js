@@ -2,6 +2,7 @@ import express from 'express';
 import productController from '../product/productController.js';
 import * as productService from '../product/productService.js';
 import authController from '../auth/authController.js';
+import { renderCheckoutPage } from '../checkout/checkoutController.js';
 import { renderCartPage } from '../cart/cartController.js';
 
 const router = express.Router();
@@ -20,9 +21,15 @@ router.get('/contact', (req, res) => {
     res.render('contact');
 });
 
-router.use('/cart', (req, res) => {
+router.get('/cart', (req, res) => {
     res.set('Cache-Control', 'no-store');
     renderCartPage(req, res);
+});
+
+router.get('/checkout', (req, res) => {
+    req.user
+        ? renderCheckoutPage(req, res)
+        : res.redirect('/auth/login');
 });
 
 router.get('/profile', (req, res) => {
