@@ -56,7 +56,6 @@ export default passport.use(
             state: true,
         },
         async (accessToken, refreshToken, profile, done) => {
-            console.log(profile);
             const { id, displayName, emails, photos } = profile;
             const email = emails[0].value;
             let avatar = photos[0].value;
@@ -150,4 +149,40 @@ async function sendMail(email, subject, text) {
         subject: subject,
         text: text,
     });
+}
+
+export function authorize(isAdmin = false) {
+    return (req, res, next) => {
+        if (!req.user) {
+            return res
+                .status(401)
+                .send(
+                    '<strong>Unauthorized.</strong> <a href="/">Back to homepage</a>',
+                );
+        }
+        if (isAdmin && !req.user.is_admin) {
+            return res
+                .status(403)
+                .send(
+                    '<strong>Route is only for admin.</strong> <a href="/">Back to homepage</a>',
+                );
+        }
+        return next();
+    };
+}
+
+export function forbidRoute(req, res, next) {
+    const isLoggedIn = !!req.user;
+    const isLogout = req.path.includes('/logout');
+
+    // Logged in but accessing something other than '/logout'
+    // Or not logged in but accessing '/logout'
+    if ((isLoggedIn && !isLogout) || (!isLoggedIn && isLogout)) {
+        return res
+            .status(403)
+            .send(
+                '<strong>Route is forbidden.</strong> <a href="/">Back to homepage</a>',
+            );
+    }
+    return next();
 }

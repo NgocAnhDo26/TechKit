@@ -108,14 +108,24 @@ router.get(
     }),
 );
 
-router.get(
-    '/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    function (req, res) {
-        // Successful authentication, redirect last url or home page
-        res.redirect(req.session.lastUrl || '/');
-    },
-);
+router.get('/google/callback', (req, res, next) => {
+    passport.authenticate('google', (err, user) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            // Authentication failed
+            return res.redirect('/login');
+        }
+
+        // Save lastUrl before logging in
+        const lastUrl = req.session.lastUrl;
+        req.login(user, (err) => {
+            if (err) return next(err);
+            return res.redirect(lastUrl || '/');
+        });
+    })(req, res, next);
+});
 
 // Render forgot password page
 router.get('/forgot-password', (req, res) => {
@@ -147,10 +157,15 @@ router.post('/forgot-password', (req, res) => {
 
 // Handle logout
 router.get('/logout', (req, res, next) => {
-    const lastUrl = req.session.lastUrl;
+    const forbiddenPaths = ['/profile/', '/admin/']; // Prevent redirect to these paths after logout
+    const lastUrl = forbiddenPaths.some((path) =>
+        path.includes(req.session.lastUrl),
+    )
+        ? '/'
+        : req.session.lastUrl;
     req.logout((err) => {
         if (err) return next(err);
-        return res.redirect(lastUrl || '/');
+        return res.redirect(lastUrl);
     });
 });
 

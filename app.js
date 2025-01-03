@@ -33,10 +33,22 @@ app.use(passport.session());
 
 // Middleware to save last visited URL
 app.use((req, res, next) => {
-    // Don't store url for authentication (login, register, logout) or other method except GET
-    if (!req.url.startsWith('/auth') && req.method === 'GET') {
+    // Exclude certain paths or non-GET methods
+    const isExcludedPath =
+        req.url.startsWith('/auth') ||
+        req.url.startsWith('/api') ||
+        req.method !== 'GET';
+
+    // Block storing lastUrl if user is not logged in and tries /profile or /admin, or user is not admin for /admin
+    const isForbiddenProfileOrAdmin =
+        (!req.user && req.url.startsWith('/profile')) ||
+        (!req.user?.is_admin && req.url.startsWith('/admin'));
+
+    // Only store if not excluded and not forbidden
+    if (!isExcludedPath && !isForbiddenProfileOrAdmin) {
         req.session.lastUrl = req.originalUrl;
     }
+
     next();
 });
 
