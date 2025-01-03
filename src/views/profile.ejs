@@ -1,15 +1,138 @@
 <!doctype html>
-<html lang="en">
-    <head>
-        <%- include('./partials/head'); %>
-        <title>TechKit - Login</title>
-    </head>
+<html lang="vi">
 
-    <body>
-        <!-- Header -->
-        <%- include('./partials/header'); %>
-        
+<head>
+    <%- include('./partials/head'); %>
+        <title>TechKit - Login</title>
+</head>
+
+<body>
+    <!-- Header -->
+    <%- include('./partials/header'); %>
+        <!-- Content -->
+        <div class="flex gap-5">
+            <!-- Sidebar -->
+            <aside class="rounded-md shadow-md p-5">
+                <nav class="flex flex-col gap-2 items-stretch">
+                    <a class="rounded-md border border-primary text-primary p-2 text-center" href="/profile/info">
+                        Thông tin tài khoản
+                    </a>
+                    <a class="rounded-md border border-primary text-primary p-2 text-center" href="/profile/orders">
+                        Đơn hàng của tôi
+                    </a>
+                </nav>
+            </aside>
+            <%- include('./profileInfo', {account}); %>
+        </div>
         <!-- Footer -->
         <%- include('./partials/footer'); %>
-    </body>
+</body>
+<script>
+    // Image preview
+    const avatar = document.getElementById('avatar');
+    const preview = document.getElementById('preview');
+
+    avatar.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            preview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    // Click update button, enable all input fields (except email)
+    const updateButton = document.getElementById('update');
+    const applyButton = document.getElementById('apply');
+
+    updateButton.addEventListener('click', () => {
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach((input) => {
+            if (input.id !== 'email') {
+                input.removeAttribute('readonly');
+                input.classList.remove('opacity-60');
+            }
+        });
+
+        // Open image preview
+        const chooseImg = document.getElementById('choose-img');
+        chooseImg.style.display = 'flex';
+
+
+        updateButton.classList.add('hidden');
+        applyButton.classList.remove('hidden');
+    });
+
+    applyButton.addEventListener('click', async () => {
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const birthdate = document.getElementById('birthday').value;
+        const address = document.getElementById('address').value;
+        const sex = '';
+
+        const info = { name, address, birthdate, sex, phone };
+        console.log(info);
+
+        const updateProfile = async () => {
+            try {
+                const response = await fetch('/api/profile/info', { // Adjust URL if necessary
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(info),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log('Profile updated successfully:', data);
+                    const inputs = document.querySelectorAll('input');
+                    inputs.forEach((input) => {
+                        if (input.id !== 'email') {
+                            input.setAttribute('readonly', 'true');
+                            input.classList.add('opacity-60');
+                        }
+                    });
+
+                    const chooseImg = document.getElementById('choose-img');
+                    chooseImg.style.display = '';
+
+                    applyButton.classList.add('hidden');
+                    updateButton.classList.remove('hidden');
+                    // // Update name field
+                    // const nameElement = document.getElementById('name');
+                    // if (nameElement) nameElement.value = data.result.name;
+
+                    // // Update address field
+                    // const addressElement = document.getElementById('address');
+                    // if (addressElement) addressElement.value = data.result.address;
+
+                    // // Update birthdate field
+                    // const birthdateElement = document.getElementById('birthdate');
+                    // if (birthdateElement) birthdateElement.value = data.result.birthdate;
+
+                    // // Update phone field
+                    // const phoneElement = document.getElementById('phone');
+                    // if (phoneElement) phoneElement.value = data.result.phone;
+                    // // Show success message to the user
+                    // alert('Profile updated successfully!');
+                } else {
+                    console.error('Failed to update profile:', data.message);
+                    alert(`Error: ${data.message}`);
+                }
+
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                // Handle network or other errors (e.g., show a general error message)
+            }
+        };
+
+        // Call the updateProfile function
+        updateProfile();
+    });
+</script>
+
 </html>

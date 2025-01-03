@@ -9,6 +9,7 @@ async function fetchAccountByID(account_id) {
                 id: true,
                 name: true,
                 email: true,
+                phone: true,
                 address: true,
                 birthdate: true,
                 sex: true,
@@ -23,11 +24,15 @@ async function fetchAccountByID(account_id) {
 }
 
 async function updateProfileInfoByID(account_id, info) {
-    const { name, address, birthdate, sex } = info;
-
+    const { name, address, birthdate, sex, phone } = info;
+    let formattedBirthdate;
+    if (birthdate) {
+        // Convert the birthdate string to a Date object
+        formattedBirthdate = new Date(`${birthdate}T00:00:00Z`);
+    }
     // Check if at least one field is provided
-    if (!name && !address && !birthdate && !sex) {
-        return {success:false, message: "At least one field is required to update account"};
+    if (!name && !address && !birthdate && !sex && !phone) {
+        return { success: false, message: "At least one field is required to update account" };
     }
 
     try {
@@ -35,10 +40,11 @@ async function updateProfileInfoByID(account_id, info) {
         const updatedAccount = await prisma.account.update({
             where: { id: Number(account_id) },
             data: {
-                name: name || undefined,       
-                address: address || undefined, 
-                birthdate: birthdate || undefined, 
-                sex: sex || undefined          
+                name: name || undefined,
+                address: address || undefined,
+                birthdate: formattedBirthdate || undefined,
+                sex: sex || undefined,
+                phone: phone || undefined // Adding phone to update
             }
         });
 
@@ -48,6 +54,7 @@ async function updateProfileInfoByID(account_id, info) {
         throw new Error(error.message || 'Failed to update profile');
     }
 }
+
 
 async function updatePasswordByID(account_id, newPassword) {
     try {

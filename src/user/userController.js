@@ -6,6 +6,7 @@ const router = express.Router();
 
 // GET / - Fetch account details by ID
 router.get('/', async (req, res) => {
+    const account_id = req.user.id;
     if (!account_id) {
         return res.status(400).json({
             success: false,
@@ -39,7 +40,7 @@ router.get('/', async (req, res) => {
 // Renders the profile page with account details
 export async function renderProfilePage(req, res) {
     try {
-        const account = await fetchAccountByID(req.user.id);
+        const account = await service.fetchAccountByID(req.user.id);
         if (!account) {
             return res.status(404).send('Account not found');
         }
@@ -52,7 +53,7 @@ export async function renderProfilePage(req, res) {
 
 
 router.get('/info', async (req, res) => {
-    const { account_id } = req.body; 
+    const { account_id } = req.user.id; 
 
     if (!account_id) {
         return res.status(400).json({
@@ -84,50 +85,33 @@ router.get('/info', async (req, res) => {
     }
 });
 
+async function updateProfile(req, res) {
+    const { name, address, birthdate, sex, phone } = req.body;
+    const account_id = req.user.id;
+
+    if (!account_id) {
+        return res.status(400).json({
+            success: false,
+            message: 'Account ID is required'
+        });
+    }
+
+    try {
+        const result = await service.updateProfileInfoByID(account_id, { name, address, birthdate, sex, phone });
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        return res.status(500).json({
+            success: false,
+            message: error.message || 'Failed to update profile'
+        });
+    }
+}
+
 // POST /info - Update profile information
-router.post('', async (req, res) => {
-    const { account_id, name, address, birthdate, sex } = req.body;
-    if (!account_id) {
-        return res.status(400).json({
-            success: false,
-            message: 'Account ID is required'
-        });
-    }
+router.post('',updateProfile);
 
-    try {
-        const result = await service.updateProfileInfoByID(account_id, { name, address, birthdate, sex });
-        res.status(200).json(result);
-    } catch (error) {
-        console.error('Error updating profile:', error);
-        res.status(500).json({
-            success: false,
-            message: error.message || 'Failed to update profile'
-        });
-    }
-});
-
-router.post('/info', async (req, res) => {
-    const { account_id, name, address, birthdate, sex } = req.body;
-
-    // Ensure account_id is provided
-    if (!account_id) {
-        return res.status(400).json({
-            success: false,
-            message: 'Account ID is required'
-        });
-    }
-
-    try {
-        const result = await service.updateProfileInfoByID(account_id, { name, address, birthdate, sex });
-        res.status(200).json(result);
-    } catch (error) {
-        console.error('Error updating profile:', error);
-        res.status(500).json({
-            success: false,
-            message: error.message || 'Failed to update profile'
-        });
-    }
-});
+router.post('/info', updateProfile);
 
 router.post('/password', async (req, res) => {
     const { account_id, oldPassword ,newPassword } = req.body;

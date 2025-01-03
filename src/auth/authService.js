@@ -1,9 +1,11 @@
 import { prisma, redisClient } from '../config/config.js';
 import passport from 'passport';
 import { Strategy } from 'passport-local';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
+import { uploadImage } from '../util/util.js';
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -20,14 +22,15 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
-export default passport.use(
+passport.use(
     new Strategy({ usernameField: 'email' }, async (email, password, done) => {
         try {
             const user = await prisma.account.findUnique({
-                where: { email: email },
+                where: { email },
             });
 
-            if (user) {
+            // If user is found and had logged in with local strategy
+            if (user && user.password) {
                 const match = await bcrypt.compare(password, user.password);
                 if (match) {
                     return done(null, user);
@@ -38,16 +41,97 @@ export default passport.use(
                 message: 'Incorrect email or password.',
             });
         } catch (err) {
-            done(err);
+            return done(err);
         }
     }),
+);
+
+// Google OAuth2.0
+export default passport.use(
+    new GoogleStrategy(
+        {
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: process.env.GOOGLE_REDIRECT_URI,
+            state: true,
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            const { id, displayName, emails, photos } = profile;
+            const email = emails[0].value;
+            let avatar = photos[0].value;
+
+            // Check if the user exists with the given email
+            let user = await prisma.account.findUnique({
+                where: {
+                    email: email,
+                },
+            });
+
+            if (!user) {
+                // Upload the avatar to cloudinary
+                const result = await uploadImage(avatar, 'TechKit/avatar');
+                avatar = result.public_id;
+
+                // If the user does not exist, create a new user
+                user = await prisma.account.create({
+                    data: {
+                        google_id: id,
+                        name: displayName,
+                        email: email,
+                        avatar: avatar,
+                    },
+                });
+            } else if (!user.google_id) {
+                // Upload the avatar to cloudinary
+                uploadImage(avatar, 'TechKit/avatar').then((result) => {
+                    avatar = result.public_id;
+                });
+                // If the user exists but does not have a google_id, update the google_id
+                user = await prisma.account.update({
+                    where: {
+                        email: email,
+                    },
+                    data: {
+                        google_id: id,
+                        name: displayName,
+                        avatar: avatar,
+                    },
+                });
+            }
+
+            return done(null, user);
+        },
+    ),
 );
 
 export async function sendActivationEmail(user) {
     const token = crypto.randomBytes(32).toString('hex');
     await redisClient.json.set(token, '$', user, { EX: 3600 }); // 1-hour expiry
     const activateLink = `http://localhost:1111/auth/activate?token=${token}`;
+    sendMail(
+        user.email,
+        'Activate Your TechKit Account',
+        `Please visit: ${activateLink}`,
+    );
+}
 
+export async function handleForgotPassword(email) {
+    const newPassword = crypto.randomBytes(32).toString('hex');
+    const hashPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.account.update({
+        where: { email: email },
+        data: { password: hashPassword },
+    });
+
+    sendMail(
+        email,
+        'Reset Your TechKit Password',
+        `Your new password is: ${newPassword}`,
+    );
+}
+
+async function sendMail(email, subject, text) {
     const transporter = nodemailer.createTransport({
         host: process.env.MAIL_HOST,
         service: process.env.MAIL_SERVICE,
@@ -61,14 +145,44 @@ export async function sendActivationEmail(user) {
 
     await transporter.sendMail({
         from: '"TechKit" <no-reply@techkit.com>',
-        to: user.email,
-        subject: 'Activate Your TechKit Account',
-        text: `Please visit: ${activateLink}`,
+        to: email,
+        subject: subject,
+        text: text,
     });
 }
 
-export async function isEmailExist(email) {
-    return await prisma.account.findUnique({
-        where: { email: email },
-    });
+export function authorize(isAdmin = false) {
+    return (req, res, next) => {
+        if (!req.user) {
+            return res
+                .status(401)
+                .send(
+                    '<strong>Unauthorized.</strong> <a href="/">Back to homepage</a>',
+                );
+        }
+        if (isAdmin && !req.user.is_admin) {
+            return res
+                .status(403)
+                .send(
+                    '<strong>Route is only for admin.</strong> <a href="/">Back to homepage</a>',
+                );
+        }
+        return next();
+    };
+}
+
+export function forbidRoute(req, res, next) {
+    const isLoggedIn = !!req.user;
+    const isLogout = req.path.includes('/logout');
+
+    // Logged in but accessing something other than '/logout'
+    // Or not logged in but accessing '/logout'
+    if ((isLoggedIn && !isLogout) || (!isLoggedIn && isLogout)) {
+        return res
+            .status(403)
+            .send(
+                '<strong>Route is forbidden.</strong> <a href="/">Back to homepage</a>',
+            );
+    }
+    return next();
 }

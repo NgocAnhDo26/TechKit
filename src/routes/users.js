@@ -3,6 +3,7 @@ import productController from '../product/productController.js';
 import {renderProfilePage} from '../user/userController.js';
 import * as productService from '../product/productService.js';
 import authController from '../auth/authController.js';
+import { forbidRoute, authorize } from '../auth/authService.js';
 import { renderCartPage } from '../cart/cartController.js';
 
 const router = express.Router();
@@ -32,8 +33,14 @@ router.get('/profile', (req,res,next) => {
         : res.redirect('/auth/login')
 }, renderProfilePage);
 
+router.get('/profile/info', (req,res,next) => {
+    req.user
+        ? next()
+        : res.redirect('/auth/login')
+}, renderProfilePage);
+
 router.use('/shop', productController);
 
-router.use('/auth', authController);
+router.use('/auth', forbidRoute, authController);
 
 export default router;
