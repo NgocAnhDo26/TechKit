@@ -114,7 +114,8 @@ router.post('',updateProfile);
 router.post('/info', updateProfile);
 
 router.post('/password', async (req, res) => {
-    const { account_id, oldPassword ,newPassword } = req.body;
+    const { oldPassword ,newPassword, confirmPassword } = req.body;
+    const account_id = req.user.id;
     if (!account_id || !newPassword || !oldPassword) {
         return res.status(400).json({ success: false, message: 'Fill all the fields' });
     }
@@ -131,6 +132,10 @@ router.post('/password', async (req, res) => {
 
     if (oldPassword === newPassword) {
         return res.status(401).json({success:false, message: "New password must be different from old password" })
+    }
+
+    if (confirmPassword !== newPassword) {
+        return res.status(401).json({success:false, message: "Confirm password must be the same as new password" })
     }
 
     try {

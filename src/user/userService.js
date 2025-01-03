@@ -10,12 +10,19 @@ async function fetchAccountByID(account_id) {
                 name: true,
                 email: true,
                 phone: true,
+                password: true,
                 address: true,
                 birthdate: true,
                 sex: true,
                 create_time: true
             }
         })
+        if (account && account.birthdate) {
+            // Format birthdate to "yyyy-MM-dd"
+            const birthdate = new Date(account.birthdate);
+            account.birthdate = birthdate.toISOString().split('T')[0];
+        }
+
         return account;
     } catch (error) {
         console.error('Error fetching accounts:', error);
@@ -45,6 +52,16 @@ async function updateProfileInfoByID(account_id, info) {
                 birthdate: formattedBirthdate || undefined,
                 sex: sex || undefined,
                 phone: phone || undefined // Adding phone to update
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                address: true,
+                birthdate: true,
+                sex: true,
+                create_time: true
             }
         });
 

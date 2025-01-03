@@ -55,7 +55,9 @@
                 input.classList.remove('opacity-60');
             }
         });
-
+        const select = document.getElementById('sex');
+        select.removeAttribute('disabled');
+        select.classList.remove('opacity-60');
         // Open image preview
         const chooseImg = document.getElementById('choose-img');
         chooseImg.style.display = 'flex';
@@ -70,7 +72,7 @@
         const phone = document.getElementById('phone').value;
         const birthdate = document.getElementById('birthday').value;
         const address = document.getElementById('address').value;
-        const sex = '';
+        const sex = document.getElementById('sex').value;
 
         const info = { name, address, birthdate, sex, phone };
         console.log(info);
@@ -91,34 +93,20 @@
                     console.log('Profile updated successfully:', data);
                     const inputs = document.querySelectorAll('input');
                     inputs.forEach((input) => {
-                        if (input.id !== 'email') {
+                        if (input.id !== 'old-password' && input.id !== 'new-password' && input.id !== 'confirm-password') {
                             input.setAttribute('readonly', 'true');
                             input.classList.add('opacity-60');
                         }
                     });
+                    const select = document.getElementById('sex');
+                    select.setAttribute('disabled','true');
+                    select.classList.add('opacity-60');
 
                     const chooseImg = document.getElementById('choose-img');
                     chooseImg.style.display = '';
 
                     applyButton.classList.add('hidden');
                     updateButton.classList.remove('hidden');
-                    // // Update name field
-                    // const nameElement = document.getElementById('name');
-                    // if (nameElement) nameElement.value = data.result.name;
-
-                    // // Update address field
-                    // const addressElement = document.getElementById('address');
-                    // if (addressElement) addressElement.value = data.result.address;
-
-                    // // Update birthdate field
-                    // const birthdateElement = document.getElementById('birthdate');
-                    // if (birthdateElement) birthdateElement.value = data.result.birthdate;
-
-                    // // Update phone field
-                    // const phoneElement = document.getElementById('phone');
-                    // if (phoneElement) phoneElement.value = data.result.phone;
-                    // // Show success message to the user
-                    // alert('Profile updated successfully!');
                 } else {
                     console.error('Failed to update profile:', data.message);
                     alert(`Error: ${data.message}`);
@@ -133,6 +121,48 @@
         // Call the updateProfile function
         updateProfile();
     });
+
+    const updatePasswordButton = document.getElementById('update-password');
+    updatePasswordButton.addEventListener('click', async () => {
+        const oldPassword = document.getElementById('old-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        const updatePassword = async () => {
+            try {
+                const response = await fetch('/api/profile/password', { // Adjust URL if necessary
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        oldPassword,newPassword,confirmPassword
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log('Password updated succesfully:', data);
+                    const inputs = document.querySelectorAll('input');
+                    inputs.forEach((input) => {
+                        if (input.id === 'old-password' || input.id === 'new-password' || input.id === 'confirm-password') {
+                            input.value = '';
+                        }
+                    });
+                    alert(`Success: ${data.message}`);
+                } else {
+                    console.error('Failed to update password:', data.message);
+                    alert(`Error: ${data.message}`);
+                }
+
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                // Handle network or other errors (e.g., show a general error message)
+            }
+        }
+        updatePassword();
+    })
 </script>
 
 </html>
