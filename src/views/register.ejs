@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <%- include('./partials/head'); %>
-    <title>TechKit - Register</title>
+    <title>TechKit - Đăng Ký Tài Khoản</title>
   </head>
 
   <body>
@@ -16,7 +16,7 @@
           <div
             class="rounded-lg bg-white p-4 shadow-md md:m-10 md:w-1/2 md:p-10"
           >
-            <h2 class="mb-10 text-2xl font-semibold">Register</h2>
+            <h2 class="mb-10 text-2xl font-semibold">Đăng Ký</h2>
 
             <!-- Alert -->
             <div
@@ -28,15 +28,13 @@
                 class="ml-4 max-h-5 max-w-5"
               />
               <div class="flex-col">
-                <h2 class="text-lg font-bold">
-                  We couldn't create your account.
-                </h2>
+                <h2 class="text-lg font-bold">Không thể đăng ký.</h2>
                 <p class="error-text-register text-sm font-medium"></p>
               </div>
             </div>
             <form id="register-form">
               <div class="mb-3">
-                <label for="register-name" class="mb-2 block">Your name</label>
+                <label for="register-name" class="mb-2 block">Họ và Tên</label>
                 <input
                   type="text"
                   id="register-name"
@@ -58,7 +56,7 @@
               </div>
               <div class="mb-3">
                 <label for="register-password" class="mb-2 block"
-                  >Password</label
+                  >Mật Khẩu</label
                 >
                 <input
                   type="password"
@@ -72,7 +70,7 @@
               </div>
               <div class="mb-3">
                 <label for="register-confirmPassword" class="mb-2 block"
-                  >Confirm Password</label
+                  >Xác Nhận Mật Khẩu</label
                 >
                 <input
                   type="password"
@@ -91,13 +89,13 @@
                   <a
                     href="/auth/forgot-password"
                     class="text-primary hover:underline"
-                    >Forgot Password?</a
+                    >Quên mật khẩu?</a
                   >
                 </div>
 
                 <div class="flex grow justify-end">
                   <a href="/auth/login" class="text-primary hover:underline"
-                    >Already have an account?</a
+                    >Đã có tài khoản?</a
                   >
                 </div>
               </div>
@@ -106,7 +104,7 @@
                 name="submit"
                 class="register-submit mt-10 w-full rounded-full border border-primary bg-primary px-3 py-2 text-white hover:bg-transparent hover:text-primary"
               >
-                Register
+                Đăng Ký
               </button>
               <a
                 href="/auth/google"
@@ -117,7 +115,7 @@
                   alt="google"
                   class="mx-2 h-8 w-8"
                 />
-                <p class="text-primary">Register with Google</p>
+                <p class="text-primary">Đăng ký bằng Google</p>
               </a>
             </form>
           </div>
