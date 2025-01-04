@@ -12,7 +12,7 @@ router.get('/:product_id', async (req, res) => {
         }
 
         // Fetch reviews using the service function
-        const reviews = await service.fetchProductReviewsWithQuery(product_id);
+        const reviews = await service.fetchProductReviewsWithQuery(product_id,req.query);
         // Send response
         // if (reviews.reviews.length === 0) {
         //     return res.status(404).json({ message: 'No reviews found for this product.' });

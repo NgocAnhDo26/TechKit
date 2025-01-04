@@ -8,7 +8,9 @@ async function fetchProductReviewsWithQuery(product_id, query) {
         }
 
         // Check if query is defined and handle missing page parameter
+        // console.log(query.page);
         const currentPage = query && query.page ? Math.max(Number(query.page), 1) : 1;
+        // console.log(`Current page from query: ${currentPage}`); // Log to verify the value
         const pageSize = 5; 
 
         // Get the total number of reviews for the product

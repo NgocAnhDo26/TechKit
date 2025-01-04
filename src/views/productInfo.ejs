@@ -174,11 +174,10 @@
             <div class="space-y-6">
               <div id="review-list">
                 <% if (reviews.reviews.length !=0) { %>
-                  <% const limitedReviews=reviews.reviews.slice(0, 5); %> <!-- Limit to 5 reviews -->
-                    <% limitedReviews.forEach(review=> { %>
+                    <% reviews.reviews.forEach(review=> { %>
                       <div class="py-4 shadow-md border-md">
                         <div class="flex items-center mb-2">
-                          <img id="review-avatar" src="<%= review.avatar_url %> " class="w-10 h-auto"/>
+                          <img id="review-avatar" src="<%= review.avatar_url %> " class="w-10 h-auto" />
                           <span class="text-2xl font-semibold text-gray-700 ml-4">
                             <%= review.account.name %> <!-- Display the account's name -->
                           </span>
@@ -197,6 +196,50 @@
                         <% } else { %>
                           <p>No reviews found for this product.</p>
                           <% } %>
+              </div>
+              <div class="flex justify-center mt-8">
+                <nav aria-label="Page navigation">
+                  <ul class="inline-flex space-x-2" id="review-pagination">
+                    <!-- Pagination -->
+                    <% if (reviews.currentPage > 1) { %>
+                      <!-- "Previous" button -->
+                      <li>
+                        <button onclick="onReviewPageChange(event, <%= reviews.currentPage - 1 %>);"
+                          class="w-10 h-10 flex items-center justify-center rounded-full review-pagination-link">
+                          Previous
+                        </button>
+                      </li>
+                    <% } %>
+              
+                    <!-- Loop through pages dynamically based on currentPage and totalPages -->
+                    <% 
+                      // Calculate the range of pages to show (up to 3 pages before and after the current page)
+                      let startPage = reviews.currentPage - 1;
+                      let endPage = reviews.currentPage + 1;
+                      if (startPage < 1) startPage = 1;
+                      if (endPage > reviews.totalPages) endPage = reviews.totalPages;
+                    %>
+              
+                    <% for (let i = startPage; i <= endPage; i++) { %>
+                      <li>
+                        <button onclick="onReviewPageChange(event, <%= i %>);"
+                          class="w-10 h-10 flex items-center justify-center rounded-full <%= i === reviews.currentPage ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white' %> review-pagination-link">
+                          <%= i %>
+                        </button>
+                      </li>
+                    <% } %>
+              
+                    <% if (reviews.currentPage < reviews.totalPages) { %>
+                      <!-- "Next" button -->
+                      <li>
+                        <button onclick="onReviewPageChange(event, <%= reviews.currentPage + 1 %>);"
+                          class="w-10 h-10 flex items-center justify-center rounded-full review-pagination-link">
+                          Next
+                        </button>
+                      </li>
+                    <% } %>
+                  </ul>
+                </nav>
               </div>
             </div>
             <!-- Submit Review Form -->
@@ -317,6 +360,112 @@
         showConfirmButton: false,
         timer: 2000,
       });
+    }
+  };
+
+  const renderReviews = (data) => {
+    const reviewContainer = document.getElementById('review-list');
+    reviewContainer.innerHTML = ''; // Clear current content
+
+    if (data.reviews.length !== 0) {
+
+      data.reviews.forEach((review) => {
+        // Format review's time
+        const reviewDate = new Date(review.create_time).toLocaleString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          weekday: 'short',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+
+        reviewContainer.innerHTML += `
+        <div class="py-4 shadow-md border-md">
+          <div class="flex items-center mb-2">
+            <img id="review-avatar" src="${review.avatar_url}" class="w-10 h-auto" />
+            <span class="text-2xl font-semibold text-gray-700 ml-4">
+              ${review.account.name} <!-- Display the account's name -->
+            </span>
+            <span class="text-lg text-gray-700 ml-4">
+              ${reviewDate} <!-- Format the time -->
+            </span>
+          </div>
+          <p class="ml-4">
+            ${review.content} <!-- Display the content of the review -->
+          </p>
+        </div>
+      `;
+      });
+    } else {
+      reviewContainer.innerHTML = '<p>No reviews found for this product.</p>';
+    }
+  };
+
+
+  const updateReviewPaginationUI = (currentPage, totalPage) => {
+    const paginationContainer = document.getElementById('review-pagination');
+    paginationContainer.innerHTML = ''; // Clear current pagination links
+    // console.log(currentPage);
+    // console.log(totalPage);
+
+    // Determine the range of pages to display (up to 3 pages around the current page)
+    let startPage = currentPage - 1;
+    let endPage = currentPage + 1;
+
+    // Ensure we don't go out of bounds
+    if (startPage < 1) startPage = 1;
+    if (endPage > totalPage) endPage = totalPage;
+
+    // "Previous" button (disabled on the first page)
+    if (currentPage > 1) {
+      const prevButton = document.createElement('li');
+      prevButton.innerHTML = `<button class="w-10 h-10 flex items-center justify-center rounded-full review-pagination-link">Previous</button>`;
+      prevButton.querySelector('button').addEventListener('click', (e) => {
+        onReviewPageChange(e, currentPage - 1);
+      });
+      paginationContainer.appendChild(prevButton);
+    }
+
+    // Loop through the page numbers (up to 3 pages)
+    for (let i = startPage; i <= endPage; i++) {
+      const pageButton = document.createElement('li');
+      pageButton.innerHTML = `<button class="w-10 h-10 flex items-center justify-center rounded-full review-pagination-link ${i === currentPage ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white'}">${i}</button>`;
+      pageButton.querySelector('button').addEventListener('click', (e) => {
+        onReviewPageChange(e, i);
+      });
+      paginationContainer.appendChild(pageButton);
+    }
+
+    // "Next" button (disabled on the last page)
+    if (currentPage < totalPage) {
+      const nextButton = document.createElement('li');
+      nextButton.innerHTML = `<button class="w-10 h-10 flex items-center justify-center rounded-full review-pagination-link">Next</button>`;
+      nextButton.querySelector('button').addEventListener('click', (e) => {
+        onReviewPageChange(e, currentPage + 1);
+      });
+      paginationContainer.appendChild(nextButton);
+    }
+  };
+
+  const onReviewPageChange = async function (e, page) {
+    e.preventDefault();
+
+    // Fetch data using AJAX
+    try {
+      const response = await fetch(`/api/review/<%= product.id %>?page=${page}`, {
+        method: 'GET',
+      });
+      if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+      const data = await response.json();
+      // console.log(data);
+      // Render new data (Replace this with your data-rendering logic)
+      renderReviews(data);
+
+      // Update active page button
+      updateReviewPaginationUI(data.currentPage, data.totalPages);
+    } catch (error) {
+      console.error('Failed to load data:', error);
     }
   };
 
