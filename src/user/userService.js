@@ -1,4 +1,4 @@
-import { cloudinary, prisma } from '../config/config.js';
+import { cloudinary,prisma } from '../config/config.js';
 import bcrypt from 'bcrypt';
 
 async function comparePassword(account_id,password) {
@@ -27,6 +27,7 @@ async function fetchAccountByID(account_id) {
                 email: true,
                 phone: true,
                 address: true,
+                avatar:true,
                 birthdate: true,
                 sex: true,
                 create_time: true
@@ -104,9 +105,51 @@ async function updatePasswordByID(account_id, newPassword) {
     }
 }
 
+async function updateAvatarByID(account_id, file) {
+    try {
+        // Fetch the account by ID to get the current avatar public_id
+        const account = await prisma.account.findUnique({
+            where: { id: account_id },
+        });
+
+        if (!account) {
+            throw new Error('Account not found');
+        }
+
+        // If an old avatar exists, delete it from Cloudinary
+        if (account.avatar) {
+            
+            await cloudinary.uploader.destroy(account.avatar);
+        }
+
+        // Upload the new avatar image to Cloudinary
+        const result = await cloudinary.uploader.upload(file.path, {
+            folder: 'avatar', // Folder in Cloudinary where images will be stored
+            public_id: account_id.toString(), // Optional: Set public ID based on account ID
+        });
+
+        // After successful upload, update the avatar field in the Prisma database
+        const updatedAccount = await prisma.account.update({
+            where: { id: account_id },
+            data: { avatar: result.public_id }, // Update avatar field with new public ID
+        });
+
+        return {
+            success: true,
+            message: 'Avatar updated successfully',
+            avatar_url: result.secure_url, // Return the secure Cloudinary URL
+        };
+
+    } catch (error) {
+        console.error('Error updating avatar:', error);
+        throw new Error('Failed to update avatar');
+    }
+}
+
 export {
     fetchAccountByID,
     updatePasswordByID,
     updateProfileInfoByID,
     comparePassword,
+    updateAvatarByID
 };

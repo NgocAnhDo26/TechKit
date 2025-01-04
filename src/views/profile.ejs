@@ -85,9 +85,36 @@
         const birthdate = document.getElementById('birthday').value;
         const address = document.getElementById('address').value;
         const sex = document.getElementById('sex').value;
+        const avatar = document.getElementById('avatar').files[0];
 
         const info = { name, address, birthdate, sex, phone };
         console.log(info);
+
+        const updateAvatar = async (file) => {
+            try {
+                if (!file) {
+                    return null;
+                }
+                const formData = new FormData();
+                formData.append('avatar', file);
+                const response = await fetch('api/profile/avatar', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    const avatar_container = document.getElementById('avatar-container');
+                    avatar_container.setAttribute('src',data.avatar_url) 
+                } else {
+                    console.error('Failed to update avatar:', data.message);
+                    alert(`Error: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Error updating avatar:', error);
+            }
+        }
 
         const updateProfile = async () => {
             try {
@@ -131,6 +158,7 @@
         };
 
         // Call the updateProfile function
+        updateAvatar(avatar);
         updateProfile();
     });
 
