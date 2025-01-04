@@ -1,4 +1,5 @@
 import { cloudinary,prisma } from '../config/config.js';
+import { uploadAvatarImage } from '../util/util.js';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
 
@@ -118,15 +119,12 @@ async function updateAvatarByID(account_id, file) {
         }
 
         // If an old avatar exists, delete it from Cloudinary
-        if (account.avatar) {
+        if (account.avatar !== 'Techkit/avatar/default') {
             await cloudinary.uploader.destroy(account.avatar);
         }
 
-        // Upload the new avatar image to Cloudinary
-        const result = await cloudinary.uploader.upload(file.path, {
-            folder: 'avatar', // Folder in Cloudinary where images will be stored
-            public_id: account_id.toString(), // Optional: Set public ID based on account ID
-        });
+        // Upload the new avatar image to Cloudinary with transformation
+        const result = await uploadAvatarImage(file.path, 'avatar');
 
         // After successful upload, update the avatar field in the Prisma database
         const updatedAccount = await prisma.account.update({
@@ -137,7 +135,7 @@ async function updateAvatarByID(account_id, file) {
         return {
             success: true,
             message: 'Avatar updated successfully',
-            avatar_url: result.secure_url, // Return the secure Cloudinary URL
+            avatar_url: result.url, // Return the secure Cloudinary URL
         };
 
     } catch (error) {
@@ -154,6 +152,7 @@ async function updateAvatarByID(account_id, file) {
         });
     }
 }
+
 
 
 export {

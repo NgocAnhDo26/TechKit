@@ -3,10 +3,13 @@ import productController from '../product/productControllerApi.js';
 import cartController from '../cart/cartController.js';
 import profileController from '../user/userController.js';
 import checkoutController from '../checkout/checkoutController.js';
+import reviewController from '../review/reviewController.js';
 
 const router = express.Router();
 
 router.use('/product', productController);
+
+router.use('/review',reviewController);
 
 router.use('/cart', cartController);
 

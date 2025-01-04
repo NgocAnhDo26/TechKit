@@ -4,10 +4,9 @@ import multer from 'multer';
 import { fetchOrders } from '../order/orderService.js';
 import { uploadImage, getUrl } from '../util/util.js';  
 import path from 'path';
+import { get } from 'http';
 
 const router = express.Router();
-
-const default_avatar_url = getUrl('default')
 
 // Function to fetch account details by ID
 async function fetchAccountDetails(req, res) {
@@ -29,20 +28,7 @@ async function fetchAccountDetails(req, res) {
                 message: 'Account not found',
             });
         }
-
-        if (account.avatar) {
-            const avatar_url = getUrl(account.avatar);
-            if (avatar_url) {
-                account.avatar_url = avatar_url;
-            }
-            else {
-                account.avatar_url = default_avatar_url;
-            }
-            account.avatar_url = avatar_url;
-        } else {
-            account.avatar_url = default_avatar_url;
-        }
-
+        account.avatar_url = getUrl(account.avatar);
         res.status(200).json({
             success: true,
             message: 'Account fetched successfully',
@@ -69,18 +55,7 @@ export async function renderProfilePage(req, res) {
         if (!account) {
             return res.status(404).send('Account not found');
         }
-        if (account.avatar) {
-            const avatar_url = getUrl(account.avatar);
-            if (avatar_url) {
-                account.avatar_url = avatar_url;
-            }
-            else {
-                account.avatar_url = default_avatar_url;
-            }
-            account.avatar_url = avatar_url;
-        } else {
-            account.avatar_url = default_avatar_url;
-        }
+        account.avatar_url = getUrl(account.avatar);
         res.status(200).render('profile', { section: 'info', account });
     } catch (error) {
         console.error('Error fetching account:', error);

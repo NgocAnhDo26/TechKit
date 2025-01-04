@@ -10,7 +10,7 @@
     <%- include('./partials/header'); %>
 
     <!-- Product Info -->
-    <%- include('productInfo', { product }); %>
+    <%- include('productInfo', { product, reviews: reviews }); %>
 
     <!-- Related-products -->
     <%- include('relevantProducts', { products: related_products, title: 'Sản phẩm liên quan' } ); %>
