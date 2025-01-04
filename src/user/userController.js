@@ -138,6 +138,7 @@ router.post('', updateProfile);
 router.post('/info', updateProfile);
 
 router.post('/password', async (req, res) => {
+    const passwordPattern = /^(?=.*?[0-9])(?=.*?[A-Za-z]).{8,32}$/;
     const { oldPassword, newPassword, confirmPassword } = req.body;
     const account_id = req.user.id;
     if (!account_id || !newPassword || !oldPassword) {
@@ -151,6 +152,10 @@ router.post('/password', async (req, res) => {
 
     if (oldPassword === newPassword) {
         return res.status(401).json({ success: false, message: "New password must be different from old password" })
+    }
+
+    if (!passwordPattern.test(newPassword)) {
+        return res.status(401).json({ success: false, message: "Password must be between 8 and 32 characters (A-Z, a-z, 0-9)" })
     }
 
     if (confirmPassword !== newPassword) {

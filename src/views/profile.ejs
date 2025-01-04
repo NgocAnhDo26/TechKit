@@ -221,15 +221,35 @@
                             input.value = '';
                         }
                     });
-                    alert(`Success: ${data.message}`);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đổi mật khẩu thành công',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: true,
+                    });
                 } else {
-                    console.error('Failed to update password:', data.message);
-                    alert(`Error: ${data.message}`);
+                    console.error('Đổi mật khẩu thất bại:', data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Đổi mật khẩu thất bại',
+                        text: data.message,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: true,
+                    });
                 }
 
             } catch (error) {
-                console.error('Error updating profile:', error);
-                // Handle network or other errors (e.g., show a general error message)
+                console.error('Error updating password:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Đổi mật khẩu thất bại',
+                    text: 'Internal Server Error',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: true,
+                });
             }
         }
         updatePassword();
