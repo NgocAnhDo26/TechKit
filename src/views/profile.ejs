@@ -106,7 +106,9 @@
 
                 if (response.ok) {
                     const avatar_container = document.getElementById('avatar-container');
-                    avatar_container.setAttribute('src',data.avatar_url) 
+                    const avatar_header = document.getElementById('avatar-header');
+                    avatar_container.setAttribute('src',data.avatar_url);
+                    avatar_header.setAttribute('src',data.avatar_url);
                 } else {
                     console.error('Failed to update avatar:', data.message);
                     alert(`Error: ${data.message}`);
