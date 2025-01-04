@@ -10,7 +10,11 @@ router.use('/product', productController);
 
 router.use('/cart', cartController);
 
-router.use('/profile', profileController);
+router.use('/profile',(req, res, next) => {
+    req.user
+        ? next()
+        : res.redirect('/auth/login');
+}, profileController);
 
 router.use('/checkout', (req, res, next) => {
     req.user

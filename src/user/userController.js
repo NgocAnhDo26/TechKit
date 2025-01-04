@@ -221,6 +221,4 @@ router.post('/avatar', upload.single('avatar'), async (req, res) => {
     }
 });
 
-
-
 export default router;
