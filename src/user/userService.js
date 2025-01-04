@@ -1,4 +1,5 @@
 import { cloudinary,prisma } from '../config/config.js';
+import fs from 'fs';
 import bcrypt from 'bcrypt';
 
 async function comparePassword(account_id,password) {
@@ -118,7 +119,6 @@ async function updateAvatarByID(account_id, file) {
 
         // If an old avatar exists, delete it from Cloudinary
         if (account.avatar) {
-            
             await cloudinary.uploader.destroy(account.avatar);
         }
 
@@ -143,8 +143,18 @@ async function updateAvatarByID(account_id, file) {
     } catch (error) {
         console.error('Error updating avatar:', error);
         throw new Error('Failed to update avatar');
+    } finally {
+        // Delete the temporary file from the local system in any situation
+        fs.unlink(file.path, (err) => {
+            if (err) {
+                console.error('Error deleting temporary file:', err);
+            } else {
+                console.log('Temporary file deleted successfully');
+            }
+        });
     }
 }
+
 
 export {
     fetchAccountByID,
