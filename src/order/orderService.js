@@ -1,5 +1,6 @@
 import { prisma } from '../config/config.js'; // Import prisma database connection
 import { clearCart, fetchCartProducts } from '../cart/cartService.js';
+import { getImage } from '../util/util.js';
 
 // Create order
 export const createOrder = async (userId, order) => {
@@ -89,13 +90,60 @@ export const fetchOrders = async (customer_id) => {
 };
 
 // Fetch order by ID
-export const fetchOrderById = async (order_id) => {
-  return await prisma.orders.findUnique({
+export const fetchOrderById = async (user_id, order_id) => {
+  const result = await prisma.orders.findUnique({
     where: {
-      order_id,
+      id: order_id,
+      account_id: user_id,
     },
+    include: {
+      order_product: {
+        include: {
+          product: {
+            select: {
+              name: true,
+              product_image: {
+                select: {
+                  public_id: true,
+                },
+                where: {
+                  is_profile_img: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    }
   });
-};
+
+  if (!result) {
+    return null;
+  }
+
+  // Format the result
+  const order = {
+    id: result.id,
+    account_id: result.account_id,
+    create_time: result.create_time,
+    total_price: result.total_price,
+    status: result.status,
+    shipping_address: result.shipping_address,
+    customer_name: result.customer_name,
+    customer_phone: result.customer_phone,
+    customer_email: result.customer_email,
+    payment_method: result.payment_method,
+    products: result.order_product.map((product) => ({
+      id: product.product_id,
+      name: product.product.name,
+      quantity: product.quantity,
+      price: product.price,
+      image: getImage(product.product.product_image[0].public_id).url,
+    })),
+  };
+
+  return order;
+}
 
 // Update order status
 export const updateOrderStatus = async (order_id, status) => {

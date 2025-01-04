@@ -10,7 +10,7 @@ router.use('/product', productController);
 
 router.use('/cart', cartController);
 
-router.use('/profile',profileController);
+router.use('/profile', profileController);
 
 router.use('/checkout', (req, res, next) => {
     req.user
