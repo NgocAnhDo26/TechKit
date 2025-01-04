@@ -1,6 +1,5 @@
 import express from 'express';
 import * as service from './userService.js';
-import bcrypt from 'bcrypt';
 import { fetchOrders } from '../order/orderService.js';
 
 const router = express.Router();
@@ -16,7 +15,7 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        const account = await fetchAccountByID(req.user.id);
+        const account = await service.fetchAccountByID(req.user.id);
         if (!account) {
             return res.status(404).json({
                 success: false,
@@ -63,7 +62,7 @@ export async function renderOrdersPage(req, res) {
 }
 
 router.get('/info', async (req, res) => {
-    const { account_id } = req.user.id;
+    const account_id = req.user.id;
 
     if (!account_id) {
         return res.status(400).json({
@@ -73,7 +72,7 @@ router.get('/info', async (req, res) => {
     }
 
     try {
-        const account = await fetchAccountByID(account_id);
+        const account = await service.fetchAccountByID(account_id);
         if (!account) {
             return res.status(404).json({
                 success: false,
@@ -141,7 +140,7 @@ router.post('/password', async (req, res) => {
         return res.status(400).json({ success: false, message: 'User not found' });
     }
 
-    const match = await bcrypt.compare(oldPassword, account.password);
+    const match = await service.comparePassword(account_id, oldPassword);
     if (!match) {
         return res.status(401).json({ success: false, message: "Old password is incorrect" })
     }

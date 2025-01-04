@@ -1,6 +1,22 @@
 import { cloudinary, prisma } from '../config/config.js';
 import bcrypt from 'bcrypt';
 
+async function comparePassword(account_id,password) {
+    try {
+        const account = await prisma.account.findUnique({
+            where: {
+                id: account_id
+            }
+        })
+        const match = await bcrypt.compare(password,account.password);
+        return match;
+    }
+    catch (error) {
+        console.error('Error comparing password:', error);
+        return {message: "Failed to compare password"};
+    }
+}   
+
 async function fetchAccountByID(account_id) {
     try {
         const account = await prisma.account.findUnique({
@@ -10,7 +26,6 @@ async function fetchAccountByID(account_id) {
                 name: true,
                 email: true,
                 phone: true,
-                password: true,
                 address: true,
                 birthdate: true,
                 sex: true,
@@ -92,5 +107,6 @@ async function updatePasswordByID(account_id, newPassword) {
 export {
     fetchAccountByID,
     updatePasswordByID,
-    updateProfileInfoByID
+    updateProfileInfoByID,
+    comparePassword,
 };
