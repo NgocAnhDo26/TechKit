@@ -44,16 +44,16 @@
         <div class="w-full lg:w-1/2 flex flex-col justify-between">
           <div class="pb-8 border-b border-gray-line">
             <h1 class="text-3xl font-bold mb-4"><%= product.name %></h1>
-            <div class="flex items-center mb-4">
-              <span class="text-yellow-400">★★★★★</span>
-              <span class="ml-2">(0 Reviews)</span>
+            <div class="items-center mb-4 <%= product.in_stock === 0 ? "hidden" : "flex" %>">
+              <span class="mr-2">Sản phẩm trong kho: </span>
+              <span class="font-semibold"><%= product.in_stock %></span>
             </div>
             <div class="mb-4 pb-4 border-b">
               <span>Thương hiệu: </span>
-              <a href="" class="text-primary"><%= product.brand %></a>
+              <a href="/shop?brand=<%= product.brand %>" class="text-primary"><%= product.brand %></a>
               <span class="mx-2">|</span>
               <span>Loại: </span>
-              <a href="" class="text-primary"><%= product.category %></a>
+              <a href="/shop/<%= product.category %>" class="text-primary"><%= product.category %></a>
             </div>
             <div class="mb-4 pb-4 border-b border-gray-line">
               <p class="mb-2">✔ Bảo hành chính hãng 24 tháng.</p>
@@ -85,6 +85,7 @@
                 id="decrease"
                 class="text-primary text-xl font-semibold w-10 h-10 flex items-center justify-center hover:bg-primary hover:text-white"
                 disabled
+                type="button"
               >
                 -
               </button>
@@ -92,11 +93,13 @@
                 id="quantity"
                 type="text"
                 value="1"
+                max="<%= product.in_stock %>"
                 class="w-auto min-w-10 max-w-10 py-2 text-center justify-center self-center"
                 readonly
               />
               <button
                 id="increase"
+                type="button"
                 class="text-primary text-xl w-10 h-10 items-center justify-center hover:bg-primary hover:text-white"
               >
                 +
@@ -104,6 +107,7 @@
             </div>
             <button
               id="add-to-cart"
+              type="button"
               class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary py-2 px-4 rounded-md w-full"
             >
               <div class="font-bold mt-1">THÊM VÀO GIỎ</div>
@@ -369,6 +373,18 @@
       quantity.value = value;
       if (value === 1) {
         decrease.disabled = true;
+      }
+    }
+  });
+
+  increase.addEventListener('click', () => {
+    let value = parseInt(quantity.value);
+    let max = parseInt(quantity.getAttribute('max'));
+    if (value < max) {
+      value++;
+      quantity.value = value;
+      if (value > 1) {
+        decrease.disabled = false;
       }
     }
   });

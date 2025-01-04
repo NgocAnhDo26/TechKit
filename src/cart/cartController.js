@@ -57,22 +57,10 @@ router.post('/', async (req, res) => {
         res.status(500).send("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.");
       });
   } else {
-    const product = await fetchProductByID(parseInt(productId));
-
-    if (!product) {
-      return res.status(404).send('Không tìm thấy sản phẩm.');
-    }
-
-    const existingItem = req.session.guestCart.find(
-      (item) => item.productId === productId,
-    );
-    if (existingItem) {
-      existingItem.quantity += parseInt(quantity, 10);
-    } else {
-      req.session.guestCart.push({
-        productId,
-        quantity: parseInt(quantity, 10),
-      });
+    const result = await service.addProductToGuestCart(req, parseInt(productId), parseInt(quantity));
+    if (result === null) {
+      res.status(400).send("Không còn đủ sản phẩm trong kho.");
+      return;
     }
 
     res.status(200).json(req.session.guestCart);
@@ -139,25 +127,14 @@ router.put('/:productId', async (req, res) => {
         res.status(500).send('Đã xảy ra lỗi khi cập nhật số lượng sản phẩm.');
       });
   } else {
-    const product = req.session.guestCart.find(
-      (item) => item.productId === productId,
-    );
-    if (product) {
-      product.quantity = quantity;
-    }
-
-    // Recalculate total price and quantity
     try {
-      const result = await service.fetchGuestCartProducts(
-        req.session.guestCart,
-      );
-      const { totalPrice, totalQuantity, products } = result;
+      const result = await service.updateGuestProductQuantity(req, productId, quantity);
+      if (result === null) {
+        res.status(400).send('Số lượng sản phẩm không hợp lệ hoặc không còn đủ hàng trong kho.');
+        return;
+      }
 
-      // Get product new quantity and total price
-      const updatedProduct = products.find((item) => item.id === productId);
-      const productTotal = updatedProduct.price * quantity;
-
-      res.status(200).json({ totalQuantity, totalPrice, productTotal });
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).send('Đã xảy ra lỗi khi lấy thông tin giỏ hàng.');

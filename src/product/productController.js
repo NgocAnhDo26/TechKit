@@ -39,7 +39,7 @@ router.get('/:category', (req, res) => {
 });
 
 // Fetch single product by product_id
-router.get('/:product_id', async (req, res) => {
+router.get('/laptop/:product_id', async (req, res) => {
   try {
     const product = await service.fetchProductByID(
       Number(req.params.product_id),

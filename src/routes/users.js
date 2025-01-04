@@ -5,6 +5,7 @@ import * as productService from '../product/productService.js';
 import authController from '../auth/authController.js';
 import { forbidRoute, authorize } from '../auth/authService.js';
 import { renderCheckoutPage } from '../checkout/checkoutController.js';
+import orderController from '../order/orderController.js';
 import { renderCartPage } from '../cart/cartController.js';
 
 const router = express.Router();
@@ -55,5 +56,7 @@ router.get('/profile/orders', (req, res, next) => {
 router.use('/shop', productController);
 
 router.use('/auth', forbidRoute, authController);
+
+router.use('/order', authorize, orderController);
 
 export default router;
