@@ -38,7 +38,7 @@ passport.use(
       }
 
       return done(null, false, {
-        message: 'Incorrect email or password.',
+        message: 'Sai email hoặc mật khẩu',
       });
     } catch (err) {
       return done(err);
@@ -110,8 +110,8 @@ export async function sendActivationEmail(user) {
   const activateLink = `http://localhost:1111/auth/activate?token=${token}`;
   sendMail(
     user.email,
-    'Activate Your TechKit Account',
-    `Please visit: ${activateLink}`,
+    '[TechKit] Kích hoạt tài khoản TechKit của bạn',
+    `Nhấn vào đây để kích hoạt tài khoản: ${activateLink}`,
   );
 }
 
@@ -126,8 +126,8 @@ export async function handleForgotPassword(email) {
 
   sendMail(
     email,
-    'Reset Your TechKit Password',
-    `Your new password is: ${newPassword}`,
+    '[TechKit] Mật khẩu mới của bạn',
+    `Mật khẩu mới của bạn là: ${newPassword}`,
   );
 }
 

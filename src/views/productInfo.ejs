@@ -159,9 +159,11 @@
           >
             <div class="flex flex-col lg:flex-row lg:space-x-8">
               <div class="w-full">
-                <% product.description.split(/[\r\n]+/).forEach(str => { %>
-                <p class="mb-4"><%=str%></p>
-                <% }); %>
+                <% if (product.description) { %>
+                    <% product.description.split(/[\r\n]+/).forEach(str => { %>
+                    <p class="mb-4"><%=str%></p>
+                    <% }); %>
+                <% } %>
               </div>
             </div>
           </div>
