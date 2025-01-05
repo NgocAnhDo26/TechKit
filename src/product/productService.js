@@ -58,8 +58,8 @@ export async function fetchProductWithQuery(params, query) {
 
   // Prepare sorting
   let orderBy = {};
-  if (query.order) {
-    orderBy.price_sale = query.order;
+  if (query.order && query.sortBy) {
+    orderBy[query.sortBy] = query.order;
   }
 
   // Exclude products with 0 stock
