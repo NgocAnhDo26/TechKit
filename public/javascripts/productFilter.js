@@ -157,72 +157,88 @@ const onFilterSubmit = async function (e) {
   // Redirect
   const baseUrl = window.location.href.split('?')[0];
   url = `${baseUrl}${queryParams ? '?' : ''}${queryParams.toString()}`;
-  window.location.href = url;
+  window.history.pushState({}, '', url);
 
-  // const api_url = `${window.location.protocol}//${window.location.host}/api/product${queryParams ? '?' : ''}${queryParams.toString()}`;
-  // try {
-  //   const response = await fetch(api_url);
-  //   if (!response.ok) {
-  //     throw new Error(`Response status: ${response.status}`);
-  //   }
-  //   const { products, totalPage, currentPage } = await response.json();
+  // Extract the category from the URL if it exists
+  const category = window.location.pathname.split('/');
+  if (category.length > 2) {
+    // Append the category to the query
+    queryParams.set('category', category[2]);
+  }
+    
+  const api_url = `http://${window.location.hostname}:${window.location.port}/api/product${queryParams ? '?' : ''}${queryParams.toString()}`;
+  try {
+    const response = await fetch(api_url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
 
-  //   // Render products
-  //   const productList = document.getElementById('product-list');
-  //   productList.innerHTML = ''; // Clear existing products
-  //   products.forEach((product) => {
-  //     const productElement = document.createElement('div');
-  //     productElement.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow', 'flex', 'flex-col', 'flex-1');
-  //     productElement.innerHTML += `
-  //       <img
-  //         src="${product.profile_img.url}"
-  //         alt="${product.name}"
-  //         class="w-full object-cover mb-4 rounded-lg"
-  //       />
-  //       <a
-  //         href="/shop/laptop/${product.id}"
-  //         class="text-lg font-semibold"
-  //       >
-  //         ${product.name}
-  //       </a>
-  //       <p class="my-2">${product.category}</p>
-  //       `;
+    // Render products
+    const productList = document.getElementById('product-list');
+    productList.innerHTML = ''; // Clear existing products
+
+    const data = await response.json();
+    if (data.length === 0) {
+      productList.innerHTML = '<p class="text-center">Không tìm thấy sản phẩm...</p>';
+      return;
+    }
+
+    const { products, totalPage, currentPage } = data;
+
+
+    products.forEach((product) => {
+      const productElement = document.createElement('div');
+      productElement.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow', 'flex', 'flex-col', 'flex-1');
+      productElement.innerHTML += `
+        <img
+          src="${product.profile_img.url}"
+          alt="${product.name}"
+          class="w-full object-cover mb-4 rounded-lg"
+        />
+        <a
+          href="/shop/laptop/${product.id}"
+          class="text-lg font-semibold"
+        >
+          ${product.name}
+        </a>
+        <p class="my-2">${product.category}</p>
+        `;
       
-  //     if (product.price_sale) {
-  //       productElement.innerHTML += `
-  //       <div class="flex items-center mb-4 mt-auto">
-  //         <span class="text-lg font-bold text-primary"
-  //           >${product.price_sale.toLocaleString()}₫</span
-  //         >
-  //         <span class="text-sm font-bold line-through ml-2"
-  //           >${product.price.toLocaleString()}₫</span
-  //         >
-  //         <span class="text-sm font-bold text-primary ml-2"
-  //           >-${Math.round((1 - product.price_sale / product.price) * 100)}%</span
-  //         >
-  //       </div>
-  //       `;
-  //     } else {
-  //       productElement.innerHTML += `
-  //       <div class="flex items-center mb-4 mt-auto">
-  //         <span class="text-lg font-bold text-primary"
-  //       >${product.price.toLocaleString()}₫}</span>
-  //       </div>
-  //       `;
-  //     }
-  //     productElement.innerHTML += `
-  //       <button
-  //         onclick="addToCartSingle(${product.id})"
-  //         class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full"
-  //       >
-  //         Thêm vào giỏ
-  //       </button>
-  //     `;
+      if (product.price_sale) {
+        productElement.innerHTML += `
+        <div class="flex items-center mb-4 mt-auto">
+          <span class="text-lg font-bold text-primary"
+            >${product.price_sale.toLocaleString()}₫</span
+          >
+          <span class="text-sm font-bold line-through ml-2"
+            >${product.price.toLocaleString()}₫</span
+          >
+          <span class="text-sm font-bold text-primary ml-2"
+            >-${Math.round((1 - product.price_sale / product.price) * 100)}%</span
+          >
+        </div>
+        `;
+      } else {
+        productElement.innerHTML += `
+        <div class="flex items-center mb-4 mt-auto">
+          <span class="text-lg font-bold text-primary"
+        >${product.price.toLocaleString()}₫}</span>
+        </div>
+        `;
+      }
+      productElement.innerHTML += `
+        <button
+          onclick="addToCartSingle(${product.id})"
+          class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full w-full"
+        >
+          Thêm vào giỏ
+        </button>
+      `;
 
-  //     updatePaginationUI(currentPage, totalPage);
-  //     productList.appendChild(productElement);
-  //   });
-  // } catch (error) {
-  //   console.error('Error fetching or rendering products:', error.message);
-  // }
+      updatePaginationUI(currentPage, totalPage);
+      productList.appendChild(productElement);
+    });
+  } catch (error) {
+    console.error('Error fetching or rendering products:', error.message);
+  }
 };
