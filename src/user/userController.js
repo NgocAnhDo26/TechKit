@@ -173,40 +173,40 @@ router.post('/password', async (req, res) => {
 });
 
 router.post('/avatar', upload.single('avatar'), async (req, res) => {
-  const account_id = req.user.id;
-  // This should now contain the file data
-  if (!account_id) {
-    return res.status(400).json({
-      success: false,
-      message: 'Account ID is required',
-    });
-  }
+    const account_id = req.user.id;
 
-  // Check if file is uploaded
-  if (!req.file) {
-    return res.status(400).json({
-      success: false,
-      message: 'Avatar image is required.',
-    });
-  }
+    if (!account_id) {
+        return res.status(400).json({
+            success: false,
+            message: 'Account ID is required',
+        });
+    }
 
-  try {
-    // Call your updateAvatarByID function to upload the image and update the database
-    const result = await service.updateAvatarByID(account_id, req.file);
+    if (!req.file) {
+        return res.status(400).json({
+            success: false,
+            message: 'Avatar image is required.',
+        });
+    }
 
-    res.status(200).json({
-      success: true,
-      message: result.message,
-      avatar_url: result.avatar_url, // Return the new avatar URL
-    });
-  } catch (error) {
-    console.error('Error uploading avatar:', error);
-    res.status(500).json({
-      success: false,
-      message: 'An error occurred while uploading the avatar.',
-      error: error.message,
-    });
-  }
+    try {
+        // Update the avatar in Cloudinary and Prisma database
+        const result = await service.updateAvatarByID(account_id, req.file);
+
+        res.status(200).json({
+            success: true,
+            message: result.message,
+            avatar_url: result.avatar_url, // Return the new avatar URL
+        });
+    } catch (error) {
+        console.error('Error uploading avatar:', error);
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred while uploading the avatar.',
+            error: error.message,
+        });
+    }
 });
+
 
 export default router;
