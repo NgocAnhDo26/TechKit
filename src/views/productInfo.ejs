@@ -115,7 +115,7 @@
               <p class="mb-2">✔ Miễn phí giao hàng toàn quốc.</p>
             </div>
             <div class="text-4xl font-semibold mb-8">
-              <% if (product.price_sale) { %>
+              <% if (product.price_sale !== product.price) { %>
                 <span class="text-primary">
                   <%= product.price_sale.toLocaleString() %>₫
                 </span>
@@ -128,7 +128,7 @@
                   <span class="text-primary">
                     <%= product.price.toLocaleString() %>₫
                   </span>
-                  <% } %>
+                <% } %>
             </div>
             <div class="items-center mb-8 border-2 w-min <%= product.status === 'on stock' ? 'flex' : 'hidden' %>">
               <button id="decrease"
@@ -252,7 +252,7 @@
                       </div>
                       <% }); %>
                         <% } else { %>
-                          <p>No reviews found for this product.</p>
+                          <p>Sản phẩm này chưa có đánh giá nào...</p>
                           <% } %>
               </div>
               <div class="flex justify-center mt-8">
@@ -302,17 +302,17 @@
             </div>
             <!-- Submit Review Form -->
             <div class="mt-8">
-              <h3 class="text-lg font-semibold mb-4">Write a Review</h3>
+              <h3 class="text-lg font-semibold mb-4">Để lại đánh giá của bạn</h3>
               <form id="review-form" class="space-y-4">
                 <div>
-                  <label for="review-text" class="block text-sm font-medium text-gray-700">Review</label>
+                  <label for="review-text" class="block text-sm font-medium text-gray-700">Đánh giá</label>
                   <textarea id="review-text" name="review-text" rows="4"
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"></textarea>
                 </div>
                 <div>
                   <button type="button" id="review-submit"
                     class="bg-primary hover:bg-transparent border border-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full focus:outline-none">
-                    Submit Review
+                    Gửi đánh giá
                   </button>
                 </div>
               </form>
