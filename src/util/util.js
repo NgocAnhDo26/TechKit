@@ -39,4 +39,3 @@ export const uploadAvatarImage = async (address, folder) =>
       console.error('Error uploading avatar image:', error);
       return { success: false, message: 'Failed to upload avatar image' };
     });
-
