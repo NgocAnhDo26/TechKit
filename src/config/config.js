@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
 import { createClient } from 'redis';
+import multer from 'multer';
 
 dotenv.config({ path: '.env' });
 
@@ -26,7 +27,10 @@ redisClient.on('error', (err) => console.log('Redis Client Error', err));
 await redisClient.connect();
 
 // Init database
-// Export const prisma = new PrismaClient({ log: ['query'] });
 export const prisma = new PrismaClient();
 
-export { cloudinary, redisClient };
+// Configure Multer for file handling
+const storage = multer.memoryStorage(); // Store files in memory
+const upload = multer({ storage });
+
+export { cloudinary, redisClient, upload };

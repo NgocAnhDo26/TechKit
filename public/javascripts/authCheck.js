@@ -20,13 +20,11 @@ if (registerSubmit && registerForm) {
       errorContainer = document.querySelector('.error-container-register'),
       errorElement = document.querySelector('.error-text-register');
 
-    autoHideErrorContainer(errorContainer);
-
     if (isEmpty(name, email, password, confirmPassword)) {
       displayError(
         errorContainer,
         errorElement,
-        'The fields below must not be empty',
+        'Những thông tin bên dưới không được để trống',
       );
       return;
     }
@@ -39,7 +37,7 @@ if (registerSubmit && registerForm) {
       displayError(
         errorContainer,
         errorElement,
-        'Please check your responses and try again',
+        'Vui lòng kiểm tra lại thông tin nhập',
       );
       return;
     }
@@ -55,7 +53,7 @@ if (registerSubmit && registerForm) {
           // SweetAlert2
           Swal.fire({
             icon: 'success',
-            title: 'Activation email sent to your email address',
+            title: 'Mail kích hoạt đã được gửi đến email của bạn',
             timer: 3000,
             timerProgressBar: true,
             showConfirmButton: false,
@@ -64,7 +62,7 @@ if (registerSubmit && registerForm) {
           displayError(
             errorContainer,
             errorElement,
-            data.message || 'Registration failed. Please try again.',
+            data.message || 'Đăng ký thất bại. Vui lòng thử lại',
           );
         }
       });
@@ -79,7 +77,7 @@ if (registerSubmit && registerForm) {
       if (name === 'email') {
         const error = document.querySelector('.error-register.email');
         if (!emailPattern.test(value)) {
-          error.textContent = 'Please enter a valid email address';
+          error.textContent = 'Vui lòng nhập đúng định dạng email';
           error.classList.remove('hidden');
         }
         await fetch(`/auth/register?email=${encodeURIComponent(value)}`)
@@ -96,7 +94,7 @@ if (registerSubmit && registerForm) {
       if (name === 'password' && !passwordPattern.test(value)) {
         const error = document.querySelector('.error-register.password');
         error.textContent =
-          'Password must be between 8 and 32 characters (A-Z, a-z, 0-9)';
+          'Mật khẩu phải chứa ít nhất 1 chữ số và 1 chữ cái, từ 8 đến 32 ký tự';
         error.classList.remove('hidden');
       }
 
@@ -105,7 +103,7 @@ if (registerSubmit && registerForm) {
         value !== document.getElementById('register-password').value
       ) {
         const error = document.querySelector('.error-register.confirmPassword');
-        error.textContent = 'Password mismatch';
+        error.textContent = 'Mật khẩu không khớp';
         error.classList.remove('hidden');
       }
     },
@@ -135,13 +133,11 @@ if (loginSubmit) {
       errorContainer = document.querySelector('.error-container-login'),
       errorElement = document.querySelector('.error-text-login');
 
-    autoHideErrorContainer(errorContainer);
-
     if (isEmpty(email, password)) {
       displayError(
         errorContainer,
         errorElement,
-        'The fields below must not be empty',
+        'Những thông tin bên dưới không được để trống',
       );
       return;
     }
@@ -156,7 +152,7 @@ if (loginSubmit) {
         if (data.success) {
           Swal.fire({
             icon: 'success',
-            title: 'Login successful',
+            title: 'Đăng nhập thành công',
             showConfirmButton: false,
             timer: 1500,
             timerProgressBar: true,
@@ -167,7 +163,7 @@ if (loginSubmit) {
           displayError(
             errorContainer,
             errorElement,
-            data.message || 'Login failed. Please try again.',
+            data.message || 'Đăng nhập thất bại. Vui lòng thử lại',
           );
         }
       });
@@ -184,13 +180,11 @@ if (forgotPasswordSubmit) {
       ),
       errorElement = document.querySelector('.error-text-forgotPassword');
 
-    autoHideErrorContainer(errorContainer);
-
     if (isEmpty(email)) {
       displayError(
         errorContainer,
         errorElement,
-        'The fields below must not be empty',
+        'Nhung thông tin bên dưới không được để trống',
       );
       return;
     }
@@ -205,7 +199,7 @@ if (forgotPasswordSubmit) {
         if (data.success) {
           Swal.fire({
             icon: 'success',
-            title: 'New password sent to your email address',
+            title: 'Mật khẩu mới đã được gửi đến email của bạn',
             showConfirmButton: false,
             timer: 1500,
             timerProgressBar: true,
@@ -216,26 +210,20 @@ if (forgotPasswordSubmit) {
           displayError(
             errorContainer,
             errorElement,
-            data.message || 'Reset password failed. Please try again.',
+            data.message || 'Quá trình khôi phục mật khẩu thất bại',
           );
         }
       });
   });
 }
 
-// Hide error container after 5 seconds if visible
-function autoHideErrorContainer(container) {
-  if (!container.classList.contains('hidden')) {
-    setTimeout(() => {
-      container.classList.add('hidden');
-    }, 5000);
-  }
-}
-
 // Show error in container
 function displayError(container, errorElement, message) {
   container.classList.remove('hidden');
   errorElement.textContent = message;
+  setTimeout(() => {
+    container.classList.add('hidden');
+  }, 5000);
 }
 
 // Check for empty fields
