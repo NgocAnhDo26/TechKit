@@ -1,11 +1,11 @@
-<div class="flex-1 flex flex-col border-md shadow-md rounded-md p-5 text-lg pt-10">
-    <h1 class="font-bold">Thông tin cá nhân</h1>
+<div class="flex-1 flex flex-col border-md shadow-md rounded-md p-5 text-md pt-10">
+    <h1 class="font-bold text-xl">Thông tin cá nhân</h1>
 
     <form>
         <div class="flex flex-col gap-5 mt-5">
-            <div class="flex gap-10">
+            <div class="flex gap-10"> 
                 <p>Ảnh đại diện:</p>
-                <img src="" alt="Avatar" class="rounded-full w-16 object-cover" />
+                <img src="<%= account.avatar_url %>" id="avatar-container" alt="Avatar" class="rounded-full w-16 object-cover" />
             </div>
 
             <div id="choose-img" class="hidden items-center">
@@ -44,6 +44,16 @@
                 <input type="text" id="address" name="address" class="border border-gray-300 rounded-md p-2 opacity-60"
                     value="<%= account.address %>" readonly />
             </div>
+            
+            <div class="flex flex-col gap-2 lg:w-1/2">
+                <label for="sex">Giới tính</label>
+                <select id="sex" name="sex" class="border border-gray-300 rounded-md p-2 opacity-60" disabled>
+                    <option value="" <%= !account.sex ? 'selected' : '' %>>Chọn giới tính</option>
+                    <option value="Nam" <%= account.sex === 'Nam' ? 'selected' : '' %>>Nam</option>
+                    <option value="Nữ" <%= account.sex === 'Nữ' ? 'selected' : '' %>>Nữ</option>
+                </select>
+            </div>
+                        
 
             <button id="update" type="button"
                 class="text-primary border-primary border-2 hover:scale-105 0 rounded-md py-2 px-5 w-fit">
@@ -58,7 +68,7 @@
         </div>
     </form>
 
-    <h1 class="font-bold mt-10 mb-5">Cập nhật mật khẩu</h1>
+    <h1 class="font-bold mt-10 mb-5 text-xl">Cập nhật mật khẩu</h1>
     <form>
         <div class="flex flex-col gap-2 lg:w-1/2 mb-2">
             <label for="old-password">Mật khẩu cũ</label>
@@ -78,7 +88,7 @@
                 class="border border-gray-300 rounded-md p-2" required />
         </div>
 
-        <button type="submit"
+        <button type="button" id="update-password"
             class="text-primary border-primary border-2 hover:scale-105 rounded-md py-2 px-5 w-fit mt-5">
             Cập nhật mật khẩu
         </button>

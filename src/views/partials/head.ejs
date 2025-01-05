@@ -30,12 +30,51 @@
 <script src="/javascripts/pagination.js"></script>
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+  const addToCartSingle = async (productId) => {
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId: parseInt(productId),
+          quantity: 1,
+        }),
+      });
 
-<!-- Swiper CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-/>
+      if (response.ok) {
+        const data = await response.json();
+        if (data) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: 'Sản phẩm đã được thêm vào giỏ hàng',
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        }
 
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+        await updateCartCount();
+      } else {
+        const message = await response.text();
+        Swal.fire({
+          icon: 'error',
+          title: 'Thất bại',
+          text: message,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Thất bại',
+        text: 'Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng',
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+  };
+</script>

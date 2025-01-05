@@ -37,7 +37,9 @@ function setFilters() {
 
   // Set sort by
   if (params.order) {
-    document.getElementById('sort-price').value = params.order;
+    // Concatenate sortBy and order
+    const sortValue = `${params.sortBy}-${params.order}`;
+    document.getElementById('sort-price').value = sortValue;
   }
 }
 
@@ -51,7 +53,16 @@ const sortByPrice = function () {
   const queryParams = new URLSearchParams(queryString);
 
   if (sort.value) {
-    queryParams.set('order', sort.value);
+    // Split "-"
+    if (sort.value === 'default') {
+      queryParams.delete('sortBy');
+      queryParams.delete('order');
+    } else {
+      const sortValue = sort.value.split('-');
+      console.log(sortValue);
+      queryParams.set('sortBy', sortValue[0]);
+      queryParams.set('order', sortValue[1]);
+    }
     // Redirect
     const baseUrl = window.location.href.split('?')[0];
     window.location.href = `${baseUrl}?${queryParams.toString()}`;

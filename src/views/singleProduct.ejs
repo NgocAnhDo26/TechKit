@@ -3,6 +3,11 @@
   <head>
     <%- include('./partials/head'); %>
     <title>TechKit - Sản Phẩm</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   </head>
 
   <body>
@@ -10,7 +15,7 @@
     <%- include('./partials/header'); %>
 
     <!-- Product Info -->
-    <%- include('productInfo', { product }); %>
+    <%- include('productInfo', { product, reviews: reviews }); %>
 
     <!-- Related-products -->
     <%- include('relevantProducts', { products: related_products, title: 'Sản phẩm liên quan' } ); %>

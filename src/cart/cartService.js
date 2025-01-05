@@ -1,4 +1,5 @@
 import { prisma } from '../config/config.js'; // Import prisma database connection
+import { getImage } from '../util/util.js'; // Import getImage function
 
 // Get unique product count from user's cart
 export async function getCartCount(user_id) {
@@ -45,7 +46,7 @@ export async function fetchCartProducts(user_id) {
     name: product.product.name,
     price: product.product.price,
     price_sale: product.product.price_sale,
-    image: product.product.product_image[0].public_id,
+    image: getImage(product.product.product_image[0].public_id).url,
     quantity: product.quantity,
     total: product.product.price_sale * product.quantity,
   }));
@@ -81,7 +82,7 @@ export async function fetchGuestCartProducts(cart) {
       name: product.name,
       price: product.price,
       price_sale: product.price_sale,
-      image: product.product_image[0].public_id,
+      image: getImage(product.product_image[0].public_id).url,
       quantity: item.quantity,
       total: product.price_sale * item.quantity,
     };
@@ -103,6 +104,15 @@ export async function fetchGuestCartProducts(cart) {
 
 // Add product to user's cart
 export async function addProductToCart(user_id, product_id, quantity) {
+  // Check if the product in_stock >= quantity
+  const productData = await prisma.product.findUnique({
+    where: { id: product_id },
+  });
+
+  if (!productData || productData.in_stock < quantity) {
+    return null;
+  }
+
   // Check if product already exists in user's cart
   const product = await prisma.cart.findUnique({
     where: {
@@ -138,6 +148,37 @@ export async function addProductToCart(user_id, product_id, quantity) {
   });
 }
 
+// Add product to guest cart
+export async function addProductToGuestCart(req, product_id, quantity) {
+  // Check if the product quantity in cart + the new quantity <= in_stock
+  const productData = await prisma.product.findUnique({
+    where: { id: product_id },
+  });
+
+  if (!productData || productData.in_stock < quantity) {
+    return null;
+  }
+
+  // Check if product already exists in guest cart
+  const product = req.session.guestCart.find(
+    (item) => item.productId === product_id,
+  );
+
+  // If product already exists in guest cart, update product quantity
+  if (product) {
+    if (product.quantity + quantity > productData.in_stock) {
+      return null;
+    }
+
+    product.quantity += quantity;
+  } else {
+    // If product does not exist in guest cart, add product to cart
+    req.session.guestCart.push({ productId: product_id, quantity });
+  }
+
+  return {status: 'success'};
+}
+
 // Remove product from user's cart
 export async function removeProductFromCart(user_id, product_id) {
   await prisma.cart.delete({
@@ -160,6 +201,15 @@ export async function removeProductFromCart(user_id, product_id) {
 // Update product quantity in user's cart
 export async function updateProductQuantity(user_id, product_id, quantity) {
   if (!quantity || quantity <= 0) {
+    return null;
+  }
+
+  // Check if the product in_stock >= quantity
+  const productData = await prisma.product.findUnique({
+    where: { id: product_id },
+  });
+
+  if (!productData || productData.in_stock < quantity) {
     return null;
   }
 
@@ -194,6 +244,39 @@ export async function updateProductQuantity(user_id, product_id, quantity) {
     totalPrice: products.totalPrice,
     productTotal: total,
   };
+}
+
+export async function updateGuestProductQuantity(req, product_id, quantity) {
+  if (!quantity || quantity <= 0) {
+    return null;
+  }
+
+  // Check if the product in_stock >= quantity
+  const productData = await prisma.product.findUnique({
+    where: { id: product_id },
+  });
+
+  if (!productData || productData.in_stock < quantity) {
+    return null;
+  }
+
+  const product = req.session.guestCart.find(
+    (item) => item.productId === product_id,
+  );
+
+  if (product) {
+    product.quantity = quantity;
+  }
+
+    const result = await fetchGuestCartProducts(
+      req.session.guestCart,
+    );
+    const { totalPrice, totalQuantity } = result;
+
+    // Get product new quantity and total price
+    const productTotal = productData.price_sale * quantity;
+
+    return { totalQuantity, totalPrice, productTotal };
 }
 
 // Clear user's cart

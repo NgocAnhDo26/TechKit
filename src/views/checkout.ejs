@@ -1,121 +1,399 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <%- include('./partials/head'); %>
-    <title>TechKit - Thanh Toán</title>
-  </head>
+    <head>
+        <%- include('./partials/head'); %>
+        <title>TechKit - Thanh toán</title>
+    </head>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <body>
     <!-- Header -->
     <%- include('./partials/header'); %>
 
-    <!-- Checkout -->
-    <section id="checkout-page" class="bg-white py-16">
-      <div class="container mx-auto px-4">
-        <h1 class="text-2xl font-semibold mb-8">Checkout</h1>
-        <div class="flex flex-col md:flex-row gap-4">
-          <!-- Billing and Shipping Details -->
-          <div class="md:w-2/3 bg-white rounded-lg shadow-md p-4">
-            <h2 class="text-xl font-semibold mb-4">Billing Details</h2>
-            <form>
-              <div class="mb-4">
-                <label for="billing-name" class="mb-4">Full Name</label>
-                <input
-                  type="text"
-                  id="billing-name"
-                  class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                />
-              </div>
-              <div class="mb-4">
-                <label for="billing-email" class="mb-4">Email</label>
-                <input
-                  type="email"
-                  id="billing-email"
-                  class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                />
-              </div>
-              <div class="mb-4">
-                <label for="billing-address" class="mb-4">Address</label>
-                <input
-                  type="text"
-                  id="billing-address"
-                  class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                />
-              </div>
-              <div class="mb-4">
-                <label for="billing-city" class="mb-4">City</label>
-                <input
-                  type="text"
-                  id="billing-city"
-                  class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                />
-              </div>
-              <div class="mb-4 flex gap-4">
-                <div class="w-1/2">
-                  <label for="billing-state" class="mb-4">State</label>
-                  <input
-                    type="text"
-                    id="billing-state"
-                    class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
-                  />
-                </div>
-                <div class="w-1/2">
-                  <label for="billing-zip" class="mb-4">ZIP Code</label>
-                  <input
-                    type="text"
-                    id="billing-zip"
-                    class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
-                  />
-                </div>
-              </div>
-              <div class="mb-4">
-                <label for="billing-phone" class="mb-4">Phone Number</label>
-                <input
-                  type="tel"
-                  id="billing-phone"
-                  class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                />
-              </div>
-              <div class="mb-4">
-                <label class="mb-4">Ship to a different address?</label>
-                <input type="checkbox" id="different-address" class="mr-2" />
-                <label for="different-address" class="text-gray-700">Yes</label>
-              </div>
-            </form>
-          </div>
-          <!-- Order Summary -->
-          <div class="md:w-1/3 bg-white rounded-lg shadow-md p-4">
-            <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
-            <div class="flex justify-between mb-4">
-              <p>Subtotal</p>
-              <p>$59.00</p>
-            </div>
-            <div class="flex justify-between mb-4">
-              <p>Shipping</p>
-              <p>$10.00</p>
-            </div>
-            <div class="flex justify-between mb-4">
-              <p class="font-semibold">Total</p>
-              <p class="font-semibold">$69.00</p>
-            </div>
-            <button
-              class="bg-primary text-white border border-primary hover:bg-transparent hover:text-primary py-2 px-4 rounded-full w-full"
-            >
-              Proceed to Payment
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+        <!-- Checkout -->
+        <section id="checkout-page" class="bg-white pb-16 pt-10 font-manrope">
+            <div class="container mx-auto px-4">
+                <h1 class="text-2xl font-semibold mb-8">Thanh toán</h1>
+                <div class="flex flex-col lg:flex-row gap-4">
+                    <!-- Billing and Shipping Details -->
+                    <div class="md:w-2/3 bg-white rounded-lg shadow-md p-8">
+                        <h2 class="text-xl font-semibold mb-6">
+                            Thông tin giao hàng
+                        </h2>
+                        <form>
+                            <div class="mb-4">
+                                <label for="billing-name" class="mb-4"
+                                    >Họ và tên</label
+                                >
+                                <input
+                                    type="text"
+                                    id="billing-name"
+                                    class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                    required
+                                />
+                            </div>
+                            <div class="mb-4">
+                                <label for="billing-phone" class="mb-4"
+                                    >Số điện thoại</label
+                                >
+                                <input
+                                    type="tel"
+                                    id="billing-phone"
+                                    class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                    required
+                                />
+                            </div>
+                            <div class="mb-4">
+                                <label for="billing-email" class="mb-4"
+                                    >Email</label
+                                >
+                                <input
+                                    type="email"
+                                    id="billing-email"
+                                    class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                    required
+                                />
+                            </div>
+                            <div class="mb-4">
+                                <label for="billing-address" class="mb-4"
+                                    >Địa chỉ</label
+                                >
+                                <input
+                                    type="text"
+                                    id="billing-address"
+                                    class="w-full px-3 mt-2 py-2 border focus:border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+                                    required
+                                />
+                            </div>
+                        </form>
 
-    <!-- Footer -->
-    <%- include('./partials/footer'); %>
-  </body>
+                        <h2 class="text-xl font-semibold mb-4 mt-10">
+                            Phương thức thanh toán
+                        </h2>
+                        <div
+                            class="flex flex-col rounded-md border border-gray-line shadow-sm"
+                        >
+                            <div
+                                class="flex gap-4 border-b border-b-gray-line p-8"
+                            >
+                                <input
+                                    type="radio"
+                                    id="cod"
+                                    value="cod"
+                                    name="payment-method"
+                                    checked
+                                />
+                                <label
+                                    for="cod"
+                                    class="flex items-center gap-4"
+                                >
+                                    <img
+                                        src="/images/icons/cash-on-delivery.png"
+                                        alt="COD"
+                                        class="w-10 h-10 border border-gray-line p-1 rounded-md"
+                                    />
+                                    Thanh toán khi nhận hàng (COD)
+                                </label>
+                            </div>
+
+                            <div
+                                class="flex gap-4 border-b border-b-gray-line p-8"
+                            >
+                                <input
+                                    type="radio"
+                                    id="momo"
+                                    value="momo"
+                                    name="payment-method"
+                                />
+                                <label
+                                    for="momo"
+                                    class="flex items-center gap-4"
+                                >
+                                    <img
+                                        src="/images/icons/momo.png"
+                                        alt="MoMo"
+                                        class="w-10 h-10"
+                                    />
+                                    Thanh toán qua MoMo
+                                </label>
+                            </div>
+
+                            <div
+                                class="flex gap-4 border-b border-b-gray-line p-8"
+                            >
+                                <input
+                                    type="radio"
+                                    id="banking"
+                                    value="banking"
+                                    name="payment-method"
+                                />
+                                <label
+                                    for="banking"
+                                    class="flex items-center gap-4"
+                                >
+                                    <img
+                                        src="/images/icons/debit-card.png"
+                                        alt="Banking"
+                                        class="w-10 h-10 border border-gray-line p-1 rounded-md"
+                                    />
+                                    Chuyển khoản qua ngân hàng
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Order Summary -->
+                    <div
+                        class="md:w-1/3 bg-white rounded-lg shadow-md p-6 self-start"
+                    >
+                        <h2
+                            class="text-xl font-semibold pb-2 mb-2 border-b-gray-line border-b"
+                        >
+                            Tóm tắt đơn hàng
+                        </h2>
+
+                        <!-- Cart's items -->
+                        <% if (cart.products.length === 0) { %>
+                            <p class="text-center mt-4 text-sm mb-2">Giỏ hàng trống. Vui lòng thêm sản phẩm vào giỏ.</p>
+                        <% } %>
+                        <div class="flex flex-col">
+                            <% cart.products.forEach((item) => { %>
+                            <div
+                                class="flex justify-between my-2 items-center gap-2"
+                            >
+                                <img
+                                    src="<%= item.image %>"
+                                    alt="<%= item.name %>"
+                                    class="w-16 h-16 object-cover rounded-md border border-gray-line"
+                                />
+                                <div class="flex flex-col mr-2">
+                                    <p class="font-medium text-sm">
+                                        <%= item.name %>
+                                    </p>
+                                    <p class="text-sm">
+                                        Số lượng: <%= item.quantity %>
+                                    </p>
+                                </div>
+                                <p class="ml-auto text-sm">
+                                    <%= formatPrice(item.total) %>
+                                </p>
+                            </div>
+                            <% }) %>
+                        </div>
+
+                        <h3
+                            class="flex justify-between mb-4 border-t border-t-gray-line pt-2 mt-2 text-lg font-medium"
+                        >
+                            Các chi phí khác
+                        </h3>
+                        <div class="flex justify-between mb-4">
+                            <p>Phí vận chuyển</p>
+                            <p><%= formatPrice(30000) %></p>
+                        </div>
+                        <div
+                            class="flex justify-between mb-4 border-t border-t-gray-line pt-4 mt-4"
+                        >
+                            <p class="font-semibold text-xl">Tổng</p>
+                            <p class="font-semibold text-xl">
+                                <%= formatPrice(cart.totalPrice + 30000) %>
+                            </p>
+                        </div>
+                        <button
+                            id="checkout-button"
+                            class="bg-primary text-white border border-primary hover:bg-transparent hover:text-primary py-2 px-4 rounded-full w-full mt-10"
+                            <% if (cart.products.length === 0) { %> disabled <% } %>
+                        >
+                            Thanh toán & Đặt hàng
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <%- include('./partials/footer'); %>
+    </body>
+
+    <script>
+        const popupCenter = ({ url, title, w, h }) => {
+            // Fixes dual-screen position
+            const dualScreenLeft =
+                window.screenLeft !== undefined
+                    ? window.screenLeft
+                    : window.screenX;
+            const dualScreenTop =
+                window.screenTop !== undefined
+                    ? window.screenTop
+                    : window.screenY;
+
+            const width = window.innerWidth
+                ? window.innerWidth
+                : document.documentElement.clientWidth
+                  ? document.documentElement.clientWidth
+                  : screen.width;
+            const height = window.innerHeight
+                ? window.innerHeight
+                : document.documentElement.clientHeight
+                  ? document.documentElement.clientHeight
+                  : screen.height;
+
+            const systemZoom = width / window.screen.availWidth;
+            const left = (width - w) / 2 / systemZoom + dualScreenLeft;
+            const top = (height - h) / 2 / systemZoom + dualScreenTop;
+            const newWindow = window.open(
+                url,
+                title,
+                `
+                scrollbars=yes,menubar=no,toolbar=no,location=no,
+                width=${w / systemZoom}, 
+                height=${h / systemZoom}, 
+                top=${top}, 
+                left=${left}
+                `,
+            );
+
+            if (window.focus) newWindow.focus();
+
+            return newWindow;
+        };
+
+        const createOrder = async (order) => {
+            try {
+                const response = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(order),
+                });
+
+                if (!response.ok) {
+                    const responseBody = await response.json();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Đặt hàng thất bại',
+                        text: responseBody.message,
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đặt hàng thành công',
+                    text: 'Đơn hàng của bạn đã được ghi nhận',
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+
+                // Redirect to the home page
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+            } catch (error) {
+                console.error(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Đặt hàng thất bại',
+                    text: 'Đã xảy ra lỗi khi đặt hàng. Vui lòng thử lại sau',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            }
+        };
+
+        // Add event listener to the button
+        document
+            .getElementById('checkout-button')
+            .addEventListener('click', async () => {
+                // Get the billing details
+                const billingName =
+                    document.getElementById('billing-name').value;
+                const billingPhone =
+                    document.getElementById('billing-phone').value;
+                const billingEmail =
+                    document.getElementById('billing-email').value;
+                const billingAddress =
+                    document.getElementById('billing-address').value;
+
+                // Validate the billing details
+                if (
+                    !billingName ||
+                    !billingPhone ||
+                    !billingEmail ||
+                    !billingAddress
+                ) {
+                    Swal.fire({
+                        icon: 'info',
+                        text: 'Vui lòng điền đầy đủ thông tin giao hàng',
+                    });
+                    return;
+                }
+
+                // Validate the phone number
+                if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(billingPhone)) {
+                    Swal.fire({
+                        icon: 'info',
+                        text: 'Số điện thoại không hợp lệ',
+                    });
+                    return;
+                }
+
+                // Validate the email
+                if (!/^\S+@\S+\.\S+$/.test(billingEmail)) {
+                    Swal.fire({
+                        icon: 'info',
+                        text: 'Email không hợp lệ',
+                    });
+                    return;
+                }
+
+                // Get the payment method
+                const paymentMethod = document.querySelector(
+                    'input[name="payment-method"]:checked',
+                ).value;
+
+                // Open up the loading modal
+                Swal.fire({
+                    title: 'Đang xử lý',
+                    html: 'Lưu ý: Các phương thức thanh toán khác ngoài COD sẽ có cửa sổ mới để quý khách thực hiện thanh toán.',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                });
+
+                // Create the order
+                    const order = {
+                        customer_name: billingName,
+                        customer_phone: billingPhone,
+                        customer_email: billingEmail,
+                        shipping_address: billingAddress,
+                        payment_method: paymentMethod,
+                    };
+
+                // Simulate the payment process
+                if (paymentMethod === 'cod') {
+                    await createOrder(order);
+                } else {
+                    // Open up a new window for the payment
+                    const window = popupCenter({
+                        url: 'https://momo.vn',
+                        title: 'Thanh toán',
+                        w: 800,
+                        h: 600,
+                    });
+
+                    // Once the payment is successful
+                    const paymentInterval = setInterval(async () => {
+                        if (window.closed) {
+                            clearInterval(paymentInterval);
+                            await createOrder(order);
+                        }
+                    }, 2000);
+                }
+            });
+    </script>
 </html>

@@ -1,5 +1,6 @@
 import express from 'express';
 import * as service from './productService.js';
+import * as reviewService from '../review/reviewService.js';
 
 const router = express.Router();
 
@@ -39,23 +40,22 @@ router.get('/:category', (req, res) => {
 });
 
 // Fetch single product by product_id
-router.get('/:category_id/:product_id', async (req, res) => {
+router.get('/laptop/:product_id', async (req, res) => {
   try {
     const product = await service.fetchProductByID(
       Number(req.params.product_id),
     );
-
     if (!product) {
       return res.status(404).render('error', {
         message: 'Không tìm thấy sản phẩm',
         status: 404,
       });
     }
+    const reviews = await reviewService.fetchProductReviewsWithQuery(product.id, req.query);
 
     // Fetch related products and exclude the current product by comparing product_id
     const related_products = await service.fetchProductByRelevant(product);
-
-    res.render('singleProduct', { product, related_products });
+    res.render('singleProduct', { product, related_products, reviews });
   } catch (e) {
     console.error(e);
     res.status(500).render('error', {

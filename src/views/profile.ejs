@@ -3,27 +3,38 @@
 
 <head>
     <%- include('./partials/head'); %>
-        <title>TechKit - Login</title>
+        <title>TechKit - Tài khoản</title>
 </head>
 
 <body>
     <!-- Header -->
     <%- include('./partials/header'); %>
         <!-- Content -->
-        <div class="flex gap-5">
+        <div class="flex gap-5 p-10">
             <!-- Sidebar -->
-            <aside class="rounded-md shadow-md p-5">
-                <nav class="flex flex-col gap-2 items-stretch">
-                    <a class="rounded-md border border-primary text-primary p-2 text-center" href="/profile/info">
+            <aside class="rounded-md shadow-md p-5 h-">
+                <nav class="flex flex-col gap-4 h-fit">
+                    <a class="rounded-md border border-primary text-primary p-2 text-center hover:bg-primary hover:text-white"
+                        href="/profile/info">
                         Thông tin tài khoản
                     </a>
-                    <a class="rounded-md border border-primary text-primary p-2 text-center" href="/profile/orders">
+                    <a class="rounded-md border border-primary text-primary p-2 text-center hover:bg-primary hover:text-white"
+                        href="/profile/orders">
                         Đơn hàng của tôi
                     </a>
                 </nav>
             </aside>
-            <%- include('./profileInfo', {account}); %>
+
+            <% switch (section) { case 'info' : %>
+                <%- include('./profileInfo', {account}); %>
+                    <% break; case 'orders' : %>
+                        <%- include('./orders', {orders}); %>
+                            <% break; default: %>
+                                <%- include('./profileInfo', {account}); %>
+                                    <% break; } %>
+
         </div>
+
         <!-- Footer -->
         <%- include('./partials/footer'); %>
 </body>
@@ -55,7 +66,9 @@
                 input.classList.remove('opacity-60');
             }
         });
-
+        const select = document.getElementById('sex');
+        select.removeAttribute('disabled');
+        select.classList.remove('opacity-60');
         // Open image preview
         const chooseImg = document.getElementById('choose-img');
         chooseImg.style.display = 'flex';
@@ -70,14 +83,47 @@
         const phone = document.getElementById('phone').value;
         const birthdate = document.getElementById('birthday').value;
         const address = document.getElementById('address').value;
-        const sex = '';
+        const sex = document.getElementById('sex').value;
+        const avatar = document.getElementById('avatar').files[0];
 
         const info = { name, address, birthdate, sex, phone };
         console.log(info);
 
+        const updateAvatar = async (file) => {
+            try {
+                if (!file) {
+                    // If no avatar file is selected, just return a success response with no error message
+                    return { success: true, message: '' };
+                }
+
+                const formData = new FormData();
+                formData.append('avatar', file);
+                const response = await fetch('/api/profile/avatar', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    const avatar_container = document.getElementById('avatar-container');
+                    const avatar_header = document.getElementById('avatar-header');
+                    avatar_container.setAttribute('src', data.avatar_url);
+                    avatar_header.setAttribute('src', data.avatar_url);
+                    return { success: true, message: 'Avatar updated successfully' };
+                } else {
+                    console.error('Failed to update avatar:', data.message);
+                    return { success: false, message: data.message || 'Error updating avatar' };
+                }
+            } catch (error) {
+                console.error('Error updating avatar:', error);
+                return { success: false, message: 'Error updating avatar' };
+            }
+        };
+
         const updateProfile = async () => {
             try {
-                const response = await fetch('/api/profile/info', { // Adjust URL if necessary
+                const response = await fetch('/api/profile/info', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -91,48 +137,123 @@
                     console.log('Profile updated successfully:', data);
                     const inputs = document.querySelectorAll('input');
                     inputs.forEach((input) => {
-                        if (input.id !== 'email') {
+                        if (input.id !== 'old-password' && input.id !== 'new-password' && input.id !== 'confirm-password') {
                             input.setAttribute('readonly', 'true');
                             input.classList.add('opacity-60');
                         }
                     });
+                    const select = document.getElementById('sex');
+                    select.setAttribute('disabled', 'true');
+                    select.classList.add('opacity-60');
 
                     const chooseImg = document.getElementById('choose-img');
                     chooseImg.style.display = '';
 
                     applyButton.classList.add('hidden');
                     updateButton.classList.remove('hidden');
-                    // // Update name field
-                    // const nameElement = document.getElementById('name');
-                    // if (nameElement) nameElement.value = data.result.name;
-
-                    // // Update address field
-                    // const addressElement = document.getElementById('address');
-                    // if (addressElement) addressElement.value = data.result.address;
-
-                    // // Update birthdate field
-                    // const birthdateElement = document.getElementById('birthdate');
-                    // if (birthdateElement) birthdateElement.value = data.result.birthdate;
-
-                    // // Update phone field
-                    // const phoneElement = document.getElementById('phone');
-                    // if (phoneElement) phoneElement.value = data.result.phone;
-                    // // Show success message to the user
-                    // alert('Profile updated successfully!');
+                    return { success: true, message: 'Profile updated successfully' };
                 } else {
                     console.error('Failed to update profile:', data.message);
-                    alert(`Error: ${data.message}`);
+                    return { success: false, message: data.message || 'Error updating profile' };
                 }
-
             } catch (error) {
                 console.error('Error updating profile:', error);
-                // Handle network or other errors (e.g., show a general error message)
+                return { success: false, message: 'Error updating profile' };
             }
         };
 
-        // Call the updateProfile function
-        updateProfile();
+        // Call the updateAvatar function
+        const avatarPromise = await updateAvatar(avatar);
+        const profilePromise = await updateProfile();
+
+        const avatarMessage = avatarPromise.message || '';
+        const profileMessage = profilePromise.message || '';
+
+        // Concatenate the messages, but only if they exist
+        const errorMessage = `${avatarMessage} ${profileMessage}`.trim();
+
+        if (avatarPromise.success && profilePromise.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Cập nhật profile thành công',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Cập nhật profile thất bại',
+                text: errorMessage || 'An unexpected error occurred',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+            });
+        }
     });
+
+
+    const updatePasswordButton = document.getElementById('update-password');
+    updatePasswordButton.addEventListener('click', async () => {
+        const oldPassword = document.getElementById('old-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        const updatePassword = async () => {
+            try {
+                const response = await fetch('/api/profile/password', { // Adjust URL if necessary
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        oldPassword, newPassword, confirmPassword
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log('Password updated succesfully:', data);
+                    const inputs = document.querySelectorAll('input');
+                    inputs.forEach((input) => {
+                        if (input.id === 'old-password' || input.id === 'new-password' || input.id === 'confirm-password') {
+                            input.value = '';
+                        }
+                    });
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đổi mật khẩu thành công',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: true,
+                    });
+                } else {
+                    console.error('Đổi mật khẩu thất bại:', data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Đổi mật khẩu thất bại',
+                        text: data.message,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: true,
+                    });
+                }
+
+            } catch (error) {
+                console.error('Error updating password:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Đổi mật khẩu thất bại',
+                    text: 'Internal Server Error',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: true,
+                });
+            }
+        }
+        updatePassword();
+    })
 </script>
 
 </html>
