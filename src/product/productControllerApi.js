@@ -5,7 +5,6 @@ const router = express.Router();
 
 // Fetch all products with query parameters
 router.get('/', (req, res) => {
-  console.log(req.query);
   service
     .fetchProductWithQuery(req.params, req.query)
     .then((result) => {

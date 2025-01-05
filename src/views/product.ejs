@@ -20,7 +20,7 @@
       ><%= product.price.toLocaleString() %>₫</span
     >
     <span class="text-sm font-bold text-primary ml-2"
-      >-<%= Math.round((1 - product.price_sale / product.price) * 100)
+      >-<%= ((1 - product.price_sale / product.price) * 100).toFixed(1)
             %>%</span
     >
     <% } else { %>

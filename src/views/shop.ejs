@@ -72,12 +72,12 @@
             <!-- Loop through products and display each one -->
             <% if (products) { %>
             <% products.forEach(product => { %>
-            <%- include('product', { product }); %>
+              <%- include('product', { product }); %>
             <% }); %>
+            <% } else { %>
+              <h1>Không tìm thấy sản phẩm...</h1>
+              <% } %>
           </div>
-          <% } else { %>
-          <h1>Không tìm thấy sản phẩm...</h1>
-          <% } %>
 
           <div class="flex justify-center mt-8">
             <nav aria-label="Page navigation">

@@ -166,7 +166,7 @@ const onFilterSubmit = async function (e) {
     queryParams.set('category', category[2]);
   }
     
-  const api_url = `http://${window.location.hostname}:${window.location.port}/api/product${queryParams ? '?' : ''}${queryParams.toString()}`;
+  const api_url = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/api/product${queryParams ? '?' : ''}${queryParams.toString()}`;
   try {
     const response = await fetch(api_url);
     if (!response.ok) {
