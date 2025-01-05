@@ -16,8 +16,8 @@ model category {
 model product {
   id             Int              @id @default(autoincrement())
   name           String           @unique(map: "name") @db.VarChar(70)
-  brand_id       Int?
-  category_id    Int?
+  brand_id       Int
+  category_id    Int
   storage        String?          @db.VarChar(20)
   cpu            String?          @db.VarChar(100)
   screen_size    String?          @db.VarChar(30)
@@ -25,7 +25,7 @@ model product {
   ram            String?          @db.VarChar(20)
   graphic_card   String?          @db.VarChar(50)
   description    String?          @db.Text
-  price          Int              @default(25990000)
+  price          Int              
   price_sale     Int?             @default(19990000)
   in_stock       Int?             @default(1)
   sales          Int?             @default(0)

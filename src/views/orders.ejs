@@ -18,9 +18,14 @@
       <tr>
         <td class="p-2"><%= order.id %></td>
         <td class="p-2"><%= order.create_time.toLocaleDateString() %></td>
-        <td class="p-2"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND',}).format(order.total_price) %></td>
-        <td class="p-2"><%= order.status %></td>
-        <td class="p-2 text-primary"><a href="/order/<%= order.id %>">Xem chi tiết</a></td>
+        <td class="p-2">
+          <%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency:
+          'VND',}).format(order.total_price) %>
+        </td>
+        <td class="p-2"><%= orderStatusText[order.status] %></td>
+        <td class="p-2 text-primary">
+          <a href="/order/<%= order.id %>">Xem chi tiết</a>
+        </td>
       </tr>
       <% }) %>
     </tbody>

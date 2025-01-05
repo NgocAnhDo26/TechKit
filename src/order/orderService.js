@@ -32,8 +32,8 @@ export const createOrder = async (userId, order) => {
               quantity: product.quantity,
               price: product.price_sale * product.quantity,
             },
-          })
-        )
+          }),
+        ),
       );
 
       // Update product in_stock quantity and sales
@@ -60,34 +60,42 @@ export const createOrder = async (userId, order) => {
               },
             });
           } else {
-            throw new Error('Sản phẩm ' + productData.name + ' đã hết hàng. Vui lòng thử lại sau.');
+            throw new Error(
+              'Sản phẩm ' +
+                productData.name +
+                ' đã hết hàng. Vui lòng thử lại sau.',
+            );
           }
-        })
+        }),
       );
 
       // Clear the cart
       await clearCart(order.customer_id);
     });
 
-    return { status: 'success', message: 'Đơn hàng đã được tạo thành công!', orderId };
+    return {
+      status: 'success',
+      message: 'Đơn hàng đã được tạo thành công!',
+      orderId,
+    };
   } catch (e) {
     console.error(e);
     return {
       status: 'failed',
-      message: e.message.startsWith('Sản phẩm ') ? e.message : 'Đã xảy ra lỗi khi tạo đơn hàng. Vui lòng thử lại sau.',
+      message: e.message.startsWith('Sản phẩm ')
+        ? e.message
+        : 'Đã xảy ra lỗi khi tạo đơn hàng. Vui lòng thử lại sau.',
     };
   }
-
 };
 
 // Fetch all customer's orders
-export const fetchOrders = async (customer_id) => {
-  return await prisma.orders.findMany({
+export const fetchOrders = async (customer_id) =>
+  await prisma.orders.findMany({
     where: {
       account_id: customer_id,
     },
   });
-};
 
 // Fetch order by ID
 export const fetchOrderById = async (user_id, order_id) => {
@@ -114,7 +122,7 @@ export const fetchOrderById = async (user_id, order_id) => {
           },
         },
       },
-    }
+    },
   });
 
   if (!result) {
@@ -143,7 +151,7 @@ export const fetchOrderById = async (user_id, order_id) => {
   };
 
   return order;
-}
+};
 
 // Update order status
 export const updateOrderStatus = async (order_id, status) => {
@@ -160,9 +168,13 @@ export const updateOrderStatus = async (order_id, status) => {
     console.error(e);
     return {
       status: 'failed',
-      message: 'Đã xảy ra lỗi khi cập nhật trạng thái đơn hàng. Vui lòng thử lại sau.',
+      message:
+        'Đã xảy ra lỗi khi cập nhật trạng thái đơn hàng. Vui lòng thử lại sau.',
     };
   }
 
-  return { status: 'success', message: 'Trạng thái đơn hàng đã được cập nhật thành công!' };
+  return {
+    status: 'success',
+    message: 'Trạng thái đơn hàng đã được cập nhật thành công!',
+  };
 };

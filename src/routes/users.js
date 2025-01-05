@@ -30,28 +30,32 @@ router.get('/cart', (req, res) => {
 });
 
 router.get('/checkout', (req, res) => {
-  req.user
-    ? renderCheckoutPage(req, res)
-    : res.redirect('/auth/login');
+  req.user ? renderCheckoutPage(req, res) : res.redirect('/auth/login');
 });
 
-router.get('/profile', (req, res, next) => {
-  req.user
-    ? next()
-    : res.redirect('/auth/login')
-}, renderProfilePage);
+router.get(
+  '/profile',
+  (req, res, next) => {
+    req.user ? next() : res.redirect('/auth/login');
+  },
+  renderProfilePage,
+);
 
-router.get('/profile/info', (req, res, next) => {
-  req.user
-    ? next()
-    : res.redirect('/auth/login')
-}, renderProfilePage);
+router.get(
+  '/profile/info',
+  (req, res, next) => {
+    req.user ? next() : res.redirect('/auth/login');
+  },
+  renderProfilePage,
+);
 
-router.get('/profile/orders', (req, res, next) => {
-  req.user
-    ? next()
-    : res.redirect('/auth/login')
-}, renderOrdersPage);
+router.get(
+  '/profile/orders',
+  (req, res, next) => {
+    req.user ? next() : res.redirect('/auth/login');
+  },
+  renderOrdersPage,
+);
 
 router.use('/shop', productController);
 

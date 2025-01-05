@@ -1,10 +1,9 @@
 import express from 'express';
 import * as service from './userService.js';
 import { fetchOrders } from '../order/orderService.js';
-import { uploadImage, getUrl } from '../util/util.js';
+import { getUrl } from '../util/util.js';
 import { upload } from '../config/config.js';
-import path from 'path';
-import { get } from 'http';
+import { orderStatusText } from '../util/constants.js';
 
 const router = express.Router();
 
@@ -65,7 +64,9 @@ export async function renderProfilePage(req, res) {
 export async function renderOrdersPage(req, res) {
   try {
     const orders = await fetchOrders(req.user.id);
-    res.status(200).render('profile', { section: 'orders', orders });
+    res
+      .status(200)
+      .render('profile', { section: 'orders', orders, orderStatusText });
   } catch (error) {
     console.error('Error fetching orders:', error);
     res.status(500).send('Error occured when fetching orders');
@@ -173,40 +174,39 @@ router.post('/password', async (req, res) => {
 });
 
 router.post('/avatar', upload.single('avatar'), async (req, res) => {
-    const account_id = req.user.id;
+  const account_id = req.user.id;
 
-    if (!account_id) {
-        return res.status(400).json({
-            success: false,
-            message: 'Account ID is required',
-        });
-    }
+  if (!account_id) {
+    return res.status(400).json({
+      success: false,
+      message: 'Account ID is required',
+    });
+  }
 
-    if (!req.file) {
-        return res.status(400).json({
-            success: false,
-            message: 'Avatar image is required.',
-        });
-    }
+  if (!req.file) {
+    return res.status(400).json({
+      success: false,
+      message: 'Avatar image is required.',
+    });
+  }
 
-    try {
-        // Update the avatar in Cloudinary and Prisma database
-        const result = await service.updateAvatarByID(account_id, req.file);
+  try {
+    // Update the avatar in Cloudinary and Prisma database
+    const result = await service.updateAvatarByID(account_id, req.file);
 
-        res.status(200).json({
-            success: true,
-            message: result.message,
-            avatar_url: result.avatar_url, // Return the new avatar URL
-        });
-    } catch (error) {
-        console.error('Error uploading avatar:', error);
-        res.status(500).json({
-            success: false,
-            message: 'An error occurred while uploading the avatar.',
-            error: error.message,
-        });
-    }
+    res.status(200).json({
+      success: true,
+      message: result.message,
+      avatar_url: result.avatar_url, // Return the new avatar URL
+    });
+  } catch (error) {
+    console.error('Error uploading avatar:', error);
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while uploading the avatar.',
+      error: error.message,
+    });
+  }
 });
-
 
 export default router;
