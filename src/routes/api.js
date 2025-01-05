@@ -9,11 +9,11 @@ const router = express.Router();
 
 router.use('/product', productController);
 
-router.use('/review',reviewController);
+router.use('/review', reviewController);
 
 router.use('/cart', cartController);
 
-router.use('/profile',(req, res, next) => {
+router.use('/profile', (req, res, next) => {
     req.user
         ? next()
         : res.redirect('/auth/login');

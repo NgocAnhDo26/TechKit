@@ -26,14 +26,64 @@
       <div class="flex flex-col lg:flex-row gap-10">
         <!-- Image Section -->
         <div class="w-full lg:w-1/2">
-          <div class="flex flex-col gap-4">
-            <!-- Big Image -->
-            <div id="main-image-container">
-              <img id="main-image" class="h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px]"
-                src="<%= product.profile_img.url %>" alt="Main Product Image" />
-            </div>
+                      <!-- Big Image -->
+
             <!-- Small Images -->
+          <div class="gap-4">
             <!-- Swiper Slider -->
+            <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img src="<%= product.profile_img.url %>" class="w-full object-cover"/>
+                </div>
+                <% product.other_img.forEach(img => { %>
+                  <div class="swiper-slide">
+                    <img src="<%= img.url %>" class="w-full object-cover"/>
+                  </div>
+                <% }); %>
+              </div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
+            <div thumbsSlider="" class="swiper mySwiper mt-5">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img src="<%= product.profile_img.url %>" class="w-full object-cover" />
+                </div>
+                <% product.other_img.forEach(img => { %>
+                  <div class="swiper-slide">
+                    <img src="<%= img.url %>" class="w-full object-cover"/>
+                  </div>
+                <% }); %>
+              </div>
+            </div>
+
+            <!-- Swiper JS -->
+            <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+            <!-- Initialize Swiper -->
+            <script>
+              var swiper = new Swiper(".mySwiper", {
+                loop: true,
+                autoHeight: true,
+                spaceBetween: 10,
+                slidesPerView: 4,
+                freeMode: true,
+                watchSlidesProgress: true,
+              });
+              var swiper2 = new Swiper(".mySwiper2", {
+                loop: true,
+                spaceBetween: 10,
+                autoHeight: true,
+                navigation: {
+                  nextEl: ".swiper-button-next",
+                  prevEl: ".swiper-button-prev",
+                },
+                thumbs: {
+                  swiper: swiper,
+                },
+              });
+            </script>
           </div>
         </div>
         <!-- Product Details Section -->
@@ -42,7 +92,7 @@
             <h1 class="text-3xl font-bold mb-4">
               <%= product.name %>
             </h1>
-            <div class="items-center mb-4 <%= product.in_stock === 0 ? " hidden" : "flex" %>">
+            <div class="items-center mb-4 <%= product.status !== 'on stock' ? " hidden" : "flex" %>">
               <span class="mr-2">Sản phẩm trong kho: </span>
               <span class="font-semibold">
                 <%= product.in_stock %>
@@ -80,7 +130,7 @@
                   </span>
                   <% } %>
             </div>
-            <div class="flex items-center mb-8 border-2 w-min">
+            <div class="items-center mb-8 border-2 w-min <%= product.status === 'on stock' ? 'flex' : 'hidden' %>">
               <button id="decrease"
                 class="text-primary text-xl font-semibold w-10 h-10 flex items-center justify-center hover:bg-primary hover:text-white"
                 disabled type="button">
@@ -94,9 +144,19 @@
               </button>
             </div>
             <button id="add-to-cart" type="button"
-              class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary py-2 px-4 rounded-md w-full">
-              <div class="font-bold mt-1">THÊM VÀO GIỎ</div>
-              <div class="mb-1">Giao tận nơi Hoặc Nhận tại cửa hàng</div>
+              class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary py-2 px-4 rounded-md w-full"
+              <%= product.status !== 'on stock' && 'disabled' %>
+              >
+                <% if (product.status === 'on stock') { %>
+                  <div class="font-bold mt-1">Thêm vào giỏ hàng</div>
+                  <div class="mb-1">Giao tận nơi Hoặc Nhận tại cửa hàng</div>
+                <% } else if (product.status === 'out of stock') { %>
+                    <div class="font-bold mt-1">Sản phẩm tạm hết hàng</div>
+                    <div class="mb-1">Cửa hàng sẽ thông báo khi hàng mới về</div>
+                <% } else if (product.status === 'suspended') { %>
+                    <div class="font-bold mt-1">Ngừng kinh doanh</div>
+                    <div class="mb-1">Vui lòng tham khảo các sản phẩm khác</div>
+                <% } %>
             </button>
           </div>
         </div>
@@ -173,22 +233,20 @@
             <!-- Reviews List -->
             <div class="space-y-6">
               <div id="review-list">
-                <% if (reviews.reviews.length !=0) { %>
+                <% if (reviews.reviews.length !== 0) { %>
                     <% reviews.reviews.forEach(review=> { %>
-                      <div class="py-4 shadow-md border-md">
+                      <div class="py-4 shadow-md rounded-md m-4 p-4">
                         <div class="flex items-center mb-2">
-                          <img id="review-avatar" src="<%= review.avatar_url %> " class="w-10 h-auto" />
-                          <span class="text-2xl font-semibold text-gray-700 ml-4">
+                          <img id="review-avatar" src="<%= review.avatar_url %> " class="w-10 h-auto object-cover rounded-full" />
+                          <span class="text-md font-semibold text-gray-700 ml-4">
                             <%= review.account.name %> <!-- Display the account's name -->
                           </span>
                           <!-- Space between name and time -->
-                          <span class="text-lg text-gray-700 ml-4">
-                            <%= new Date(review.create_time).toLocaleString('en-US', { hour: '2-digit' ,
-                              minute: '2-digit' , weekday: 'short' , year: 'numeric' , month: 'short' , day: 'numeric'
-                              }) %> <!-- Format the time -->
+                          <span class="text-sm text-gray-700 ml-4">
+                            <%= review.create_time.toLocaleString(); %> <!-- Format the time -->
                           </span>
                         </div>
-                        <p class="ml-4">
+                        <p class="mt-4 ml-4">
                           <%= review.content %> <!-- Display the content of the review -->
                         </p>
                       </div>
@@ -370,35 +428,26 @@
     if (data.reviews.length !== 0) {
 
       data.reviews.forEach((review) => {
-        // Format review's time
-        const reviewDate = new Date(review.create_time).toLocaleString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-          weekday: 'short',
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        });
-
         reviewContainer.innerHTML += `
-        <div class="py-4 shadow-md border-md">
+        <div class="py-4 shadow-md rounded-md m-4 p-4">
           <div class="flex items-center mb-2">
-            <img id="review-avatar" src="${review.avatar_url}" class="w-10 h-auto" />
-            <span class="text-2xl font-semibold text-gray-700 ml-4">
+            <img id="review-avatar" src="${review.avatar_url}" class="w-10 h-auto object-cover rounded-full" />
+            <span class="text-md font-semibold text-gray-700 ml-4">
               ${review.account.name} <!-- Display the account's name -->
             </span>
-            <span class="text-lg text-gray-700 ml-4">
-              ${reviewDate} <!-- Format the time -->
+            <!-- Space between name and time -->
+            <span class="text-sm text-gray-700 ml-4">
+              ${new Date(review.create_time).toLocaleString()} %> <!-- Format the time -->
             </span>
           </div>
-          <p class="ml-4">
+          <p class="mt-4 ml-4">
             ${review.content} <!-- Display the content of the review -->
           </p>
         </div>
       `;
       });
     } else {
-      reviewContainer.innerHTML = '<p>No reviews found for this product.</p>';
+      reviewContainer.innerHTML = '<p>Chưa có đánh giá về sản phẩm này...</p>';
     }
   };
 
@@ -497,28 +546,21 @@
       if (addReviewResponse.ok && data.success == true) {
         const reviewListElement = document.getElementById('review-list');
 
-        // Formatting date
-        const reviewDate = new Date(data.review.create_time).toLocaleString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-          weekday: 'short',
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        });
-
         reviewListElement.insertAdjacentHTML('afterbegin', `
-        <div class="py-4 shadow-md border-md">
+        <div class="py-4 shadow-md rounded-md m-4 p-4">
           <div class="flex items-center mb-2">
-            <img id="review-avatar" src="${data.review.avatar_url}" alt="Review Avatar">
-            <span class="text-2xl font-semibold text-gray-700 ml-4">
-              ${data.review.account.name}
+            <img id="review-avatar" src="${data.review.avatar_url}" class="w-10 h-auto object-cover rounded-full" />
+            <span class="text-md font-semibold text-gray-700 ml-4">
+              ${data.review.account.name} <!-- Display the account's name -->
             </span>
-            <span class="text-lg text-gray-700 ml-4">
-              ${reviewDate}
+            <!-- Space between name and time -->
+            <span class="text-sm text-gray-700 ml-4">
+              ${new Date(data.review.create_time).toLocaleString()} %> <!-- Format the time -->
             </span>
           </div>
-          <p class="ml-4">${data.review.content}</p>
+          <p class="mt-4 ml-4">
+            ${data.review.content} <!-- Display the content of the review -->
+          </p>
         </div>
       `);
 
