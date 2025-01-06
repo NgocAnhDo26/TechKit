@@ -53,7 +53,7 @@ export default passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_REDIRECT_URI,
-      state: true,
+      state: true, // Use state for CSRF protection
     },
     async (accessToken, refreshToken, profile, done) => {
       const { id, displayName, emails, photos } = profile;
@@ -107,6 +107,7 @@ export default passport.use(
 export async function sendActivationEmail(user) {
   const token = crypto.randomBytes(32).toString('hex');
   await redisClient.json.set(token, '$', user, { EX: 3600 }); // 1-hour expiry
+
   const activateLink = `${process.env.ACTIVATE_LINK}/auth/activate?token=${token}`;
   sendMail(
     user.email,

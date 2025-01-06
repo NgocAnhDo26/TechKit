@@ -126,6 +126,8 @@ router.get('/google/callback', (req, res, next) => {
 
     // Save lastUrl before logging in
     const lastUrl = req.session.lastUrl;
+    console.log('lastUrl', lastUrl);
+
     req.login(user, (err) => {
       if (err) return next(err);
       return res.redirect(lastUrl || '/');
@@ -163,12 +165,7 @@ router.post('/forgot-password', (req, res) => {
 
 // Handle logout
 router.get('/logout', (req, res, next) => {
-  const forbiddenPaths = ['/profile/']; // Prevent redirect to these paths after logout
-  const lastUrl = forbiddenPaths.some((path) =>
-    path.includes(req.session.lastUrl),
-  )
-    ? '/'
-    : req.session.lastUrl;
+  const lastUrl = req.session.lastUrl;
   req.logout((err) => {
     if (err) return next(err);
     return res.redirect(lastUrl);

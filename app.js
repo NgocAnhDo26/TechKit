@@ -40,11 +40,8 @@ app.use((req, res, next) => {
     req.url.startsWith('/api') ||
     req.method !== 'GET';
 
-  // Block storing lastUrl if user is not logged in and tries /profile
-  const isForbiddenProfile = !req.user && req.url.startsWith('/profile');
-
-  // Only store if not excluded and not forbidden
-  if (!isExcludedPath && !isForbiddenProfile) {
+  // Only store if not excluded
+  if (!isExcludedPath) {
     req.session.lastUrl = req.originalUrl;
   }
 
