@@ -107,7 +107,7 @@ export default passport.use(
 export async function sendActivationEmail(user) {
   const token = crypto.randomBytes(32).toString('hex');
   await redisClient.json.set(token, '$', user, { EX: 3600 }); // 1-hour expiry
-  const activateLink = `http://localhost:1111/auth/activate?token=${token}`;
+  const activateLink = `${process.env.ACTIVATE_LINK}/auth/activate?token=${token}`;
   sendMail(
     user.email,
     '[TechKit] Kích hoạt tài khoản TechKit của bạn',
