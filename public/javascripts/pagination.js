@@ -11,7 +11,7 @@ const renderProducts = (data) => {
           class="w-full object-cover mb-4 rounded-lg"
         />
         <a
-          href="/shop/${product.category}/${product.id}"
+          href="/shop/laptop/${product.id}"
           class="text-lg font-semibold mb-2"
         >
           ${product.name}
