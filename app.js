@@ -7,7 +7,6 @@ import { redisClient } from './src/config/config.js';
 import passport from 'passport';
 import { getCartCount } from './src/cart/cartService.js';
 import { getUrl } from './src/util/util.js';
-import { stat } from 'fs';
 
 const app = express();
 const __dirname = import.meta.dirname;
@@ -21,7 +20,7 @@ app.use(express.json()); // Parse JSON bodies
 app.use(express.static(path.join(__dirname, 'public'))); // Use static files
 app.use(
   session({
-    store: new RedisStore({ client: redisClient }), // Store session in memory in 1 day using redis
+    store: new RedisStore({ client: redisClient, ttl: 86400 }), // Store session in memory in 1 day using redis
     secret: JSON.parse(process.env.SECRET),
     resave: false,
     saveUninitialized: false,
@@ -41,11 +40,8 @@ app.use((req, res, next) => {
     req.url.startsWith('/api') ||
     req.method !== 'GET';
 
-  // Block storing lastUrl if user is not logged in and tries /profile
-  const isForbiddenProfile = !req.user && req.url.startsWith('/profile');
-
-  // Only store if not excluded and not forbidden
-  if (!isExcludedPath && !isForbiddenProfile) {
+  // Only store if not excluded
+  if (!isExcludedPath) {
     req.session.lastUrl = req.originalUrl;
   }
 
@@ -79,12 +75,10 @@ app.use(router); // Init routes
 // Handing errors
 app.use((err, req, res, next) => {
   console.error(err);
-  res
-    .status(500)
-    .render('error', {
-      message: 'Đã có lỗi xảy ra, vui lòng thử lại sau',
-      status: 500,
-    });
+  res.status(500).render('error', {
+    message: 'Đã có lỗi xảy ra, vui lòng thử lại sau',
+    status: 500,
+  });
 });
 
 const PORT = process.env.PORT ?? 1111; // Server setup

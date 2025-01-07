@@ -1,5 +1,5 @@
 <header class="sticky top-0 z-50 bg-primary">
-  <div class="container mx-auto flex items-center justify-between py-4">
+  <div class="container flex items-center py-4">
     <!-- Left section: Logo -->
     <a href="/" class="flex items-center">
       <div>
@@ -31,7 +31,7 @@
     </form>
 
     <!-- Right section: Buttons (for desktop) -->
-    <div class="relative items-center space-x-4 flex">
+    <div class="relative items-center space-x-4 flex ml-auto">
       <a class="flex w-max border-2 border-white rounded-md p-2" href="/cart">
         <img
           src="/images/icons/cart-shopping.svg"
@@ -78,8 +78,8 @@
     class="container2 mx-auto flex items-center justify-around bg-gray-light py-4"
   >
     <!-- Hamburger menu (for mobile) -->
-    <div class="flex md:hidden">
-      <button id="hamburger" class="text-white focus:outline-none">
+    <div class="hidden">
+      <button type="button" id="hamburger" class="text-white focus:outline-none">
         <svg
           class="h-6 w-6"
           fill="none"
@@ -97,7 +97,7 @@
     </div>
 
     <!-- Center section: Menu -->
-    <nav class="hidden justify-center md:flex md:flex-grow">
+    <nav class="justify-center md:flex md:flex-grow flex-wrap">
       <ul class="flex w-full justify-evenly space-x-4 text-white">
         <li>
           <a href="/" class="hover:text-secondary font-semibold">Trang chủ</a>
@@ -136,7 +136,7 @@
           >
             <li>
               <a
-                href="/shop/gaming?brand=ASUS"
+                href="/shop/gaming?brand=Asus"
                 class="block min-w-40 rounded px-4 py-2 hover:bg-primary hover:text-white"
                 >Asus</a
               >

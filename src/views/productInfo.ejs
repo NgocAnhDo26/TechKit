@@ -7,14 +7,14 @@
       </li>
       <li><span class="mx-2">&gt;</span></li>
       <li>
-        <a
-          href="/shop/<%= product.category.toLowerCase() %>"
-          class="font-semibold hover:text-primary"
-          ><%= product.category %></a
-        >
+        <a href="/shop/<%= product.category.toLowerCase() %>" class="font-semibold hover:text-primary">
+          <%= product.category %>
+        </a>
       </li>
       <li><span class="mx-2">&gt;</span></li>
-      <li><%= product.name %></li>
+      <li>
+        <%= product.name %>
+      </li>
     </ol>
   </div>
 </section>
@@ -26,34 +26,88 @@
       <div class="flex flex-col lg:flex-row gap-10">
         <!-- Image Section -->
         <div class="w-full lg:w-1/2">
-          <div class="flex flex-col gap-4">
-            <!-- Big Image -->
-            <div id="main-image-container">
-              <img
-                id="main-image"
-                class="h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px]"
-                src="<%= product.profile_img.url %>"
-                alt="Main Product Image"
-              />
-            </div>
+                      <!-- Big Image -->
+
             <!-- Small Images -->
+          <div class="gap-4">
             <!-- Swiper Slider -->
+            <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img src="<%= product.profile_img.url %>" class="w-full object-cover"/>
+                </div>
+                <% product.other_img.forEach(img => { %>
+                  <div class="swiper-slide">
+                    <img src="<%= img.url %>" class="w-full object-cover"/>
+                  </div>
+                <% }); %>
+              </div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
+            <div thumbsSlider="" class="swiper mySwiper mt-5">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img src="<%= product.profile_img.url %>" class="w-full object-cover" />
+                </div>
+                <% product.other_img.forEach(img => { %>
+                  <div class="swiper-slide">
+                    <img src="<%= img.url %>" class="w-full object-cover"/>
+                  </div>
+                <% }); %>
+              </div>
+            </div>
+
+            <!-- Swiper JS -->
+            <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+            <!-- Initialize Swiper -->
+            <script>
+              var swiper = new Swiper(".mySwiper", {
+                loop: true,
+                autoHeight: true,
+                spaceBetween: 10,
+                slidesPerView: 4,
+                freeMode: true,
+                watchSlidesProgress: true,
+              });
+              var swiper2 = new Swiper(".mySwiper2", {
+                loop: true,
+                spaceBetween: 10,
+                autoHeight: true,
+                navigation: {
+                  nextEl: ".swiper-button-next",
+                  prevEl: ".swiper-button-prev",
+                },
+                thumbs: {
+                  swiper: swiper,
+                },
+              });
+            </script>
           </div>
         </div>
         <!-- Product Details Section -->
         <div class="w-full lg:w-1/2 flex flex-col justify-between">
           <div class="pb-8 border-b border-gray-line">
-            <h1 class="text-3xl font-bold mb-4"><%= product.name %></h1>
-            <div class="items-center mb-4 <%= product.in_stock === 0 ? "hidden" : "flex" %>">
+            <h1 class="text-3xl font-bold mb-4">
+              <%= product.name %>
+            </h1>
+            <div class="items-center mb-4 <%= product.status !== 'on stock' ? " hidden" : "flex" %>">
               <span class="mr-2">Sản phẩm trong kho: </span>
-              <span class="font-semibold"><%= product.in_stock %></span>
+              <span class="font-semibold">
+                <%= product.in_stock %>
+              </span>
             </div>
             <div class="mb-4 pb-4 border-b">
               <span>Thương hiệu: </span>
-              <a href="/shop?brand=<%= product.brand %>" class="text-primary"><%= product.brand %></a>
+              <a href="/shop?brand=<%= product.brand %>" class="text-primary">
+                <%= product.brand %>
+              </a>
               <span class="mx-2">|</span>
               <span>Loại: </span>
-              <a href="/shop/<%= product.category %>" class="text-primary"><%= product.category %></a>
+              <a href="/shop/<%= product.category %>" class="text-primary">
+                <%= product.category %>
+              </a>
             </div>
             <div class="mb-4 pb-4 border-b border-gray-line">
               <p class="mb-2">✔ Bảo hành chính hãng 24 tháng.</p>
@@ -61,57 +115,49 @@
               <p class="mb-2">✔ Miễn phí giao hàng toàn quốc.</p>
             </div>
             <div class="text-4xl font-semibold mb-8">
-              <% if (product.price_sale) { %>
-              <span class="text-primary">
-                <%= product.price_sale.toLocaleString() %>₫
-              </span>
-              <s
-                class="text-2xl text-gray-400 font-light stroke-gray-line ml-3 text-gray-txt"
-              >
-                <%= product.price.toLocaleString() %>₫
-              </s>
-              <span class="text-2xl ml-5 text-primary"
-                >-<%= (100 - Math.round((product.price_sale /
-                                product.price) * 100)) %>%</span
-              >
-              <% } else { %>
-              <span class="text-primary">
-                <%= product.price.toLocaleString() %>₫
-              </span>
-              <% } %>
+              <% if (product.price_sale !== product.price) { %>
+                <span class="text-primary">
+                  <%= product.price_sale.toLocaleString() %>₫
+                </span>
+                <s class="text-2xl text-gray-400 font-light stroke-gray-line ml-3 text-gray-txt">
+                  <%= product.price.toLocaleString() %>₫
+                </s>
+                <span class="text-2xl ml-5 text-primary">-<%= (100 - Math.round((product.price_sale / product.price) *
+                    100)).toFixed(1) %>%</span>
+                <% } else { %>
+                  <span class="text-primary">
+                    <%= product.price.toLocaleString() %>₫
+                  </span>
+                <% } %>
             </div>
-            <div class="flex items-center mb-8 border-2 w-min">
-              <button
-                id="decrease"
+            <div class="items-center mb-8 border-2 w-min <%= product.status === 'on stock' ? 'flex' : 'hidden' %>">
+              <button id="decrease"
                 class="text-primary text-xl font-semibold w-10 h-10 flex items-center justify-center hover:bg-primary hover:text-white"
-                disabled
-                type="button"
-              >
+                disabled type="button">
                 -
               </button>
-              <input
-                id="quantity"
-                type="text"
-                value="1"
-                max="<%= product.in_stock %>"
-                class="w-auto min-w-10 max-w-10 py-2 text-center justify-center self-center"
-                readonly
-              />
-              <button
-                id="increase"
-                type="button"
-                class="text-primary text-xl w-10 h-10 items-center justify-center hover:bg-primary hover:text-white"
-              >
+              <input id="quantity" type="text" value="1" max="<%= product.in_stock %>"
+                class="w-auto min-w-10 max-w-10 py-2 text-center justify-center self-center" readonly />
+              <button id="increase" type="button"
+                class="text-primary text-xl w-10 h-10 items-center justify-center hover:bg-primary hover:text-white">
                 +
               </button>
             </div>
-            <button
-              id="add-to-cart"
-              type="button"
+            <button id="add-to-cart" type="button"
+              onclick="addToCart('<%= product.id %>')"
               class="bg-primary border border-transparent hover:bg-transparent hover:border-primary text-white hover:text-primary py-2 px-4 rounded-md w-full"
-            >
-              <div class="font-bold mt-1">THÊM VÀO GIỎ</div>
-              <div class="mb-1">Giao tận nơi Hoặc Nhận tại cửa hàng</div>
+              <%= product.status !== 'on stock' && 'disabled' %>
+              >
+                <% if (product.status === 'on stock') { %>
+                  <div class="font-bold mt-1">Thêm vào giỏ hàng</div>
+                  <div class="mb-1">Giao tận nơi Hoặc Nhận tại cửa hàng</div>
+                <% } else if (product.status === 'out of stock') { %>
+                    <div class="font-bold mt-1">Sản phẩm tạm hết hàng</div>
+                    <div class="mb-1">Cửa hàng sẽ thông báo khi hàng mới về</div>
+                <% } else if (product.status === 'suspended') { %>
+                    <div class="font-bold mt-1">Ngừng kinh doanh</div>
+                    <div class="mb-1">Vui lòng tham khảo các sản phẩm khác</div>
+                <% } %>
             </button>
           </div>
         </div>
@@ -126,56 +172,31 @@
     <div class="pb-10">
       <div class="mt-10">
         <div class="flex space-x-4" role="tablist">
-          <button
-            id="description-tab"
-            role="tab"
-            aria-controls="description-content"
-            aria-selected="true"
-            class="tab active"
-          >
+          <button id="description-tab" role="tab" aria-controls="description-content" aria-selected="true"
+            class="tab active">
             Mô tả
           </button>
-          <button
-            id="specs-tab"
-            role="tab"
-            aria-controls="specs-content"
-            aria-selected="false"
-            class="tab"
-          >
+          <button id="specs-tab" role="tab" aria-controls="specs-content" aria-selected="false" class="tab">
             Thông số chi tiết
           </button>
-          <button
-            id="reviews-tab"
-            role="tab"
-            aria-controls="reviews-content"
-            aria-selected="false"
-            class="tab"
-          >
+          <button id="reviews-tab" role="tab" aria-controls="reviews-content" aria-selected="false" class="tab">
             Đánh giá
           </button>
         </div>
         <div class="mt-8">
-          <div
-            id="description-content"
-            role="tabpanel"
-            aria-labelledby="description-tab"
-            class="tab-content"
-          >
+          <div id="description-content" role="tabpanel" aria-labelledby="description-tab" class="tab-content">
             <div class="flex flex-col lg:flex-row lg:space-x-8">
               <div class="w-full">
-                <% product.description.split(/[\r\n]+/).forEach(str => { %>
-                <p class="mb-4"><%=str%></p>
-                <% }); %>
+                <% if (product.description) { %>
+                    <% product.description.split(/[\r\n]+/).forEach(str => { %>
+                    <p class="mb-4"><%=str%></p>
+                    <% }); %>
+                <% } %>
               </div>
             </div>
           </div>
 
-          <div
-            id="specs-content"
-            role="tabpanel"
-            aria-labelledby="specs-tab"
-            class="tab-content hidden"
-          >
+          <div id="specs-content" role="tabpanel" aria-labelledby="specs-tab" class="tab-content hidden">
             <div class="flex flex-col lg:flex-row lg:space-x-8">
               <div class="w-full">
                 <ul>
@@ -184,8 +205,8 @@
                     <%= product.cpu %>
                   </li>
                   <li>
-                    <span class="font-bold">Dung lượng: </span
-                    ><%= product.storage %>
+                    <span class="font-bold">Dung lượng: </span>
+                    <%= product.storage %>
                   </li>
                   <li>
                     <span class="font-bold">RAM: </span>
@@ -198,137 +219,101 @@
                   <li>
                     <span class="font-bold">Kích thước màn hình: </span>
                     <%= product.screen_size %>
-                    inch
+                      inch
                   </li>
                   <li>
-                    <span class="font-bold">Độ phân giải: </span
-                    ><%= product.resolution %>
+                    <span class="font-bold">Độ phân giải: </span>
+                    <%= product.resolution %>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
 
-          <div
-            id="reviews-content"
-            role="tabpanel"
-            aria-labelledby="reviews-tab"
-            class="tab-content hidden"
-          >
+          <div id="reviews-content" role="tabpanel" aria-labelledby="reviews-tab" class="tab-content hidden">
             <!-- Reviews List -->
             <div class="space-y-6">
-              <div id="reviews-list">
-                <!-- Review 1 -->
-                <div class="py-4">
-                  <div class="flex items-center mb-2">
-                    <span class="text-lg font-semibold text-gray-700"
-                      >John Doe</span
-                    >
-                    <span class="ml-2 text-primary">★★★★★</span>
-                  </div>
-                  <p>
-                    Great quality! Fits perfectly and the material feels
-                    premium. Highly recommend this t-shirt.
-                  </p>
-                </div>
-                <!-- Review 2 -->
-                <div class="border-t border-gray-line py-4">
-                  <div class="flex items-center mb-2">
-                    <span class="text-lg font-semibold text-gray-700"
-                      >Jane Smith</span
-                    >
-                    <span class="ml-2 text-primary">★★★★☆</span>
-                  </div>
-                  <p>
-                    I love the design and the fabric is very comfortable.
-                    However, I wish it came in more colors.
-                  </p>
-                </div>
-                <!-- Review 3 -->
-                <div class="border-t border-gray-line py-4">
-                  <div class="flex items-center mb-2">
-                    <span class="text-lg font-semibold text-gray-700"
-                      >Alice Johnson</span
-                    >
-                    <span class="ml-2 text-primary">★★★★★</span>
-                  </div>
-                  <p>
-                    Excellent t-shirt! The size is perfect and it looks great.
-                    Will definitely buy again.
-                  </p>
-                </div>
+              <div id="review-list">
+                <% if (reviews.reviews.length !== 0) { %>
+                    <% reviews.reviews.forEach(review=> { %>
+                      <div class="py-4 shadow-md rounded-md m-4 p-4">
+                        <div class="flex items-center mb-2">
+                          <img id="review-avatar" src="<%= review.avatar_url %> " class="w-10 h-auto object-cover rounded-full" />
+                          <span class="text-md font-semibold text-gray-700 ml-4">
+                            <%= review.account.name %> <!-- Display the account's name -->
+                          </span>
+                          <!-- Space between name and time -->
+                          <span class="text-sm text-gray-700 ml-4">
+                            <%= review.create_time.toLocaleString(); %> <!-- Format the time -->
+                          </span>
+                        </div>
+                        <p class="mt-4 ml-4">
+                          <%= review.content %> <!-- Display the content of the review -->
+                        </p>
+                      </div>
+                      <% }); %>
+                        <% } else { %>
+                          <p>Sản phẩm này chưa có đánh giá nào...</p>
+                          <% } %>
+              </div>
+              <div class="flex justify-center mt-8">
+                <nav aria-label="Page navigation">
+                  <ul class="inline-flex space-x-2" id="review-pagination">
+                    <!-- Pagination -->
+                    <% if (reviews.currentPage > 1) { %>
+                      <!-- "Previous" button -->
+                      <li>
+                        <button onclick="onReviewPageChange(event, <%= reviews.currentPage - 1 %>);"
+                          class="w-10 h-10 flex items-center justify-center rounded-full review-pagination-link">
+                          Previous
+                        </button>
+                      </li>
+                    <% } %>
+              
+                    <!-- Loop through pages dynamically based on currentPage and totalPages -->
+                    <% 
+                      // Calculate the range of pages to show (up to 3 pages before and after the current page)
+                      let startPage = reviews.currentPage - 1;
+                      let endPage = reviews.currentPage + 1;
+                      if (startPage < 1) startPage = 1;
+                      if (endPage > reviews.totalPages) endPage = reviews.totalPages;
+                    %>
+              
+                    <% for (let i = startPage; i <= endPage; i++) { %>
+                      <li>
+                        <button onclick="onReviewPageChange(event, <%= i %>);"
+                          class="w-10 h-10 flex items-center justify-center rounded-full <%= i === reviews.currentPage ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white' %> review-pagination-link">
+                          <%= i %>
+                        </button>
+                      </li>
+                    <% } %>
+              
+                    <% if (reviews.currentPage < reviews.totalPages) { %>
+                      <!-- "Next" button -->
+                      <li>
+                        <button onclick="onReviewPageChange(event, <%= reviews.currentPage + 1 %>);"
+                          class="w-10 h-10 flex items-center justify-center rounded-full review-pagination-link">
+                          Next
+                        </button>
+                      </li>
+                    <% } %>
+                  </ul>
+                </nav>
               </div>
             </div>
-
             <!-- Submit Review Form -->
             <div class="mt-8">
-              <h3 class="text-lg font-semibold mb-4">Write a Review</h3>
+              <h3 class="text-lg font-semibold mb-4">Để lại đánh giá của bạn</h3>
               <form id="review-form" class="space-y-4">
-                <div class="space-y-4 md:flex md:space-x-4 md:space-y-0">
-                  <div class="md:flex-1">
-                    <label
-                      for="review-name"
-                      class="block text-sm font-medium text-gray-700"
-                      >Name</label
-                    >
-                    <input
-                      type="text"
-                      id="review-name"
-                      name="review-name"
-                      class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-                    />
-                  </div>
-                  <div class="md:flex-1">
-                    <label
-                      for="review-email"
-                      class="block text-sm font-medium text-gray-700"
-                      >Email</label
-                    >
-                    <input
-                      type="email"
-                      id="review-email"
-                      name="review-email"
-                      class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-                    />
-                  </div>
-                  <div class="md:flex-1">
-                    <label
-                      for="review-rating"
-                      class="block text-sm font-medium text-gray-700"
-                      >Rating</label
-                    >
-                    <select
-                      id="review-rating"
-                      name="review-rating"
-                      class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-                    >
-                      <option value="5">★★★★★</option>
-                      <option value="4">★★★★☆</option>
-                      <option value="3">★★★☆☆</option>
-                      <option value="2">★★☆☆☆</option>
-                      <option value="1">★☆☆☆☆</option>
-                    </select>
-                  </div>
+                <div>
+                  <label for="review-text" class="block text-sm font-medium text-gray-700">Đánh giá</label>
+                  <textarea id="review-text" name="review-text" rows="4"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"></textarea>
                 </div>
                 <div>
-                  <label
-                    for="review-text"
-                    class="block text-sm font-medium text-gray-700"
-                    >Review</label
-                  >
-                  <textarea
-                    id="review-text"
-                    name="review-text"
-                    rows="4"
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-                  ></textarea>
-                </div>
-                <div>
-                  <button
-                    type="submit"
-                    class="bg-primary hover:bg-transparent border border-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full focus:outline-none"
-                  >
-                    Submit Review
+                  <button type="button" id="review-submit"
+                    class="bg-primary hover:bg-transparent border border-transparent hover:border-primary text-white hover:text-primary font-semibold py-2 px-4 rounded-full focus:outline-none">
+                    Gửi đánh giá
                   </button>
                 </div>
               </form>
@@ -437,8 +422,178 @@
     }
   };
 
-  // Add event listener to add to cart btn
-  document.getElementById('add-to-cart').addEventListener('click', () => {
-    addToCart('<%= product.id %>');
+  const renderReviews = (data) => {
+    const reviewContainer = document.getElementById('review-list');
+    reviewContainer.innerHTML = ''; // Clear current content
+
+    if (data.reviews.length !== 0) {
+
+      data.reviews.forEach((review) => {
+        reviewContainer.innerHTML += `
+        <div class="py-4 shadow-md rounded-md m-4 p-4">
+          <div class="flex items-center mb-2">
+            <img id="review-avatar" src="${review.avatar_url}" class="w-10 h-auto object-cover rounded-full" />
+            <span class="text-md font-semibold text-gray-700 ml-4">
+              ${review.account.name} <!-- Display the account's name -->
+            </span>
+            <!-- Space between name and time -->
+            <span class="text-sm text-gray-700 ml-4">
+              ${new Date(review.create_time).toLocaleString()} %> <!-- Format the time -->
+            </span>
+          </div>
+          <p class="mt-4 ml-4">
+            ${review.content} <!-- Display the content of the review -->
+          </p>
+        </div>
+      `;
+      });
+    } else {
+      reviewContainer.innerHTML = '<p>Chưa có đánh giá về sản phẩm này...</p>';
+    }
+  };
+
+
+  const updateReviewPaginationUI = (currentPage, totalPage) => {
+    const paginationContainer = document.getElementById('review-pagination');
+    paginationContainer.innerHTML = ''; // Clear current pagination links
+    // console.log(currentPage);
+    // console.log(totalPage);
+
+    // Determine the range of pages to display (up to 3 pages around the current page)
+    let startPage = currentPage - 1;
+    let endPage = currentPage + 1;
+
+    // Ensure we don't go out of bounds
+    if (startPage < 1) startPage = 1;
+    if (endPage > totalPage) endPage = totalPage;
+
+    // "Previous" button (disabled on the first page)
+    if (currentPage > 1) {
+      const prevButton = document.createElement('li');
+      prevButton.innerHTML = `<button class="w-10 h-10 flex items-center justify-center rounded-full review-pagination-link">Previous</button>`;
+      prevButton.querySelector('button').addEventListener('click', (e) => {
+        onReviewPageChange(e, currentPage - 1);
+      });
+      paginationContainer.appendChild(prevButton);
+    }
+
+    // Loop through the page numbers (up to 3 pages)
+    for (let i = startPage; i <= endPage; i++) {
+      const pageButton = document.createElement('li');
+      pageButton.innerHTML = `<button class="w-10 h-10 flex items-center justify-center rounded-full review-pagination-link ${i === currentPage ? 'bg-primary text-white' : 'hover:bg-primary hover:text-white'}">${i}</button>`;
+      pageButton.querySelector('button').addEventListener('click', (e) => {
+        onReviewPageChange(e, i);
+      });
+      paginationContainer.appendChild(pageButton);
+    }
+
+    // "Next" button (disabled on the last page)
+    if (currentPage < totalPage) {
+      const nextButton = document.createElement('li');
+      nextButton.innerHTML = `<button class="w-10 h-10 flex items-center justify-center rounded-full review-pagination-link">Next</button>`;
+      nextButton.querySelector('button').addEventListener('click', (e) => {
+        onReviewPageChange(e, currentPage + 1);
+      });
+      paginationContainer.appendChild(nextButton);
+    }
+  };
+
+  const onReviewPageChange = async function (e, page) {
+    e.preventDefault();
+
+    // Fetch data using AJAX
+    try {
+      const response = await fetch(`/api/review/<%= product.id %>?page=${page}`, {
+        method: 'GET',
+      });
+      if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+      const data = await response.json();
+      // console.log(data);
+      // Render new data (Replace this with your data-rendering logic)
+      renderReviews(data);
+
+      // Update active page button
+      updateReviewPaginationUI(data.currentPage, data.totalPages);
+    } catch (error) {
+      console.error('Failed to load data:', error);
+    }
+  };
+
+  const submitReviewButton = document.getElementById('review-submit');
+  submitReviewButton.addEventListener('click', async () => {
+    const content = document.getElementById('review-text').value;
+
+    try {
+      const addReviewResponse = await fetch('/api/review', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ product_id: '<%= product.id %>', content: content }),
+      });
+
+      // Check the Content-Type header to determine response type
+      const contentType = addReviewResponse.headers.get('content-type');
+
+      if (contentType && contentType.includes('text/html')) {
+        console.log('Redirecting to login...');
+        window.location.href = '/auth/login';
+        return;
+      }
+
+      // Parse JSON response
+      const data = await addReviewResponse.json();
+
+      if (addReviewResponse.ok && data.success == true) {
+        const reviewListElement = document.getElementById('review-list');
+
+        reviewListElement.insertAdjacentHTML('afterbegin', `
+        <div class="py-4 shadow-md rounded-md m-4 p-4">
+          <div class="flex items-center mb-2">
+            <img id="review-avatar" src="${data.review.avatar_url}" class="w-10 h-auto object-cover rounded-full" />
+            <span class="text-md font-semibold text-gray-700 ml-4">
+              ${data.review.account.name} <!-- Display the account's name -->
+            </span>
+            <!-- Space between name and time -->
+            <span class="text-sm text-gray-700 ml-4">
+              ${new Date(data.review.create_time).toLocaleString()} %> <!-- Format the time -->
+            </span>
+          </div>
+          <p class="mt-4 ml-4">
+            ${data.review.content} <!-- Display the content of the review -->
+          </p>
+        </div>
+      `);
+
+        const reviewBox = document.getElementById('review-text');
+        reviewBox.value = '';
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Thêm đánh giá thành công',
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Thất bại',
+          text: data.message,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Thất bại',
+        text: 'Đã xảy ra lỗi khi thêm đánh giá',
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
   });
+
+
 </script>

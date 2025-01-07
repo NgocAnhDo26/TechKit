@@ -22,9 +22,11 @@
               onchange="sortByPrice();"
               class="block appearance-none w-full bg-white border hover:border-primary px-4 py-2 pr-8 rounded-full shadow leading-tight focus:outline-none focus:shadow-outline"
             >
-              <option value="">Xếp theo:</option>
-              <option value="asc">Xếp theo: Giá tăng dần</option>
-              <option value="desc">Xếp theo: Giá giảm dần</option>
+              <option value="default">Xếp theo: Mặc định</option>
+              <option value="price_sale-asc">Giá: Tăng dần</option>
+              <option value="price_sale-desc">Giá: Giảm dần</option>
+              <option value="create_time-desc">Ngày tạo: Mới nhất</option>
+              <option value="create_time-asc">Ngày tạo: Cũ nhất</option>
             </select>
             <div
               class="pointer-events-none absolute inset-y-0 right-0 flex items-center justify-center px-2"
@@ -70,12 +72,12 @@
             <!-- Loop through products and display each one -->
             <% if (products) { %>
             <% products.forEach(product => { %>
-            <%- include('product', { product }); %>
+              <%- include('product', { product }); %>
             <% }); %>
+            <% } else { %>
+              <h1>Không tìm thấy sản phẩm...</h1>
+              <% } %>
           </div>
-          <% } else { %>
-          <h1>Không tìm thấy sản phẩm...</h1>
-          <% } %>
 
           <div class="flex justify-center mt-8">
             <nav aria-label="Page navigation">

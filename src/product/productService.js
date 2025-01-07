@@ -58,14 +58,9 @@ export async function fetchProductWithQuery(params, query) {
 
   // Prepare sorting
   let orderBy = {};
-  if (query.order) {
-    orderBy.price_sale = query.order;
+  if (query.order && query.sortBy) {
+    orderBy[query.sortBy] = query.order;
   }
-
-  // Exclude products with 0 stock
-  filters.AND.push({
-    in_stock: { gt: 0 },
-  });
 
   // Fetch products with average ratings and category names
   const products = await prisma.product.findMany({
@@ -125,9 +120,7 @@ export async function fetchProductByID(productID) {
       product_image: {
         select: {
           public_id: true,
-        },
-        orderBy: {
-          is_profile_img: 'desc', // Profile image first
+          is_profile_img: true,
         },
       },
       product_review: {
@@ -160,11 +153,14 @@ export async function fetchProductByID(productID) {
       price_sale: product.price_sale,
       in_stock: product.in_stock,
       sales: product.sales,
+      status: product.status,
       create_time: product.create_time,
       category: product.category.name,
-      profile_img: getImage(product.product_image[0].public_id),
+      profile_img: getImage(
+        product.product_image.find((item) => item.is_profile_img).public_id,
+      ),
       other_img: product.product_image
-        .slice(1)
+        .filter((item) => !item.is_profile_img)
         .map((item) => getImage(item.public_id)),
       product_review: product.product_review.map((item) => ({
         username: item.account.username,
@@ -235,7 +231,7 @@ export async function fetchProductByRelevant(singleProduct) {
     where: {
       NOT: { id: singleProduct.id },
       OR: [
-        { category: { name: singleProduct.category.name } },
+        { category: { name: singleProduct.category } },
         { brand: { name: singleProduct.brand } },
       ],
       in_stock: { gt: 0 },

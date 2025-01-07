@@ -1,4 +1,5 @@
 import { cloudinary,prisma } from '../config/config.js';
+import { uploadAvatarImage } from '../util/util.js';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
 
@@ -106,52 +107,60 @@ async function updatePasswordByID(account_id, newPassword) {
     }
 }
 
-async function updateAvatarByID(account_id, file) {
+export async function updateAvatarByID(account_id, image) {
+    // Fetch account information to get the current avatar's public ID
+    const account = await prisma.account.findUnique({
+        where: {
+            id: Number(account_id),
+        },
+        select: {
+            id: true,
+            avatar: true, // Assuming 'avatar' stores the public_id
+        },
+    });
+
+    if (!account) {
+        return { success: false, message: 'Account does not exist' };
+    }
+
     try {
-        // Fetch the account by ID to get the current avatar public_id
-        const account = await prisma.account.findUnique({
-            where: { id: account_id },
+        // Upload the new avatar to Cloudinary
+        const result = await new Promise((resolve, reject) => {
+            cloudinary.uploader
+                .upload_stream({ folder: 'TechKit/avatar' }, (error, result) => {
+                    if (error) reject(error);
+                    resolve(result);
+                })
+                .end(image.buffer); // Use the buffer from the uploaded image
         });
 
-        if (!account) {
-            throw new Error('Account not found');
-        }
-
-        // If an old avatar exists, delete it from Cloudinary
-        if (account.avatar) {
+        // Delete the old avatar from Cloudinary if it exists and isn't the default avatar
+        if (account.avatar && account.avatar !== 'TechKit/avatar/default') {
             await cloudinary.uploader.destroy(account.avatar);
         }
 
-        // Upload the new avatar image to Cloudinary
-        const result = await cloudinary.uploader.upload(file.path, {
-            folder: 'avatar', // Folder in Cloudinary where images will be stored
-            public_id: account_id.toString(), // Optional: Set public ID based on account ID
+        // Update the avatar's public_id in the database
+        await prisma.account.update({
+            where: {
+                id: Number(account_id),
+            },
+            data: {
+                avatar: result.public_id,
+            },
         });
 
-        // After successful upload, update the avatar field in the Prisma database
-        const updatedAccount = await prisma.account.update({
-            where: { id: account_id },
-            data: { avatar: result.public_id }, // Update avatar field with new public ID
-        });
-
+        // Return the URL of the updated avatar
         return {
             success: true,
             message: 'Avatar updated successfully',
-            avatar_url: result.secure_url, // Return the secure Cloudinary URL
+            avatar_url: result.secure_url,
         };
-
     } catch (error) {
         console.error('Error updating avatar:', error);
-        throw new Error('Failed to update avatar');
-    } finally {
-        // Delete the temporary file from the local system in any situation
-        fs.unlink(file.path, (err) => {
-            if (err) {
-                console.error('Error deleting temporary file:', err);
-            } else {
-                console.log('Temporary file deleted successfully');
-            }
-        });
+        return {
+            success: false,
+            message: 'Failed to update avatar',
+        };
     }
 }
 
@@ -161,5 +170,4 @@ export {
     updatePasswordByID,
     updateProfileInfoByID,
     comparePassword,
-    updateAvatarByID
 };
